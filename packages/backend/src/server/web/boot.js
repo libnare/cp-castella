@@ -249,8 +249,8 @@
 
 		body,
 		html {
-			background-color: rgb(28, 28, 37);
-			color: #dfddcc;
+			background-color: rgb(27, 26, 37);
+			color: rgb(242, 238, 252);
 			justify-content: center;
 			margin: auto;
 			padding: 10px;
@@ -270,12 +270,12 @@
 		}
 
 		.button-big {
-			background: linear-gradient(90deg, rgb(255, 207, 230), rgb(185, 216, 255));
+			background: linear-gradient(90deg, rgb(184, 185, 247), rgb(204, 184, 247));
 			line-height: 50px;
 		}
 
 		.button-big:hover {
-			background: rgb(255, 222, 241);
+			background: rgb(230, 230, 252);
 		}
 
 		.button-small {
@@ -284,18 +284,18 @@
 		}
 
 		.button-small:hover {
-			background: rgba(255, 255, 255, 0.1);
+			background: rgba(184, 185, 247, 0.15);
 		}
 
 		.button-label-big {
-			color: rgb(28, 28, 37);
+			color: rgb(33, 32, 41);
 			font-weight: bold;
 			font-size: 1.2em;
 			padding: 12px;
 		}
 
 		.button-label-small {
-			color: rgb(185, 216, 255);
+			color: rgba(184, 185, 247);
 			font-size: 16px;
 			padding: 12px;
 		}
@@ -322,11 +322,13 @@
 		}
 
 		code {
+			color: #f8f8f2;
+			text-shadow: 0 1px rgba(0,0,0,.3);
 			font-family: "JetBrains Mono", Fira, FiraCode, monospace;
 		}
 
 		#errorInfo {
-			background: rgb(35, 35, 47);
+			background: #272822;
 			margin-bottom: 2rem;
 			padding: 0.5rem 1rem;
 			width: 40rem;
