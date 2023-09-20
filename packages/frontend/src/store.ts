@@ -311,7 +311,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	menuDisplay: {
 		where: 'device',
-		default: 'sideFull' as 'sideFull' | 'sideIcon' | 'top',
+		default: 'sideIcon' as 'sideFull' | 'sideIcon' | 'top',
 	},
 	reportError: {
 		where: 'device',
