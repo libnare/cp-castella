@@ -21,14 +21,14 @@ import { computed, ComputedRef, onMounted, shallowRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
-import * as os from '@/os';
-import { useTooltip } from '@/scripts/use-tooltip';
-import { $i } from '@/account';
+import * as os from '@/os.js';
+import { useTooltip } from '@/scripts/use-tooltip.js';
+import { $i } from '@/account.js';
 import MkReactionEffect from '@/components/MkReactionEffect.vue';
-import { claimAchievement } from '@/scripts/achievements';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { customEmojis } from '@/custom-emojis';
+import { claimAchievement } from '@/scripts/achievements.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { customEmojis } from '@/custom-emojis.js';
 
 const props = defineProps<{
 	reaction: string;
@@ -190,6 +190,10 @@ useTooltip(buttonEl, async (showing) => {
 			filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
 		}
 	}
+}
+
+.icon {
+	max-width: 150px;
 }
 
 .count {

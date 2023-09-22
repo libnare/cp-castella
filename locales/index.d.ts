@@ -7,10 +7,8 @@ export interface Locale {
     "replayUserSetupDialog": string;
     "replayTutorial": string;
     "nya": string;
-    "displayHeaderNavBarWhenScroll": string;
     "addSingle": string;
     "addMultiple": string;
-    "showRenoteConfirmPopup": string;
     "showSubNoteFooterButton": string;
     "showSubNoteFooterButtonDescription": string;
     "alreadyFollowed": string;
@@ -34,10 +32,6 @@ export interface Locale {
     "useBoldFont": string;
     "newNoteReceivedNotification": string;
     "disableRightClick": string;
-    "useEnterToSend": string;
-    "useEnterToSendDescription": string;
-    "postFormVisibilityHotkey": string;
-    "postFormVisibilityHotkeyDescription": string;
     "cherrypickUpdatedCacheClearTitle": string;
     "cherrypickUpdatedCacheClear": string;
     "cherrypickUpdatedCacheClearLater": string;
@@ -770,6 +764,7 @@ export interface Locale {
     "loadRawImages": string;
     "disableShowingAnimatedImages": string;
     "disableShowingAnimatedImagesDescription": string;
+    "highlightSensitiveMedia": string;
     "verificationEmailSent": string;
     "notSet": string;
     "emailVerified": string;
@@ -1183,6 +1178,12 @@ export interface Locale {
     "loadReplies": string;
     "loadConversation": string;
     "pinnedList": string;
+    "keepScreenOn": string;
+    "verifiedLink": string;
+    "notifyNotes": string;
+    "unnotifyNotes": string;
+    "authentication": string;
+    "authenticationRequiredToContinue": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
@@ -1218,6 +1219,21 @@ export interface Locale {
         "functionDescription": string;
         "nickname": string;
         "nicknameDescription": string;
+        "useEnterToSend": string;
+        "useEnterToSendDescription": string;
+        "postFormVisibilityHotkey": string;
+        "postFormVisibilityHotkeyDescription": string;
+        "showRenoteConfirmPopup": string;
+        "showRenoteConfirmPopupDescription": string;
+        "displayHeaderNavBarWhenScroll": string;
+        "_displayHeaderNavBarWhenScroll": {
+            "all": string;
+            "hideHeaderOnly": string;
+            "hideHeaderFloatBtn": string;
+            "hideFloatBtnOnly": string;
+            "hideFloatBtnNavBar": string;
+            "hide": string;
+        };
         "patch": string;
         "patchDescription": string;
         "infoButtonForNoteActions": string;
@@ -1228,14 +1244,8 @@ export interface Locale {
         "mobileTimelineHeaderChange": string;
         "renameTheButtonInPostFormToNya": string;
         "renameTheButtonInPostFormToNyaDescription": string;
-    };
-    "_displayHeaderNavBarWhenScroll": {
-        "all": string;
-        "hideHeaderOnly": string;
-        "hideHeaderFloatBtn": string;
-        "hideFloatBtnOnly": string;
-        "hideFloatBtnNavBar": string;
-        "hide": string;
+        "showReplyInNotification": string;
+        "renoteQuoteButtonSeparation": string;
     };
     "_bannerDisplay": {
         "all": string;
@@ -2082,7 +2092,6 @@ export interface Locale {
     "_2fa": {
         "alreadyRegistered": string;
         "registerTOTP": string;
-        "passwordToTOTP": string;
         "step1": string;
         "step2": string;
         "step2Click": string;
@@ -2165,6 +2174,7 @@ export interface Locale {
         "users": string;
         "userList": string;
         "userGroup": string;
+        "userBlacklist": string;
     };
     "_weekday": {
         "sunday": string;
@@ -2273,6 +2283,7 @@ export interface Locale {
         "metadataContent": string;
         "changeAvatar": string;
         "changeBanner": string;
+        "verifiedLinkDescription": string;
     };
     "_exportOrImport": {
         "allNotes": string;
@@ -2406,6 +2417,7 @@ export interface Locale {
         "yourFollowRequestAccepted": string;
         "youWereInvitedToGroup": string;
         "pollEnded": string;
+        "newNote": string;
         "unreadAntennaNote": string;
         "emptyPushNotificationMessage": string;
         "achievementEarned": string;
@@ -2415,6 +2427,7 @@ export interface Locale {
         "notificationWillBeDisplayedLikeThis": string;
         "_types": {
             "all": string;
+            "note": string;
             "follow": string;
             "mention": string;
             "reply": string;

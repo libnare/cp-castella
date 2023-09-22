@@ -118,6 +118,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</dt>
 							<dd class="value">
 								<Mfm :text="field.value" :author="user" :i="$i" :colored="false"/>
+								<i v-if="user.verifiedLinks.includes(field.value)" v-tooltip:dialog="i18n.ts.verifiedLink" class="ti ti-circle-check" :class="$style.verifiedLink"></i>
 							</dd>
 						</dl>
 					</div>
@@ -169,22 +170,22 @@ import MkTextarea from '@/components/MkTextarea.vue';
 import MkOmit from '@/components/MkOmit.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkButton from '@/components/MkButton.vue';
-import { getScrollPosition } from '@/scripts/scroll';
-import { getUserMenu } from '@/scripts/get-user-menu';
-import number from '@/filters/number';
-import { userPage } from '@/filters/user';
-import * as os from '@/os';
-import { useRouter } from '@/router';
-import { i18n } from '@/i18n';
-import { $i, iAmModerator } from '@/account';
-import { dateString } from '@/filters/date';
-import { confetti } from '@/scripts/confetti';
+import { getScrollPosition } from '@/scripts/scroll.js';
+import { getUserMenu } from '@/scripts/get-user-menu.js';
+import number from '@/filters/number.js';
+import { userPage } from '@/filters/user.js';
+import * as os from '@/os.js';
+import { useRouter } from '@/router.js';
+import { i18n } from '@/i18n.js';
+import { $i, iAmModerator } from '@/account.js';
+import { dateString } from '@/filters/date.js';
+import { confetti } from '@/scripts/confetti.js';
 import MkNotes from '@/components/MkNotes.vue';
-import { api } from '@/os';
-import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe';
-import { defaultStore } from '@/store';
-import { miLocalStorage } from '@/local-storage';
-import { editNickname } from '@/scripts/edit-nickname';
+import { api } from '@/os.js';
+import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
+import { defaultStore } from '@/store.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { editNickname } from '@/scripts/edit-nickname.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -746,7 +747,12 @@ onUnmounted(() => {
 <style lang="scss" module>
 .tl {
 	background: var(--bg);
-    border-radius: var(--radius);
-    overflow: clip;
+	border-radius: var(--radius);
+	overflow: clip;
+}
+
+.verifiedLink {
+	margin-left: 4px;
+	color: var(--success);
 }
 </style>

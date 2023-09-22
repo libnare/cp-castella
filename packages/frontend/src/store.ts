@@ -5,7 +5,8 @@
 
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { Storage } from './pizzax';
+import { miLocalStorage } from './local-storage';
+import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
 	title: string,
@@ -209,6 +210,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'respect' as 'respect' | 'force' | 'ignore',
 	},
+	highlightSensitiveMedia: {
+		where: 'device',
+		default: false,
+	},
 	animation: {
 		where: 'device',
 		default: !window.matchMedia('(prefers-reduced-motion)').matches,
@@ -381,6 +386,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: {} as Record<string, Record<string, string[]>>,
 	},
+	keepScreenOn: {
+		where: 'device',
+		default: false,
+	},
 
 	// #region CherryPick
 	// - Settings/General
@@ -508,6 +517,14 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	showReplyInNotification: {
+		where: 'device',
+		default: false,
+	},
+	renoteQuoteButtonSeparation: {
+		where: 'device',
+		default: true,
+	},
 
 	// - etc
 	friendlyEnableNotifications: {
@@ -545,7 +562,6 @@ interface Watcher {
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-import { miLocalStorage } from './local-storage';
 import lightTheme from '@/themes/l-stella-r2.json5';
 import darkTheme from '@/themes/d-stella-r2.json5';
 

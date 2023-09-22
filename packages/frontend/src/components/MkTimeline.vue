@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkInfo v-if="$i && tlHint && !tlHintClosed" :closeable="true" style="margin-bottom: 16px;" @closed="closeHint">
-  <I18n :src="tlHint"><template #icon><i :class="tlIcon"></i></template></I18n>
+	<I18n :src="tlHint"><template #icon><i :class="tlIcon"></i></template></I18n>
 </MkInfo>
 <MkNotes ref="tlComponent" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline" :pagination="pagination" @queue="emit('queue', $event)"/>
 </template>
@@ -13,12 +13,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, provide, onUnmounted } from 'vue';
 import MkNotes from '@/components/MkNotes.vue';
-import { useStream } from '@/stream';
-import * as sound from '@/scripts/sound';
-import { $i } from '@/account';
-import { defaultStore } from '@/store';
 import MkInfo from '@/components/MkInfo.vue';
-import { i18n } from '@/i18n';
+import { useStream } from '@/stream.js';
+import * as sound from '@/scripts/sound.js';
+import { $i } from '@/account.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
 	src: string;

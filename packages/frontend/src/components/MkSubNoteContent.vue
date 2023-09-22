@@ -62,7 +62,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-tooltip="i18n.ts.renote"
 				:class="$style.footerButton"
 				class="_button"
-				@mousedown="renote()"
+				@mousedown="defaultStore.state.renoteQuoteButtonSeparation ? renoteOnly() : renote()"
 			>
 				<i class="ti ti-repeat"></i>
 				<p v-if="note.renoteCount > 0" :class="$style.footerButtonCount">{{ note.renoteCount }}</p>
@@ -80,7 +80,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i v-if="note.reactionAcceptance !== 'likeOnly'" class="ti ti-mood-minus"></i>
 				<i v-else class="ti ti-heart-minus"></i>
 			</button>
-			<button v-if="canRenote" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
+			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
 			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @mousedown="clip()">
 				<i class="ti ti-paperclip"></i>
 			</button>
@@ -98,28 +98,29 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, Ref, ref, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import * as os from '@/os';
+import * as os from '@/os.js';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkDetailsButton from '@/components/MkDetailsButton.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
-import MkReactionsViewer from "@/components/MkReactionsViewer.vue";
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
-import { shouldCollapsed, shouldMfmCollapsed } from '@/scripts/collapsed';
-import { defaultStore } from '@/store';
-import { miLocalStorage } from '@/local-storage';
-import { instance } from '@/instance';
-import { notePage } from '@/filters/note';
-import { useTooltip } from '@/scripts/use-tooltip';
-import { pleaseLogin } from '@/scripts/please-login';
-import { showMovedDialog } from '@/scripts/show-moved-dialog';
-import { getNoteClipMenu, getNoteMenu } from '@/scripts/get-note-menu';
-import { deepClone } from '@/scripts/clone';
-import { reactionPicker } from '@/scripts/reaction-picker';
-import { claimAchievement } from '@/scripts/achievements';
-import { useNoteCapture } from '@/scripts/use-note-capture';
+import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
+import { shouldCollapsed, shouldMfmCollapsed } from '@/scripts/collapsed.js';
+import { defaultStore } from '@/store.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { instance } from '@/instance.js';
+import { notePage } from '@/filters/note.js';
+import { useTooltip } from '@/scripts/use-tooltip.js';
+import { pleaseLogin } from '@/scripts/please-login.js';
+import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
+import { getNoteClipMenu, getNoteMenu } from '@/scripts/get-note-menu.js';
+import { deepClone } from '@/scripts/clone.js';
+import { reactionPicker } from '@/scripts/reaction-picker.js';
+import { claimAchievement } from '@/scripts/achievements.js';
+import { useNoteCapture } from '@/scripts/use-note-capture.js';
+import { MenuItem } from '@/types/menu.js';
 
 const el = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
@@ -192,7 +193,78 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
-async function renote() {
+function renote(viaKeyboard = false) {
+	pleaseLogin();
+	showMovedDialog();
+
+	let items = [] as MenuItem[];
+
+	if (props.note.channel) {
+		items = items.concat([{
+			text: i18n.ts.inChannelRenote,
+			icon: 'ti ti-repeat',
+			action: () => {
+				const el = renoteButton.value as HTMLElement | null | undefined;
+				if (el) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + (el.offsetWidth / 2);
+					const y = rect.top + (el.offsetHeight / 2);
+					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+				}
+
+				os.api('notes/create', {
+					renoteId: props.note.id,
+					channelId: props.note.channelId,
+				}).then(() => {
+					os.noteToast(i18n.ts.renoted);
+				});
+			},
+		}, {
+			text: i18n.ts.inChannelQuote,
+			icon: 'ti ti-quote',
+			action: () => {
+				os.post({
+					renote: props.note,
+					channel: props.note.channel,
+				});
+			},
+		}, null]);
+	}
+
+	items = items.concat([{
+		text: i18n.ts.renote,
+		icon: 'ti ti-repeat',
+		action: () => {
+			const el = renoteButton.value as HTMLElement | null | undefined;
+			if (el) {
+				const rect = el.getBoundingClientRect();
+				const x = rect.left + (el.offsetWidth / 2);
+				const y = rect.top + (el.offsetHeight / 2);
+				os.popup(MkRippleEffect, { x, y }, {}, 'end');
+			}
+
+			os.api('notes/create', {
+				renoteId: props.note.id,
+			}).then(() => {
+				os.noteToast(i18n.ts.renoted);
+			});
+		},
+	}, {
+		text: i18n.ts.quote,
+		icon: 'ti ti-quote',
+		action: () => {
+			os.post({
+				renote: props.note,
+			});
+		},
+	}]);
+
+	os.popupMenu(items, renoteButton.value, {
+		viaKeyboard,
+	});
+}
+
+async function renoteOnly() {
 	pleaseLogin();
 	showMovedDialog();
 
@@ -200,7 +272,7 @@ async function renote() {
 		const { canceled } = await os.confirm({
 			type: 'info',
 			text: i18n.ts.renoteConfirm,
-      caption: i18n.ts.renoteConfirmDescription,
+			caption: i18n.ts.renoteConfirmDescription,
 		});
 		if (canceled) return;
 	}

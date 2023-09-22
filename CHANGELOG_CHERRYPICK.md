@@ -26,33 +26,37 @@
 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### General
-- 스크롤 시 요소 표시(헤더, 플로팅 버튼, 탐색 모음)를 사용자화 할 수 있는 옵션 추가
-- 노트 작성 버튼을 '노트'에서 '냥!'으로 변경할 수 있는 옵션 추가
-- 노트의 리액션을 삭제하지 않고도 리액션 버튼을 눌러 리액션을 변경할 수 있도록 (misskey-dev/misskey#11157)
-- 리노트를 신고할 수 있도록 (misskey-dev/misskey#11466)
-- Rosé Pine 테마 추가 ([rose-pine/misskey](https://github.com/rose-pine/misskey))
-- 타임라인 소개 추가
-- 이용 약관을 서버 메뉴에서 볼 수 있도록
-- 계정 초기 설정과 타임라인 튜토리얼을 다시 진행할 수 있도록
-- 리모트 사용자의 노트/팔로잉/팔로워 수를 리모트 서버의 정보와 동일하게 보이도록
-- 유저 메뉴에서 '리모트 유저 정보 갱신'을 진행할 수 있도록
-- 설정에서 변경 가능한 옵션은 다이얼로그에서 안내하도록 주석 추가
-- 메모리 할당자를 jemalloc으로 설정 (MisskeyIO/misskey#152)
-- 신고 즉시 해결 기능 (misskey-dev/misskey#11032)
-- 어떤 이유로 클라이언트의 이모티콘 캐시가 삭제된 경우 즉시 다시 가져오도록 (MisskeyIO/misskey#163)
-- EventBus를 사용하는 코드를 EventEmitter3로 변경
-- 노트 작성 폼에 MFM 도움말을 볼 수 있는 버튼 추가
-- 새 MFM 구문 추가 (페이드)
+- Add: Rosé Pine 테마 추가 ([rose-pine/misskey](https://github.com/rose-pine/misskey))
+- Add: 타임라인 소개 추가
+- Change: EventBus를 사용하는 코드를 EventEmitter3로 변경
+- Feat: 스크롤 시 요소 표시(헤더, 플로팅 버튼, 탐색 모음)를 사용자화 할 수 있는 옵션 추가
+- Feat: 노트 작성 버튼을 '노트'에서 '냥!'으로 변경할 수 있는 옵션 추가
+- Feat: 리노트를 신고할 수 있도록 (misskey-dev/misskey#11466)
+- Feat: 계정 초기 설정과 타임라인 튜토리얼을 다시 진행할 수 있도록
+- Feat: 리모트 사용자의 노트/팔로잉/팔로워 수를 리모트 서버의 정보와 동일하게 보이도록
+- Feat: 유저 메뉴에서 '리모트 유저 정보 갱신'을 진행할 수 있도록
+- Feat: 신고 즉시 해결 기능 (misskey-dev/misskey#11032)
+- Feat: 어떤 이유로 클라이언트의 이모티콘 캐시가 삭제된 경우 즉시 다시 가져오도록 (MisskeyIO/misskey#163)
+- Feat: 노트 작성 폼에 MFM 도움말을 볼 수 있는 버튼 추가
+- Feat: 새 MFM 구문 추가 (페이드)
+- Enhance: 노트의 리액션을 삭제하지 않고도 리액션 버튼을 눌러 리액션을 변경할 수 있도록 (misskey-dev/misskey#11157)
+- Enhance: 이용 약관을 서버 메뉴에서 볼 수 있도록
+- Enhance: 설정에서 변경 가능한 옵션은 다이얼로그에서 안내하도록 설명 추가
+- Enhance: 메모리 할당자를 jemalloc으로 설정 (MisskeyIO/misskey#152)
 
 ### Client
-- about-misskey 페이지에서 클라이언트 버전을 누르면 변경 사항을 볼 수 있음
-- 새로운 신고가 있는 경우, 네비게이션 바의 제어판 아이콘과 제어판 페이지의 신고 섹션에 점을 표시
-- 스크롤 시 요소 표시 기능을 Friendly 이외의 UI에도 대응
-- 이미지 압축 방식 선택 가능
+- Feat: about-misskey 페이지에서 클라이언트 버전을 누르면 변경 사항을 볼 수 있음
+- Feat: 이미지 압축 방식을 선택할 수 있음
   - 사이즈 변경 여부를 선택할 수 있음
   - 이미지를 업로드할 때 손실 압축으로 변경할 수 있음
-- Scratchpad에서 Async: 계열 함수나 버튼 콜백 등의 오류에도 대화창을 띄우도록(시험적이라 Play 등에는 미구현) (misskey-dev/misskey#11850)
+- Feat: Scratchpad에서 Async: 계열 함수나 버튼 콜백 등의 오류에도 대화창을 띄우도록(시험적이라 Play 등에는 미구현) (misskey-dev/misskey#11850)
+- Feat: 민감한 미디어를 돋보이게 하는 설정 추가 (misskey-dev/misskey#11851)
+- Feat: 알림에서 답글이 달린 노트의 상위 노트를 표시하지 않도록 하는 설정 추가
+- Feat: 리노트와 인용 버튼을 표시하는 방법을 선택할 수 있음
+- Feat: 알림 위젯에 필터, 모두 읽은 상태로 표시 버튼 추가
 - Spec: 사용자 정의 이모티콘 라이센스를 여러 항목으로 추가할 수 있도록 (MisskeyIO/misskey#130)
+- Enhance: 새로운 신고가 있는 경우, 네비게이션 바의 제어판 아이콘과 제어판 페이지의 신고 섹션에 점을 표시
+- Enhance: 스크롤 시 요소 표시 기능을 Friendly 이외의 UI에도 대응
 - Enhance: '제어판 - 신고' 페이지의 버튼 가독성 향상
 - Enhance: '모달에 흐림 효과 사용' 옵션이 비활성화된 경우, 이미지를 탭하여 표시할 때 표시되는 배경을 어둡게 조정
 - Enhance: 대화 페이지 디자인 개선
@@ -67,6 +71,7 @@
 - Fix: (Friendly) 흐림 효과를 사용할 때 하단 내비게이션 바의 가독성이 매우 떨어지는 문제
 - Fix: (Friendly) 위젯 버튼에서 'UI 애니메이션 줄이기' 옵션이 적용되지 않는 문제
 - Fix: (Friendly) 스크롤을 해도 위젯 버튼이 숨겨지지 않는 문제
+- Fix: (Friendly) 특정 조건에서 페이지를 새로 고치면 이전 페이지가 표시되는 문제
 - Fix: 움직임이 있는 MFM 설정을 사용하지 않아도 `$[rainbow ]`문자를 볼 수 있음 (misskey-dev/misskey#11361)
 - Fix: 모바일에서 헤더의 디자인을 변경하면 흐림 효과가 강제됨
 - Fix: 환경설정 백업 시 일부 설정이 누락되어 백업되는 문제
@@ -84,6 +89,7 @@
 - Enhance : 종료 시 DB 연결이 끊어지면 확실하게 종료 (MisskeyIO/misskey#159)
 - Fix: 실행 중인 앱 내에서 ServerStatsService 시작 (misskey-dev/misskey#11342)
 - Fix: deliver-delayed에서 URL 구문 분석에 실패할 때 모든 것이 꼬이는 문제 수정 (MisskeyIO/misskey#164)
+- Fix: 대기열에 예상치 못한 데이터가 있는 경우, 엔드포인트 URL 구문 분석 및 오류 로그 생성에 실패하는 문제 수정 (MisskeyIO/misskey#168)
 
 ---
 

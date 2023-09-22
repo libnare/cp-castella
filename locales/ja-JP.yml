@@ -4,10 +4,8 @@ disabledServerMachineStats: "「サーバーのマシン情報を公開する」
 replayUserSetupDialog: "初期設定のリプレイ"
 replayTutorial: "チュートリアルのリプレイ"
 nya: "にゃん！"
-displayHeaderNavBarWhenScroll: "スクロール時の要素表示（ヘッダー、フローティングボタン、ナビゲーションバー）"
 addSingle: "一つだけ追加"
 addMultiple: "複数追加"
-showRenoteConfirmPopup: "Renoteするときに確認ポップアップを表示"
 showSubNoteFooterButton: "サブノートにアクションボタンを表示"
 showSubNoteFooterButtonDescription: "この設定を有効にすると、返信があるノートの親ノートにアクションボタンを表示します。"
 alreadyFollowed: "フォローしました！"
@@ -31,10 +29,6 @@ friendlyEnableWidgets: "ウィジェット領域を有効化/無効化"
 useBoldFont: "文字を太くする"
 newNoteReceivedNotification: "新しいノート通知を表示するとき"
 disableRightClick: "右クリックを禁止"
-useEnterToSend: "Enterキーを押して送信"
-useEnterToSendDescription: "オプションを有効にすると、行替えはShift＋Enterキーでできます。"
-postFormVisibilityHotkey: "ショートカットキーで公開範囲を切り替える"
-postFormVisibilityHotkeyDescription: "ノートを作成する際、Ctrl(control) + Shiftキーを押すと公開範囲を切り替えることができます。ローカルのみショートカットキーは、Ctrl(commandまたはcontrol) + Alt(option)キーです。"
 cherrypickUpdatedCacheClearTitle: "キャッシュをクリアしましょうか？"
 cherrypickUpdatedCacheClear: "テーマや色、ロケールなどの変更が正しく反映されない可能性があるため、クライアントが更新されたら<b>キャッシュをクリアすることをお勧め</b>します。\nアカウントログイン状態はそのまま維持されます！"
 cherrypickUpdatedCacheClearLater: "あとでキャッシュをクリアするには、<b>設定</b> - <b>キャッシュをクリア</b>でできます！"
@@ -767,6 +761,7 @@ alwaysMarkSensitive: "デフォルトでメディアをセンシティブ設定�
 loadRawImages: "添付画像のサムネイルをオリジナル画質にする"
 disableShowingAnimatedImages: "アニメーション画像を再生しない"
 disableShowingAnimatedImagesDescription: "無効にすると、動く画像が再生されます。光敏感性発作を起こすことがありますので、ご注意ください。"
+highlightSensitiveMedia: "メディアがセンシティブであることを分かりやすく表示"
 verificationEmailSent: "確認のメールを送信しました。メールに記載されたリンクにアクセスして、設定を完了してください。\nもしメールが来なかったらスパムメールボックスを確認してください。"
 notSet: "未設定"
 emailVerified: "メールアドレスが確認されました"
@@ -1180,6 +1175,12 @@ renotes: "リノート"
 loadReplies: "返信を見る"
 loadConversation: "会話を見る"
 pinnedList: "ピン留めされたリスト"
+keepScreenOn: "デバイスの画面を常にオンにする"
+verifiedLink: "このリンク先の所有者であることが確認されました"
+notifyNotes: "投稿を通知"
+unnotifyNotes: "投稿の通知を解除"
+authentication: "認証"
+authenticationRequiredToContinue: "続けるには認証を行ってください"
 additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
@@ -1193,7 +1194,7 @@ _tlTutorial:
   step1_2: '{icon} ローカルタイムラインでは、このサーバーにいるみんなの投稿を見られます。'
   step1_3: '{icon} メディアタイムラインは、このサーバーにいるみんなの投稿のうち、メディア(写真、動画)を含む投稿のみを見ることができます。'
   step1_4: '{icon} ソーシャルタイムラインでは、ホームタイムラインとローカルタイムラインの投稿が両方表示されます。'
-  step1_5: '{icon} キャットタイムラインでは、このサーバーに接続されているすべてのサーバーのうち、キャットを有効にしたユーザーの投稿を見ることができます。'
+  step1_5: '{icon} キャットタイムラインでは、ソーシャルタイムラインでキャットを有効にしたユーザーの投稿を見ることができます。'
   step1_6: '{icon} グローバルタイムラインでは、このサーバーに接続されているすべてのサーバーからの投稿を見られます。'
 
 _announcement:
@@ -1216,6 +1217,20 @@ _cherrypick:
   functionDescription: "CherryPickが追加する独自機能を有効・無効にします。"
   nickname: "ニックネーム機能"
   nicknameDescription: "ユーザーページにて、ユーザーの名前をクリック/タップすることで好きなものに変更できるようになります。変更は自分にのみ反映されます。\n頻繁に名前を変更するユーザーを識別するときなどに使えます。"
+  useEnterToSend: "Enterキーを押して送信"
+  useEnterToSendDescription: "オプションを有効にすると、行替えはShift＋Enterキーでできます。"
+  postFormVisibilityHotkey: "ショートカットキーで公開範囲を切り替える"
+  postFormVisibilityHotkeyDescription: "ノートを作成する際、Ctrl(control) + Shiftキーを押すと公開範囲を切り替えることができます。ローカルのみショートカットキーは、Ctrl(commandまたはcontrol) + Alt(option)キーです。"
+  showRenoteConfirmPopup: "Renoteするときに確認ポップアップを表示"
+  showRenoteConfirmPopupDescription: "この設定は「リノートと引用ボタンを分けて表示する」設定がオンになっている必要があります。"
+  displayHeaderNavBarWhenScroll: "スクロール時の要素表示（ヘッダー、フローティングボタン、ナビゲーションバー）"
+  _displayHeaderNavBarWhenScroll:
+    all: "全て表示"
+    hideHeaderOnly: "ヘッダーだけを隠す"
+    hideHeaderFloatBtn: "ヘッダーとフローティングボタンを隠す"
+    hideFloatBtnOnly: "フローティングボタンだけを隠す"
+    hideFloatBtnNavBar: "フローティングボタンとナビゲーションバーを隠す"
+    hide: "全て隠す"
   patch: "パッチ"
   patchDescription: "Misskeyの機能に変更を加えます。"
   infoButtonForNoteActions: "ノートに詳細表示ボタンを表示する"
@@ -1226,14 +1241,8 @@ _cherrypick:
   mobileTimelineHeaderChange: "モバイル環境でタイムラインのヘッダーデザインを変更"
   renameTheButtonInPostFormToNya: "ノート作成画面の「ノート」ボタンを「にゃ！」に変更する"
   renameTheButtonInPostFormToNyaDescription: "にゃあにゃんにゃんにゃんにゃにゃん？"
-
-_displayHeaderNavBarWhenScroll:
-  all: "全て表示"
-  hideHeaderOnly: "ヘッダーだけを隠す"
-  hideHeaderFloatBtn: "ヘッダーとフローティングボタンを隠す"
-  hideFloatBtnOnly: "フローティングボタンだけを隠す"
-  hideFloatBtnNavBar: "フローティングボタンとナビゲーションバーを隠す"
-  hide: "全て隠す"
+  showReplyInNotification: "通知で返信があるノートの親ノートを表示する"
+  renoteQuoteButtonSeparation: "リノートと引用ボタンを分けて表示する"
 
 _bannerDisplay:
   all: "全て"
@@ -1997,7 +2006,6 @@ _timelineTutorial:
 _2fa:
   alreadyRegistered: "既に設定は完了しています。"
   registerTOTP: "認証アプリの設定を開始"
-  passwordToTOTP: "パスワードを入力してください"
   step1: "まず、{a}や{b}などの認証アプリをお使いのデバイスにインストールします。"
   step2: "次に、表示されているQRコードをアプリでスキャンします。"
   step2Click: "QRコードをクリックすると、お使いの端末にインストールされている認証アプリやキーリングに登録できます。"
@@ -2080,6 +2088,7 @@ _antennaSources:
   users: "指定した一人または複数のユーザーのノート"
   userList: "指定したリストのユーザーのノート"
   userGroup: "指定したグループのユーザーのノート"
+  userBlacklist: "指定した一人または複数のユーザーを除いた全てのノート"
 
 _weekday:
   sunday: "日曜日"
@@ -2186,6 +2195,7 @@ _profile:
   metadataContent: "内容"
   changeAvatar: "アイコン画像を変更"
   changeBanner: "バナー画像を変更"
+  verifiedLinkDescription: "内容にURLを設定すると、リンク先のWebサイトに自分のプロフィールへのリンクが含まれている場合に所有者確認済みアイコンを表示させることができます。"
 
 _exportOrImport:
   allNotes: "全てのノート"
@@ -2318,6 +2328,7 @@ _notification:
   yourFollowRequestAccepted: "フォローリクエストが承認されました"
   youWereInvitedToGroup: "{userName}があなたをグループに招待しました"
   pollEnded: "アンケートの結果が出ました"
+  newNote: "新しい投稿"
   unreadAntennaNote: "アンテナ {name}"
   emptyPushNotificationMessage: "プッシュ通知の更新をしました"
   achievementEarned: "実績を獲得"
@@ -2328,6 +2339,7 @@ _notification:
 
   _types:
     all: "すべて"
+    note: "ノート"
     follow: "フォロー"
     mention: "メンション"
     reply: "リプライ"

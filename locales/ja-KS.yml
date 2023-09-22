@@ -1116,6 +1116,7 @@ forYou: "あんたへ"
 currentAnnouncements: "現在のお知らせやで"
 pastAnnouncements: "過去のお知らせやで"
 youHaveUnreadAnnouncements: "あんたまだこのお知らせ読んどらんやろ。"
+useSecurityKey: "ブラウザまたはデバイスの言う通りに、セキュリティキーまたはパスキーを使ってや。"
 replies: "返事"
 renotes: "Renote"
 _announcement:
@@ -1776,7 +1777,6 @@ _timelineTutorial:
 _2fa:
   alreadyRegistered: "もう設定終わっとるわ。"
   registerTOTP: "認証アプリの設定はじめる"
-  passwordToTOTP: "パスワードを入れてーや"
   step1: "ほんなら、{a}や{b}とかの認証アプリを使っとるデバイスにインストールしてな。"
   step2: "次に、ここにあるQRコードをアプリでスキャンしてな～。"
   step2Click: "QRコードをクリックすると、今使とる端末に入っとる認証アプリとかキーリングに登録できるで。"

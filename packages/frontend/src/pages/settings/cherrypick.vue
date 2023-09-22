@@ -17,27 +17,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<div class="_gaps_s">
 				<MkSwitch v-model="useEnterToSend">
-					<template #label>{{ i18n.ts.useEnterToSend }}</template>
-					<template #caption>{{ i18n.ts.useEnterToSendDescription }}</template>
+					<template #label>{{ i18n.ts._cherrypick.useEnterToSend }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</template>
 				</MkSwitch>
 				<MkSwitch v-model="postFormVisibilityHotkey">
-					<template #label>{{ i18n.ts.postFormVisibilityHotkey }}</template>
-					<template #caption>{{ i18n.ts.postFormVisibilityHotkeyDescription }}</template>
+					<template #label>{{ i18n.ts._cherrypick.postFormVisibilityHotkey }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.postFormVisibilityHotkeyDescription }}</template>
 				</MkSwitch>
 				<MkSwitch v-model="showRenoteConfirmPopup">
-					<template #label>{{ i18n.ts.showRenoteConfirmPopup }}</template>
+					<template #label>{{ i18n.ts._cherrypick.showRenoteConfirmPopup }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</template>
 				</MkSwitch>
 			</div>
 
 			<div>
 				<MkRadios v-model="displayHeaderNavBarWhenScroll">
-					<template #label>{{ i18n.ts.displayHeaderNavBarWhenScroll }}</template>
-					<option value="all">{{ i18n.ts._displayHeaderNavBarWhenScroll.all }}</option>
-					<option value="hideHeaderOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
-					<option value="hideHeaderFloatBtn">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
-					<option value="hideFloatBtnOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
-					<option value="hideFloatBtnNavBar">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
-					<option value="hide">{{ i18n.ts._displayHeaderNavBarWhenScroll.hide }}</option>
+					<template #label>{{ i18n.ts._cherrypick.displayHeaderNavBarWhenScroll }}</template>
+					<option value="all">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.all }}</option>
+					<option value="hideHeaderOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
+					<option value="hideHeaderFloatBtn">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
+					<option value="hideFloatBtnOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
+					<option value="hideFloatBtnNavBar">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
+					<option value="hide">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hide }}</option>
 				</MkRadios>
 			</div>
 		</div>
@@ -58,6 +59,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
 				<template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
 			</MkSwitch>
+			<MkSwitch v-model="showReplyInNotification">{{ i18n.ts._cherrypick.showReplyInNotification }}</MkSwitch>
+			<MkSwitch v-model="renoteQuoteButtonSeparation">{{ i18n.ts._cherrypick.renoteQuoteButtonSeparation }}</MkSwitch>
 		</div>
 	</FormSection>
 </div>
@@ -68,11 +71,11 @@ import { computed, watch } from 'vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
-import { defaultStore } from '@/store';
-import * as os from '@/os';
-import { unisonReload } from '@/scripts/unison-reload';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { defaultStore } from '@/store.js';
+import * as os from '@/os.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({
@@ -94,11 +97,15 @@ const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGet
 const mobileTimelineHeaderChange = computed(defaultStore.makeGetterSetter('mobileTimelineHeaderChange'));
 const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
 const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
+const showReplyInNotification = computed(defaultStore.makeGetterSetter('showReplyInNotification'));
+const renoteQuoteButtonSeparation = computed(defaultStore.makeGetterSetter('renoteQuoteButtonSeparation'));
 
 watch([
 	infoButtonForNoteActionsEnabled,
 	reactableRemoteReactionEnabled,
 	renameTheButtonInPostFormToNya,
+	showReplyInNotification,
+	renoteQuoteButtonSeparation,
 ], async () => {
 	await reloadAsk();
 });
