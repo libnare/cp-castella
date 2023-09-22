@@ -173,10 +173,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div>
 		<div v-if="tab === 'replies'" :class="$style.tab_replies">
+			<MkPostForm v-if="!isMobile && defaultStore.state.showFixedPostFormInReplies" class="post-form _panel" fixed :reply="appearNote"></MkPostForm>
 			<div v-if="replies.length > 3 && !repliesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadReplies }}</MkButton>
 			</div>
-			<MkNoteSub v-for="note in replies" v-if="replies.length <= 3 || repliesLoaded" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
+			<template v-if="replies.length <= 3 || repliesLoaded"><MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true"/></template>
 		</div>
 		<div v-else-if="tab === 'renotes'" :class="$style.tab_renotes">
 			<MkPagination :pagination="renotesPagination">
@@ -194,11 +195,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<span style="margin-left: 4px;">{{ appearNote.reactions[reaction] }}</span>
 				</button>
 			</div>
-			<MkPagination :pagination="reactionsPagination">
+			<MkPagination v-if="reactionTabType" :key="reactionTabType" :pagination="reactionsPagination">
 				<template #default="{ items }">
-					<MkA v-for="item in items" :key="item.id" :to="userPage(item.user)">
-						<MkUserCardMini :user="item.user" :withChart="false"/>
-					</MkA>
+					<div class="_gaps_s">
+						<MkA v-for="item in items" :key="item.id" :to="userPage(item.user)">
+							<MkUserCardMini :user="item.user" :withChart="false"/>
+						</MkA>
+					</div>
 				</template>
 			</MkPagination>
 		</div>
@@ -253,6 +256,11 @@ import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkButton from '@/components/MkButton.vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
+import MkPostForm from '@/components/MkPostFormSimple.vue';
+import { deviceKind } from '@/scripts/device-kind.js';
+
+const MOBILE_THRESHOLD = 500;
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
@@ -934,13 +942,16 @@ function loadConversation() {
 }
 
 .reactionTab {
-	padding: 4px 6px;
+	padding: 0 12px;
 	border: solid 1px var(--divider);
-	border-radius: 6px;
+	border-radius: 999px;
+	height: 30px;
 }
 
 .reactionTabActive {
-	border-color: var(--accent);
+	background: var(--accentedBg);
+	color: var(--accent);
+	box-shadow: 0 0 0 1px var(--accent) inset;
 }
 
 .time {
