@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { markRaw, onMounted, onUnmounted } from 'vue';
-import * as Acct from 'cherrypick-js/built/acct';
+import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { useStream } from '@/stream.js';
 import { useRouter } from '@/router.js';
@@ -46,8 +46,8 @@ const router = useRouter();
 let tab = $ref('direct');
 
 let fetching = $ref(true);
-let messages = $ref([]);
-let connection = $ref(null);
+let messages;
+let connection;
 
 const directPagination = {
 	endpoint: 'messaging/history' as const,
@@ -104,7 +104,7 @@ function start(ev) {
 
 async function startUser() {
 	os.selectUser().then(user => {
-		router.push(`/my/messaging/${Acct.toString(user)}`);
+		router.push(`/my/messaging/@${Misskey.acct.toString(user)}`);
 	});
 }
 
