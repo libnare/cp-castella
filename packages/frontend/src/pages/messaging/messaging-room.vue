@@ -261,14 +261,13 @@ function onRead(x) {
 }
 
 function onDeleted(id) {
-	const msg = pagingComponent.value.items.find(m => m.id === id);
-	if (msg) {
-		pagingComponent.value.items = pagingComponent.value.items.filter(m => m.id !== msg.id);
-	}
+	pagingComponent.value.items.delete(id);
 }
 
 function thisScrollToBottom() {
-	scrollToBottom($$(rootEl).value, { behavior: 'smooth' });
+	if (window.location.href.includes('my/messaging/')) {
+		scrollToBottom($$(rootEl).value, { behavior: 'smooth' });
+	}
 }
 
 function onIndicatorClick() {
@@ -309,8 +308,8 @@ onBeforeUnmount(() => {
 });
 
 definePageMetadata(computed(() => !fetching ? user ? {
-  title: '',
-  icon: null,
+	title: '',
+	icon: null,
 	userName: user,
 	avatar: user,
 } : {
@@ -330,7 +329,7 @@ definePageMetadata(computed(() => !fetching ? user ? {
 }
 
 .root {
-	display: content;
+	display: contents;
 }
 
 .body {

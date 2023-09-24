@@ -47,8 +47,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
 	<div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
-		<MkFollowButton v-if="narrow" :user="metadata.avatar" :transparent="false" :full="false"/>
-		<MkFollowButton v-else :user="metadata.avatar" :transparent="false" :full="true"/>
+		<MkFollowButton v-if="narrow && mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="false"/>
+		<MkFollowButton v-else-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="true"/>
 	</div>
 </div>
 </template>
@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted, ref, inject, watch, nextTick } from 'vue';
 import tinycolor from 'tinycolor2';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 import { injectPageMetadata } from '@/scripts/page-metadata.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
