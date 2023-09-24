@@ -527,7 +527,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	mobileTimelineHeaderChange: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	renameTheButtonInPostFormToNya: {
 		where: 'account',
