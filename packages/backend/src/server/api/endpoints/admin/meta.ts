@@ -354,6 +354,18 @@ export const meta = {
 				type: 'object',
 				optional: false, nullable: false,
 			},
+			enableReceivePrerelease: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			skipVersion: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			skipCherryPickVersion: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
 		},
 	},
 } as const;
@@ -380,6 +392,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				maintainerName: instance.maintainerName,
 				maintainerEmail: instance.maintainerEmail,
 				version: this.config.version,
+				basedMisskeyVersion: this.config.basedMisskeyVersion,
 				name: instance.name,
 				shortName: instance.shortName,
 				uri: this.config.url,
@@ -483,6 +496,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				emailToReceiveAbuseReport: instance.emailToReceiveAbuseReport,
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 				manifestJsonOverride: instance.manifestJsonOverride,
+				enableReceivePrerelease: instance.enableReceivePrerelease,
+				skipVersion: instance.skipVersion,
+				skipCherryPickVersion: instance.skipCherryPickVersion,
 			};
 		});
 	}

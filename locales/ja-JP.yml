@@ -1,5 +1,11 @@
 _lang_: "日本語"
 
+skipThisVersion: "このリリースをスキップする"
+enableReceivePrerelease: "プレリリース版の通知を受け取る"
+youAreRunningBetaClient: "未発売バージョンのCherryPickを利用しています！"
+cherrypickUpdate: "CherryPickアップデート"
+allMediaNoteCollapse: "すべてのメディアノートを省略して表示"
+showingAnimatedImagesDescription: "「インタラクト時に再生」に設定すると、画像の上にマウスを置いたり、画像をタッチすると再生されます。"
 showFixedPostFormInReplies: "返信に投稿フォームを表示する"
 showFixedPostFormInRepliesDescription: "デスクトップとタブレット環境でのみ表示されます。"
 renoteQuoteButtonSeparation: "リノートと引用ボタンを分けて表示する"
@@ -30,8 +36,10 @@ displayBanner: "バナー画像の表示"
 requireRefresh: "ページの更新が必要なとき"
 performanceWarning: "リソースを多く使用するため、デバイスの温度が高くなり、バッテリーの消耗が速くなる可能性があります"
 photosensitiveSeizuresWarning: "光敏感性発作を起こす可能性があります"
-friendlyEnableNotifications: "通知領域を有効化/無効化"
-friendlyEnableWidgets: "ウィジェット領域を有効化/無効化"
+friendlyEnableNotifications: "通知領域を有効化"
+friendlyDisableNotifications: "通知領域を無効化"
+friendlyEnableWidgets: "ウィジェット領域を有効化"
+friendlyDisableWidgets: "ウィジェット領域を無効化"
 useBoldFont: "文字を太くする"
 newNoteReceivedNotification: "新しいノート通知を表示するとき"
 disableRightClick: "右クリックを禁止"
@@ -150,6 +158,8 @@ enterEmoji: "絵文字を入力"
 renote: "リノート"
 unrenote: "リノート解除"
 renoted: "リノートしました。"
+quoted: "ノートを引用しました。"
+replied: "返信を投稿しました。"
 cantRenote: "この投稿はリノートできません。"
 cantReRenote: "リノートをリノートすることはできません。"
 quote: "引用"
@@ -313,6 +323,7 @@ uploadFromUrlRequested: "アップロードをリクエストしました"
 uploadFromUrlMayTakeTime: "アップロードが完了するまで時間がかかる場合があります。"
 explore: "みつける"
 messageRead: "既読"
+messageSend: "送信済み"
 noMoreHistory: "これより過去の履歴はありません"
 startMessaging: "チャットを開始"
 nUsersRead: "{n}人が読みました"
@@ -590,6 +601,10 @@ showFixedPostFormInChannel: "タイムライン上部に投稿フォームを表
 newNoteRecived: "新しいノートがあります"
 sounds: "サウンド"
 sound: "サウンド"
+vibrations: "振動"
+soundsAndVibrations: "サウンドと振動"
+playVibrationsOnClick: "クリック時の振動再生"
+playVibrationsOnClickDescription: "この機能はiOS/iPadOSではサポートされていません。"
 listen: "聴く"
 none: "なし"
 showInPage: "ページで表示"
@@ -1188,10 +1203,22 @@ notifyNotes: "投稿を通知"
 unnotifyNotes: "投稿の通知を解除"
 authentication: "認証"
 authenticationRequiredToContinue: "続けるには認証を行ってください"
+dateAndTime: "日時"
+showRenotes: "リノートを表示"
+edited: "編集済み"
+notificationRecieveConfig: "通知の受信設定"
+mutualFollow: "相互フォロー"
+fileAttachedOnly: "ファイル付きのみ"
+showCatOnly: "キャット付きのみ"
 additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
+
+_showingAnimatedImages:
+  always: "常に再生"
+  interaction: "インタラクト時に再生"
+  inactive: "一定時間経過すると再生"
 
 _messaging:
   direct: "ダイレクトメッセージ"
@@ -1199,10 +1226,8 @@ _messaging:
 _tlTutorial:
   step1_1: '{icon} ホームタイムラインは、あなたがフォローしているアカウントの投稿を見られます。'
   step1_2: '{icon} ローカルタイムラインでは、このサーバーにいるみんなの投稿を見られます。'
-  step1_3: '{icon} メディアタイムラインは、このサーバーにいるみんなの投稿のうち、メディア(写真、動画)を含む投稿のみを見ることができます。'
-  step1_4: '{icon} ソーシャルタイムラインでは、ホームタイムラインとローカルタイムラインの投稿が両方表示されます。'
-  step1_5: '{icon} キャットタイムラインでは、ソーシャルタイムラインでキャットを有効にしたユーザーの投稿を見ることができます。'
-  step1_6: '{icon} グローバルタイムラインでは、このサーバーに接続されているすべてのサーバーからの投稿を見られます。'
+  step1_3: '{icon} ソーシャルタイムラインでは、ホームタイムラインとローカルタイムラインの投稿が両方表示されます。'
+  step1_4: '{icon} グローバルタイムラインでは、このサーバーに接続されているすべてのサーバーからの投稿を見られます。'
 
 _announcement:
   forExistingUsers: "既存ユーザーのみ"
@@ -1225,7 +1250,7 @@ _cherrypick:
   nickname: "ニックネーム機能"
   nicknameDescription: "ユーザーページにて、ユーザーの名前をクリック/タップすることで好きなものに変更できるようになります。変更は自分にのみ反映されます。\n頻繁に名前を変更するユーザーを識別するときなどに使えます。"
   useEnterToSend: "Enterキーを押して送信"
-  useEnterToSendDescription: "オプションを有効にすると、行替えはShift＋Enterキーでできます。"
+  useEnterToSendDescription: "オプションを有効にすると、行替えはShift＋Enterキーでできます。チャットを送信するときはオプションの影響を受けません。"
   postFormVisibilityHotkey: "ショートカットキーで公開範囲を切り替える"
   postFormVisibilityHotkeyDescription: "ノートを作成する際、Ctrl(control) + Shiftキーを押すと公開範囲を切り替えることができます。ローカルのみショートカットキーは、Ctrl(commandまたはcontrol) + Alt(option)キーです。"
   showRenoteConfirmPopup: "Renoteするときに確認ポップアップを表示"
@@ -1242,9 +1267,10 @@ _cherrypick:
   patchDescription: "Misskeyの機能に変更を加えます。"
   reactableRemoteReaction: "リモートのカスタム絵文字リアクションでも、このサーバーに同じ名前の絵文字があればリアクションできるようにする"
   showFollowingMessageInsteadOfButton: "既にフォローしている場合、通知欄にフォローボタンを表示しない"
-  mobileTimelineHeaderChange: "モバイル環境でタイムラインのヘッダーデザインを変更"
+  mobileHeaderChange: "モバイル環境でヘッダーのデザインを変更"
   renameTheButtonInPostFormToNya: "ノート作成画面の「ノート」ボタンを「にゃ！」に変更する"
   renameTheButtonInPostFormToNyaDescription: "にゃあにゃんにゃんにゃんにゃにゃん？"
+  enableLongPressOpenAccountMenu: "長押しでアカウントメニューを開く"
 
 _bannerDisplay:
   all: "全て"
@@ -1614,9 +1640,8 @@ _role:
   _options:
     gtlAvailable: "グローバルタイムラインの閲覧"
     ltlAvailable: "ローカルタイムラインの閲覧"
-    mtlAvailable: "メディアタイムラインの閲覧"
-    ctlAvailable: "キャットタイムラインの閲覧"
     canPublicNote: "パブリック投稿の許可"
+    canEditNote: "ノートの編集"
     canInvite: "サーバー招待コードの発行"
     inviteLimit: "招待コードの作成可能数"
     inviteLimitCycle: "招待コードの発行間隔"
@@ -1635,7 +1660,8 @@ _role:
     rateLimitFactor: "レートリミット"
     descriptionOfRateLimitFactor: "小さいほど制限が緩和され、大きいほど制限が強化されます。"
     canHideAds: "広告の非表示"
-    canSearchNotes: "ノート検索の利用可否"
+    canSearchNotes: "ノート検索の利用"
+    canUseTranslator: "翻訳機能の利用"
   _condition:
     isLocal: "ローカルユーザー"
     isRemote: "リモートユーザー"
@@ -2177,6 +2203,7 @@ _visibility:
   disableFederationDescription: "他サーバーへの配信を行いません"
 
 _postForm:
+  signinRequiredPlaceholder: "ノートを作成するにはログインが必要です。"
   replyPlaceholder: "このノートに返信..."
   quotePlaceholder: "このノートを引用..."
   channelPlaceholder: "チャンネルに投稿..."
@@ -2243,9 +2270,7 @@ _instanceCharts:
 _timelines:
   home: "ホーム"
   local: "ローカル"
-  media: "メディア"
   social: "ソーシャル"
-  cat: "キャット"
   global: "グローバル"
 
 _play:
@@ -2424,21 +2449,36 @@ _webhookSettings:
     mention: "メンションされたとき"
 
 _moderationLogTypes:
+  createRole: "ロールを作成"
+  deleteRole: "ロールを削除"
+  updateRole: "ロールを更新"
   assignRole: "ロールへアサイン"
   unassignRole: "ロールのアサイン解除"
-  updateRole: "ロール設定更新"
   suspend: "凍結"
   unsuspend: "凍結解除"
   addCustomEmoji: "カスタム絵文字追加"
+  updateCustomEmoji: "カスタム絵文字更新"
+  deleteCustomEmoji: "カスタム絵文字削除"
   updateServerSettings: "サーバー設定更新"
   updateUserNote: "モデレーションノート更新"
   deleteDriveFile: "ファイルを削除"
   deleteNote: "ノートを削除"
   createGlobalAnnouncement: "全体のお知らせを作成"
   createUserAnnouncement: "ユーザーへお知らせを作成"
+  updateGlobalAnnouncement: "全体のお知らせを更新"
+  updateUserAnnouncement: "ユーザーのお知らせを更新"
+  deleteGlobalAnnouncement: "全体のお知らせを削除"
+  deleteUserAnnouncement: "ユーザーのお知らせを削除"
   resetPassword: "パスワードをリセット"
   suspendRemoteInstance: "リモートサーバーを停止"
   unsuspendRemoteInstance: "リモートサーバーを再開"
+  markSensitiveDriveFile: "ファイルをセンシティブ付与"
+  unmarkSensitiveDriveFile: "ファイルをセンシティブ解除"
+  resolveAbuseReport: "通報を解決"
+  createInvitation: "招待コードを作成"
+  createAd: "広告を作成"
+  deleteAd: "広告を削除"
+  updateAd: "広告を更新"
 
 _abuse:
   _resolver:

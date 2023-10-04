@@ -589,4 +589,20 @@ export class MiMeta {
 		length: 1024, array: true, default: '{ "admin", "administrator", "root", "system", "maintainer", "host", "mod", "moderator", "owner", "superuser", "staff", "auth", "i", "me", "everyone", "all", "mention", "mentions", "example", "user", "users", "account", "accounts", "official", "help", "helps", "support", "supports", "info", "information", "informations", "announce", "announces", "announcement", "announcements", "notice", "notification", "notifications", "dev", "developer", "developers", "tech", "misskey", "cherrypick" }',
 	})
 	public preservedUsernames: string[];
+
+	@Column('boolean', {
+		default: false,
+	})
+	public enableReceivePrerelease: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public skipVersion: boolean;
+
+	@Column('varchar', {
+		length: 32,
+		nullable: true,
+	})
+	public skipCherryPickVersion: string | null;
 }

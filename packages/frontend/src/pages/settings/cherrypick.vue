@@ -43,6 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</FormSection>
+
 	<FormSection>
 		<template #label>{{ i18n.ts._cherrypick.patch }}</template>
 		<div class="_gaps_m">
@@ -50,11 +51,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
 			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
-			<MkSwitch v-model="mobileTimelineHeaderChange">{{ i18n.ts._cherrypick.mobileTimelineHeaderChange }}</MkSwitch>
+			<MkSwitch v-model="mobileHeaderChange">{{ i18n.ts._cherrypick.mobileHeaderChange }}</MkSwitch>
 			<MkSwitch v-model="renameTheButtonInPostFormToNya">
 				{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
 				<template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
 			</MkSwitch>
+		</div>
+	</FormSection>
+
+	<FormSection>
+		<template #label>Friendly UI</template>
+		<div class="_gaps_m">
+			<MkSwitch v-model="friendlyEnableNotifications">{{ i18n.ts.friendlyEnableNotifications }}</MkSwitch>
+			<MkSwitch v-model="friendlyEnableWidgets">{{ i18n.ts.friendlyEnableWidgets }}</MkSwitch>
+			<MkSwitch v-model="enableLongPressOpenAccountMenu">{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</MkSwitch>
 		</div>
 	</FormSection>
 </div>
@@ -87,13 +97,18 @@ const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFor
 const showRenoteConfirmPopup = computed(defaultStore.makeGetterSetter('showRenoteConfirmPopup'));
 const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('reactableRemoteReactionEnabled'));
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
-const mobileTimelineHeaderChange = computed(defaultStore.makeGetterSetter('mobileTimelineHeaderChange'));
+const mobileHeaderChange = computed(defaultStore.makeGetterSetter('mobileHeaderChange'));
 const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
 const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
+const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
+const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
+const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('enableLongPressOpenAccountMenu'));
 
 watch([
 	reactableRemoteReactionEnabled,
 	renameTheButtonInPostFormToNya,
+	friendlyEnableNotifications,
+	friendlyEnableWidgets,
 ], async () => {
 	await reloadAsk();
 });

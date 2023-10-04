@@ -97,6 +97,7 @@ type Source = {
 	perChannelMaxNoteCacheCount?: number;
 	perUserNotificationsMaxCount?: number;
 	deactivateAntennaThreshold?: number;
+	pidFile: string;
 };
 
 export type Config = {
@@ -152,6 +153,7 @@ export type Config = {
 	signToActivityPubGet: boolean | undefined;
 
 	version: string;
+	basedMisskeyVersion: string;
 	host: string;
 	hostname: string;
 	scheme: string;
@@ -172,6 +174,7 @@ export type Config = {
 	perChannelMaxNoteCacheCount: number;
 	perUserNotificationsMaxCount: number;
 	deactivateAntennaThreshold: number;
+	pidFile: string;
 };
 
 const _filename = fileURLToPath(import.meta.url);
@@ -201,6 +204,7 @@ export function loadConfig(): Config {
 
 	const url = tryCreateUrl(config.url);
 	const version = meta.version;
+	const basedMisskeyVersion = meta.basedMisskeyVersion;
 	const host = url.host;
 	const hostname = url.hostname;
 	const scheme = url.protocol.replace(/:$/, '');
@@ -214,6 +218,7 @@ export function loadConfig(): Config {
 
 	return {
 		version,
+		basedMisskeyVersion,
 		url: url.origin,
 		port: config.port ?? parseInt(process.env.PORT ?? '', 10),
 		socket: config.socket,
@@ -265,6 +270,7 @@ export function loadConfig(): Config {
 		perChannelMaxNoteCacheCount: config.perChannelMaxNoteCacheCount ?? 1000,
 		perUserNotificationsMaxCount: config.perUserNotificationsMaxCount ?? 300,
 		deactivateAntennaThreshold: config.deactivateAntennaThreshold ?? (1000 * 60 * 60 * 24 * 7),
+		pidFile: config.pidFile,
 	};
 }
 

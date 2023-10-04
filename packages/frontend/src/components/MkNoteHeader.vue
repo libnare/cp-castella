@@ -19,6 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div :class="$style.section">
 		<div :class="$style.info">
+			<span v-if="note.updatedAt" style="margin-right: 0.5em;" :title="i18n.ts.edited"><i class="ti ti-pencil"></i></span>
 			<span v-if="note.visibility !== 'public'" style="margin-right: 0.5em;">
 				<i v-if="note.visibility === 'home'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-home"></i>
 				<i v-else-if="note.visibility === 'followers'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-lock"></i>
@@ -86,12 +87,17 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 	display: block;
 	margin: 0 .5em 0 0;
 	padding: 0;
-	overflow: hidden;
+	overflow: scroll;
+  overflow-wrap: anywhere;
 	font-size: 1em;
 	font-weight: bold;
 	text-decoration: none;
 	text-overflow: ellipsis;
 	max-width: 300px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
 	&:hover {
 		color: var(--nameHover);
@@ -112,9 +118,14 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 .username {
 	flex-shrink: 9999999;
 	margin: 0 .5em 0 0;
-	overflow: hidden;
+	overflow: scroll;
 	text-overflow: ellipsis;
 	font-size: .95em;
+  max-width: 300px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .info {
@@ -149,7 +160,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 }
 
 @container (max-width: 500px) {
-	.name {
+	.name, .username {
 		max-width: 200px;
 	}
 }

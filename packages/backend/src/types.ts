@@ -34,8 +34,11 @@ export const moderationLogTypes = [
 	'unsuspend',
 	'updateUserNote',
 	'addCustomEmoji',
+	'updateCustomEmoji',
+	'deleteCustomEmoji',
 	'assignRole',
 	'unassignRole',
+	'createRole',
 	'updateRole',
 	'deleteRole',
 	'clearQueue',
@@ -44,9 +47,20 @@ export const moderationLogTypes = [
 	'deleteNote',
 	'createGlobalAnnouncement',
 	'createUserAnnouncement',
+	'updateGlobalAnnouncement',
+	'updateUserAnnouncement',
+	'deleteGlobalAnnouncement',
+	'deleteUserAnnouncement',
 	'resetPassword',
 	'suspendRemoteInstance',
 	'unsuspendRemoteInstance',
+	'markSensitiveDriveFile',
+	'unmarkSensitiveDriveFile',
+	'resolveAbuseReport',
+	'createInvitation',
+	'createAd',
+	'updateAd',
+	'deleteAd',
 ] as const;
 
 export type ModerationLogPayloads = {
@@ -55,29 +69,53 @@ export type ModerationLogPayloads = {
 		after: any | null;
 	};
 	suspend: {
-		targetId: string;
+		userId: string;
+		userUsername: string;
+		userHost: string | null;
 	};
 	unsuspend: {
-		targetId: string;
+		userId: string;
+		userUsername: string;
+		userHost: string | null;
 	};
 	updateUserNote: {
 		userId: string;
+		userUsername: string;
+		userHost: string | null;
 		before: string | null;
 		after: string | null;
 	};
 	addCustomEmoji: {
 		emojiId: string;
+		emoji: any;
+	};
+	updateCustomEmoji: {
+		emojiId: string;
+		before: any;
+		after: any;
+	};
+	deleteCustomEmoji: {
+		emojiId: string;
+		emoji: any;
 	};
 	assignRole: {
 		userId: string;
+		userUsername: string;
+		userHost: string | null;
 		roleId: string;
 		roleName: string;
 		expiresAt: string | null;
 	};
 	unassignRole: {
 		userId: string;
+		userUsername: string;
+		userHost: string | null;
 		roleId: string;
 		roleName: string;
+	};
+	createRole: {
+		roleId: string;
+		role: any;
 	};
 	updateRole: {
 		roleId: string;
@@ -86,17 +124,21 @@ export type ModerationLogPayloads = {
 	};
 	deleteRole: {
 		roleId: string;
-		roleName: string;
+		role: any;
 	};
 	clearQueue: Record<string, never>;
 	promoteQueue: Record<string, never>;
 	deleteDriveFile: {
 		fileId: string;
 		fileUserId: string | null;
+		fileUserUsername: string | null;
+		fileUserHost: string | null;
 	};
 	deleteNote: {
 		noteId: string;
 		noteUserId: string;
+		noteUserUsername: string;
+		noteUserHost: string | null;
 		note: any;
 	};
 	createGlobalAnnouncement: {
@@ -107,9 +149,34 @@ export type ModerationLogPayloads = {
 		announcementId: string;
 		announcement: any;
 		userId: string;
+		userUsername: string;
+		userHost: string | null;
+	};
+	updateGlobalAnnouncement: {
+		announcementId: string;
+		before: any;
+		after: any;
+	};
+	updateUserAnnouncement: {
+		announcementId: string;
+		before: any;
+		after: any;
+		userId: string;
+		userUsername: string;
+		userHost: string | null;
+	};
+	deleteGlobalAnnouncement: {
+		announcementId: string;
+		announcement: any;
+	};
+	deleteUserAnnouncement: {
+		announcementId: string;
+		announcement: any;
 	};
 	resetPassword: {
-		targetId: string;
+		userId: string;
+		userUsername: string;
+		userHost: string | null;
 	};
 	suspendRemoteInstance: {
 		id: string;
@@ -119,4 +186,48 @@ export type ModerationLogPayloads = {
 		id: string;
 		host: string;
 	};
+	markSensitiveDriveFile: {
+		fileId: string;
+		fileUserId: string | null;
+		fileUserUsername: string | null;
+		fileUserHost: string | null;
+	};
+	unmarkSensitiveDriveFile: {
+		fileId: string;
+		fileUserId: string | null;
+		fileUserUsername: string | null;
+		fileUserHost: string | null;
+	};
+	resolveAbuseReport: {
+		reportId: string;
+		report: any;
+		forwarded: boolean;
+	};
+	createInvitation: {
+		invitations: any[];
+	};
+	createAd: {
+		adId: string;
+		ad: any;
+	};
+	updateAd: {
+		adId: string;
+		before: any;
+		after: any;
+	};
+	deleteAd: {
+		adId: string;
+		ad: any;
+	};
+};
+
+export type Serialized<T> = {
+	[K in keyof T]:
+		T[K] extends Date
+			? string
+			: T[K] extends (Date | null)
+				? (string | null)
+				: T[K] extends Record<string, any>
+					? Serialized<T[K]>
+					: T[K];
 };

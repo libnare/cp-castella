@@ -5,8 +5,8 @@
 
 // TODO: なんでもかんでもos.tsに突っ込むのやめたいのでよしなに分割する
 
-import { pendingApiRequestsCount, api, apiGet } from '@/scripts/api.js';
-export { pendingApiRequestsCount, api, apiGet };
+import { pendingApiRequestsCount, api, apiExternal, apiGet } from '@/scripts/api.js';
+export { pendingApiRequestsCount, api, apiExternal, apiGet };
 import { Component, markRaw, Ref, ref, defineAsyncComponent } from 'vue';
 import { EventEmitter } from 'eventemitter3';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -185,9 +185,10 @@ export function toast(message: string) {
 	}, {}, 'closed');
 }
 
-export function noteToast(message: string) {
+export function noteToast(message: string, icon: string) {
 	popup(MkNoteToast, {
 		message,
+		icon,
 	}, {}, 'closed');
 }
 
@@ -435,10 +436,11 @@ export function form(title, form) {
 	});
 }
 
-export async function selectUser(opts: { includeSelf?: boolean } = {}) {
+export async function selectUser(opts: { includeSelf?: boolean, includeHost?: boolean } = {}) {
 	return new Promise((resolve, reject) => {
 		popup(defineAsyncComponent(() => import('@/components/MkUserSelectDialog.vue')), {
 			includeSelf: opts.includeSelf,
+			includeHost: opts.includeHost,
 		}, {
 			ok: user => {
 				resolve(user);

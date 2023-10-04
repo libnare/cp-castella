@@ -51,12 +51,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<article :class="$style.note" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
-			<div style="display: flex; align-items: center;">
-				<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
+			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
+			<div style="display: flex; align-items: center; white-space: nowrap; overflow: hidden;">
 				<div :class="$style.noteHeaderBody">
-					<div>
+					<div :class="$style.noteHeaderName">
 						<MkA v-user-preview="appearNote.user.id" :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
-							<MkUserName :nowrap="false" :user="appearNote.user"/>
+							<MkUserName :nowrap="true" :user="appearNote.user"/>
 						</MkA>
 						<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
 						<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
@@ -124,18 +124,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<footer>
 			<div :class="$style.noteFooterInfo">
-				<MkA :class="$style.time" :to="notePage(appearNote)">
-					<MkTime :time="appearNote.createdAt" mode="detail"/>
+				<div v-if="appearNote.updatedAt">
+					{{ i18n.ts.edited }}: <MkTime :class="$style.time" :time="appearNote.updatedAt" mode="detail"/>
+				</div>
+				<MkA :to="notePage(appearNote)">
+					<MkTime :class="$style.time" :time="appearNote.createdAt" mode="detail"/>
 				</MkA>
 			</div>
 			<MkReactionsViewer ref="reactionsViewer" :note="appearNote"/>
-			<button v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
+			<button v-vibrate="5" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
 				<i class="ti ti-arrow-back-up"></i>
 				<p v-if="appearNote.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.repliesCount }}</p>
 			</button>
 			<button
 				v-if="canRenote"
 				ref="renoteButton"
+				v-vibrate="[30, 30, 60]"
 				v-tooltip="i18n.ts.renote"
 				class="_button"
 				:class="$style.noteFooterButton"
@@ -147,21 +151,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-else class="_button" :class="$style.noteFooterButton" disabled>
 				<i class="ti ti-ban"></i>
 			</button>
-			<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @mousedown="heartReact()">
+			<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-vibrate="[30, 50, 50]" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @mousedown="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.noteFooterButton" class="_button" @mousedown="react()">
+			<button v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="[30, 50, 50]" v-tooltip="i18n.ts.reaction" :class="$style.noteFooterButton" class="_button" @mousedown="react()">
 				<i v-if="appearNote.myReaction == null" class="ti ti-mood-plus"></i>
 				<i v-else class="ti ti-mood-edit"></i>
 			</button>
-			<button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" :class="[$style.noteFooterButton, $style.reacted]" class="_button" @click="undoReact(appearNote)">
+			<button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="[30, 50, 50]" :class="[$style.noteFooterButton, $style.reacted]" class="_button" @click="undoReact(appearNote)">
 				<i class="ti ti-heart-minus"></i>
 			</button>
-			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
-			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @mousedown="clip()">
+			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="5" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()">
+				<i class="ti ti-quote"></i>
+			</button>
+			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="5" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @mousedown="clip()">
 				<i class="ti ti-paperclip"></i>
 			</button>
-			<button ref="menuButton" v-tooltip="i18n.ts.more" class="_button" :class="$style.noteFooterButton" @mousedown="menu()">
+			<button ref="menuButton" v-vibrate="5" v-tooltip="i18n.ts.more" class="_button" :class="$style.noteFooterButton" @mousedown="menu()">
 				<i class="ti ti-dots"></i>
 			</button>
 		</footer>
@@ -170,6 +176,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ti ti-arrow-back-up"></i> {{ i18n.ts.replies }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ti ti-repeat"></i> {{ i18n.ts.renotes }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ti ti-icons"></i> {{ i18n.ts.reactions }}</button>
+		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'history' }]" @click="tab = 'history'"><i class="ti ti-pencil"></i> {{ i18n.ts.edited }}</button>
 	</div>
 	<div>
 		<div v-if="tab === 'replies'" :class="$style.tab_replies">
@@ -182,9 +189,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-else-if="tab === 'renotes'" :class="$style.tab_renotes">
 			<MkPagination :pagination="renotesPagination" :disableAutoLoad="true">
 				<template #default="{ items }">
-					<MkA v-for="item in items" :key="item.id" :to="userPage(item.user)">
-						<MkUserCardMini :user="item.user" :withChart="false"/>
-					</MkA>
+					<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); grid-gap: 12px;">
+						<MkA v-for="item in items" :key="item.id" :to="userPage(item.user)">
+							<MkUserCardMini :user="item.user" :withChart="false"/>
+						</MkA>
+					</div>
 				</template>
 			</MkPagination>
 		</div>
@@ -205,6 +214,30 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</template>
 			</MkPagination>
 		</div>
+		<div v-else-if="tab === 'history'" :class="$style.tab_history">
+			<div style="display: grid;">
+				<div v-for="(text, index) in appearNote.noteEditHistory" :key="text" :class="$style.historyRoot">
+					<MkAvatar :class="$style.avatar" :user="appearNote.user" link preview/>
+					<div :class="$style.historyMain">
+						<div :class="$style.historyHeader">
+							<MkUserName :user="appearNote.user" :nowrap="true"/>
+						</div>
+						<div>
+							<div>
+								<Mfm :text="text.trim()" :author="appearNote.user" :i="$i"/>
+							</div>
+							<CodeDiff
+								:oldString="appearNote.noteEditHistory[index - 1] || ''"
+								:newString="text"
+								:trim="true"
+								:hideHeader="true"
+								diffStyle="char"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div v-else class="_panel" :class="$style.muted" @click="muted = false">
@@ -222,6 +255,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, onMounted, ref, shallowRef } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
+import { CodeDiff } from 'v-code-diff';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
@@ -384,7 +418,7 @@ function renote(viaKeyboard = false) {
 					renoteId: appearNote.id,
 					channelId: appearNote.channelId,
 				}).then(() => {
-					os.noteToast(i18n.ts.renoted);
+					os.noteToast(i18n.ts.renoted, 'renote');
 				});
 			},
 		}, {
@@ -394,6 +428,8 @@ function renote(viaKeyboard = false) {
 				os.post({
 					renote: appearNote,
 					channel: appearNote.channel,
+				}, () => {
+					focus();
 				});
 			},
 		}, null]);
@@ -414,7 +450,7 @@ function renote(viaKeyboard = false) {
 			os.api('notes/create', {
 				renoteId: appearNote.id,
 			}).then(() => {
-				os.noteToast(i18n.ts.renoted);
+				os.noteToast(i18n.ts.renoted, 'renote');
 			});
 		},
 	}, {
@@ -423,6 +459,8 @@ function renote(viaKeyboard = false) {
 		action: () => {
 			os.post({
 				renote: appearNote,
+			}, () => {
+				focus();
 			});
 		},
 	}]);
@@ -458,7 +496,7 @@ async function renoteOnly() {
 			renoteId: appearNote.id,
 			channelId: appearNote.channelId,
 		}).then(() => {
-			os.noteToast(i18n.ts.renoted);
+			os.noteToast(i18n.ts.renoted, 'renote');
 		});
 	}
 
@@ -473,23 +511,25 @@ async function renoteOnly() {
 	os.api('notes/create', {
 		renoteId: appearNote.id,
 	}).then(() => {
-		os.noteToast(i18n.ts.renoted);
+		os.noteToast(i18n.ts.renoted, 'renote');
 	});
 }
 
-function quote() {
+function quote(viaKeyboard = false): void {
 	pleaseLogin();
-	showMovedDialog();
-
 	if (appearNote.channel) {
 		os.post({
 			renote: appearNote,
 			channel: appearNote.channel,
+			animation: !viaKeyboard,
+		}, () => {
+			focus();
 		});
 	}
-
 	os.post({
 		renote: appearNote,
+	}, () => {
+		focus();
 	});
 }
 
@@ -796,12 +836,21 @@ onMounted(() => {
 	justify-content: center;
 	padding-left: 16px;
 	font-size: 0.95em;
+  max-width: 300px;
 }
 
 .noteHeaderName {
 	font-weight: bold;
 	line-height: 1.3;
 	margin: 0 .5em 0 0;
+  overflow: scroll;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
 	&:hover {
 		color: var(--nameHover);
@@ -828,6 +877,14 @@ onMounted(() => {
 	margin-bottom: 2px;
 	line-height: 1.3;
 	word-wrap: anywhere;
+  overflow: scroll;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .noteContent {
@@ -940,6 +997,9 @@ onMounted(() => {
 	padding: 16px;
 }
 
+.tab_history {
+	padding: 16px;
+}
 .reactionTabs {
 	display: flex;
 	gap: 8px;
@@ -976,6 +1036,10 @@ onMounted(() => {
 	.root {
 		font-size: 0.9em;
 	}
+
+  .noteHeaderBody {
+    max-width: 180px;
+  }
 }
 
 @container (max-width: 480px) {
@@ -1002,6 +1066,36 @@ onMounted(() => {
 		width: 50px;
 		height: 50px;
 	}
+}
+
+.historyRoot {
+	display: flex;
+	margin: 0;
+	padding: 10px;
+	overflow: clip;
+	font-size: 0.95em;
+}
+
+.historyMain {
+	flex: 1;
+	min-width: 0;
+}
+
+.historyHeader {
+	margin-bottom: 2px;
+	font-weight: bold;
+	width: 100%;
+	overflow: clip;
+    text-overflow: ellipsis;
+}
+.avatar {
+	flex-shrink: 0 !important;
+	display: block !important;
+	margin: 0 10px 0 0 !important;
+	width: 40px !important;
+	height: 40px !important;
+	border-radius: 8px !important;
+	pointer-events: none !important;
 }
 
 .muted {

@@ -17,10 +17,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:enterFromClass="defaultStore.state.animation ? $style.transition_header_enterFrom : ''"
 		:leaveToClass="defaultStore.state.animation ? $style.transition_header_leaveTo : ''"
 	>
-		<header v-if="formClick" :class="$style.header">
+		<header v-if="showForm" :class="$style.header">
 			<div :class="$style.headerLeft">
 				<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
-				<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="$style.account" class="_button" @click="openAccountMenu">
+				<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="[$style.account, { [$style.fixed]: fixed }]" class="_button" @click="openAccountMenu">
 					<MkAvatar :user="postAccount ?? $i" :class="$style.avatar"/>
 				</button>
 			</div>
@@ -59,9 +59,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</header>
 	</Transition>
-	<div v-if="quoteId" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
-	<MkEventEditor v-if="event" v-model="event" @destroyed="event = null"/>
-	<div v-if="visibility === 'specified'" :class="$style.toSpecified">
+	<div v-if="quoteId && showForm" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
+	<MkEventEditor v-if="event && showForm" v-model="event" @destroyed="event = null"/>
+	<div v-if="visibility === 'specified' && showForm" :class="$style.toSpecified">
 		<span style="margin-right: 8px;">{{ i18n.ts.recipient }}</span>
 		<div :class="$style.visibleUsers">
 			<span v-for="u in visibleUsers" :key="u.id" :class="$style.visibleUser">
@@ -71,25 +71,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button class="_buttonPrimary" style="padding: 4px; border-radius: 8px;" @click="addVisibleUser"><i class="ti ti-plus ti-fw"></i></button>
 		</div>
 	</div>
-	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
-	<input v-show="useCw" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
-	<div :class="[$style.textOuter, { [$style.withCw]: useCw, [$style.formClick]: !formClick }]">
-		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :placeholder="placeholder" data-cy-post-form-text @click="formClick = true" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
+	<MkInfo v-if="hasNotSpecifiedMentions && showForm" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
+	<input v-show="useCw && showForm" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
+	<div :class="[$style.textOuter, { [$style.withCw]: useCw, [$style.showForm]: !showForm }]">
+		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted || !$i" :placeholder="placeholder" data-cy-post-form-text @click="formClick" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
 		<div v-if="maxTextLength - textLength < 100" :class="['_acrylic', $style.textCount, { [$style.textOver]: textLength > maxTextLength }]">{{ maxTextLength - textLength }}</div>
-		<button v-if="!formClick" v-click-anime class="_button" :class="$style.submit" style="position: absolute; bottom: 0; right: 12px;" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
+		<button v-if="!showForm" v-click-anime class="_button" :class="$style.submit" style="position: absolute; bottom: 0; right: 12px;" :disabled="!canPost && $i" data-cy-open-post-form-submit @click="$i ? post : signin()">
 			<div :class="$style.submitInner">
 				<template v-if="posted"></template>
 				<template v-else-if="posting"><MkEllipsis/></template>
 				<template v-else>{{ submitText }}</template>
-				<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
+				<i v-if="$i" style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
 			</div>
 		</button>
 	</div>
-	<input v-show="withHashtags" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
-	<XPostFormAttaches v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
-	<MkPollEditor v-if="poll" v-model="poll" @destroyed="poll = null"/>
-	<MkNotePreview v-if="showPreview" :class="$style.preview" :text="text"/>
-	<div v-if="showingOptions" style="padding: 8px 16px;">
+	<input v-show="withHashtags && showForm" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
+	<XPostFormAttaches v-if="showForm" v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
+	<MkPollEditor v-if="poll && showForm" v-model="poll" @destroyed="poll = null"/>
+	<MkNotePreview v-if="showPreview && showForm" :class="$style.preview" :text="text"/>
+	<div v-if="showingOptions && showForm" style="padding: 8px 16px;">
 	</div>
 	<Transition
 		:enterActiveClass="defaultStore.state.animation ? $style.transition_footer_enterActive : ''"
@@ -97,7 +97,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:enterFromClass="defaultStore.state.animation ? $style.transition_footer_enterFrom : ''"
 		:leaveToClass="defaultStore.state.animation ? $style.transition_footer_leaveTo : ''"
 	>
-		<footer v-if="formClick" :class="$style.footer">
+		<footer v-if="showForm" :class="$style.footer">
 			<div :class="$style.footerLeft">
 				<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ti ti-photo-plus"></i></button>
 				<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ti ti-chart-arrows"></i></button>
@@ -115,7 +115,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</footer>
 	</Transition>
-	<datalist id="hashtags">
+	<datalist v-if="showForm" id="hashtags">
 		<option v-for="hashtag in recentHashtags" :key="hashtag" :value="hashtag"/>
 	</datalist>
 </div>
@@ -149,6 +149,8 @@ import { deepClone } from '@/scripts/clone.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { claimAchievement } from '@/scripts/achievements.js';
+import { vibrate } from '@/scripts/vibrate.js';
+import XSigninDialog from '@/components/MkSigninDialog.vue';
 
 const modal = inject('modal');
 
@@ -168,6 +170,7 @@ const props = withDefaults(defineProps<{
 	fixed?: boolean;
 	autofocus?: boolean;
 	freezeAfterPosted?: boolean;
+  updateMode?: boolean;
 }>(), {
 	initialVisibleUsers: () => [],
 	autofocus: false,
@@ -184,7 +187,7 @@ const cwInputEl = $shallowRef<HTMLInputElement | null>(null);
 const hashtagsInputEl = $shallowRef<HTMLInputElement | null>(null);
 const visibilityButton = $shallowRef<HTMLElement | null>(null);
 
-let formClick = $ref(false);
+let showForm = $ref(false);
 
 let posting = $ref(false);
 let posted = $ref(false);
@@ -237,7 +240,9 @@ const draftKey = $computed((): string => {
 });
 
 const placeholder = $computed((): string => {
-	if (props.renote) {
+	if (!$i) {
+		return i18n.ts._postForm.signinRequiredPlaceholder;
+	} else if (props.renote) {
 		return i18n.ts._postForm.quotePlaceholder;
 	} else if (props.reply) {
 		return i18n.ts._postForm.replyPlaceholder;
@@ -257,13 +262,15 @@ const placeholder = $computed((): string => {
 });
 
 const submitText = $computed((): string => {
-	return props.renote
-		? i18n.ts.quote
-		: props.reply
-			? i18n.ts.reply
-			: defaultStore.state.renameTheButtonInPostFormToNya
-				? i18n.ts.nya
-				: i18n.ts.note;
+	return !$i
+		? i18n.ts.login
+		: props.renote
+			? i18n.ts.quote
+			: props.reply
+				? i18n.ts.reply
+				: defaultStore.state.renameTheButtonInPostFormToNya
+					? i18n.ts.nya
+					: i18n.ts.note;
 });
 
 const textLength = $computed((): number => {
@@ -319,8 +326,6 @@ if (props.reply && props.reply.text != null) {
 
 		// 重複は除外
 		if (text.includes(`${mention} `)) continue;
-
-		text += `${mention} `;
 	}
 }
 
@@ -761,19 +766,20 @@ async function post(ev?: MouseEvent) {
 	}
 
 	let postData = {
-		text: text === '' ? undefined : text,
+		text: text === '' ? null : text,
 		fileIds: files.length > 0 ? files.map(f => f.id) : undefined,
 		replyId: props.reply ? props.reply.id : undefined,
 		renoteId: props.renote ? props.renote.id : quoteId ? quoteId : undefined,
 		channelId: props.channel ? props.channel.id : undefined,
 		poll: poll,
 		event: event,
-		cw: useCw ? cw ?? '' : undefined,
+		cw: useCw ? cw ?? '' : null,
 		localOnly: localOnly,
 		visibility: visibility,
 		visibleUserIds: visibility === 'specified' ? visibleUsers.map(u => u.id) : undefined,
 		reactionAcceptance,
 		disableRightClick: disableRightClick,
+		noteId: props.updateMode ? props.initialNote?.id : undefined,
 	};
 
 	if (withHashtags && hashtags && hashtags.trim() !== '') {
@@ -796,16 +802,19 @@ async function post(ev?: MouseEvent) {
 	}
 
 	posting = true;
-	os.api('notes/create', postData, token).then(() => {
+	os.api(props.updateMode ? 'notes/update' : 'notes/create', postData, token).then(() => {
 		if (props.freezeAfterPosted) {
 			posted = true;
 		} else {
 			clear();
 		}
 		nextTick(() => {
+			if (props.reply) os.noteToast(i18n.ts.replied, 'reply');
+			else if (props.renote) os.noteToast(i18n.ts.quoted, 'quote');
+			else os.noteToast(i18n.ts.posted, 'posted');
+
 			deleteDraft();
 			emit('posted');
-			os.noteToast(i18n.ts.posted);
 			if (postData.text && postData.text !== '') {
 				const hashtags_ = mfm.parse(postData.text).filter(x => x.type === 'hashtag').map(x => x.props.hashtag);
 				const history = JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]') as string[];
@@ -863,6 +872,7 @@ async function post(ev?: MouseEvent) {
 			text: err.message + '\n' + (err as any).id,
 		});
 	});
+	vibrate([10, 20, 10, 20, 10, 20, 60]);
 }
 
 function cancel() {
@@ -885,8 +895,10 @@ function showActions(ev) {
 		action: () => {
 			action.handler({
 				text: text,
+				cw: cw,
 			}, (key, value) => {
 				if (key === 'text') { text = value; }
+				if (key === 'cw') { useCw = value !== null; cw = value; }
 			});
 		},
 	})), ev.currentTarget ?? ev.target);
@@ -911,6 +923,37 @@ function openAccountMenu(ev: MouseEvent) {
 			}
 		},
 	}, ev);
+}
+
+function formClick() {
+	if ($i) showForm = true;
+
+	if (props.reply && props.reply.text != null) {
+		const ast = mfm.parse(props.reply.text);
+		const otherHost = props.reply.user.host;
+
+		for (const x of extractMentions(ast)) {
+			const mention = x.host ?
+				`@${x.username}@${toASCII(x.host)}` :
+				(otherHost == null || otherHost === host) ?
+					`@${x.username}` :
+					`@${x.username}@${toASCII(otherHost)}`;
+
+			// 自分は除外
+			if ($i.username === x.username && (x.host == null || x.host === host)) continue;
+
+			// 重複は除外
+			if (text.includes(`${mention} `)) continue;
+
+			text += `${mention} `;
+		}
+	}
+}
+
+function signin() {
+	os.popup(XSigninDialog, {
+		autoSet: true,
+	}, {}, 'closed');
 }
 
 onMounted(() => {
@@ -1044,7 +1087,10 @@ defineExpose({
 	display: inline-flex;
 	vertical-align: bottom;
 	flex: 0 1 50px;
-  margin: 0 0 0 12px;
+
+  &.fixed {
+    margin: 0 0 0 12px;
+  }
 }
 
 .avatar {
@@ -1217,7 +1263,7 @@ defineExpose({
 		padding-top: 8px;
 	}
 
-  &.formClick {
+  &.showForm {
     margin-top: 20px;
   }
 }

@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<header :class="$style.header">
 		<div :class="$style.headerLeft">
 			<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
-			<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="$style.account" class="_button" @click="openAccountMenu">
+			<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="[$style.account, { [$style.fixed]: fixed }]" class="_button" @click="openAccountMenu">
 				<MkAvatar :user="postAccount ?? $i" :class="$style.avatar"/>
 			</button>
 		</div>
@@ -129,6 +129,7 @@ import { deepClone } from '@/scripts/clone.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { claimAchievement } from '@/scripts/achievements.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 const modal = inject('modal');
 
@@ -148,6 +149,7 @@ const props = withDefaults(defineProps<{
 	fixed?: boolean;
 	autofocus?: boolean;
 	freezeAfterPosted?: boolean;
+	updateMode?: boolean;
 }>(), {
 	initialVisibleUsers: () => [],
 	autofocus: true,
@@ -743,19 +745,20 @@ async function post(ev?: MouseEvent) {
 	}
 
 	let postData = {
-		text: text === '' ? undefined : text,
+		text: text === '' ? null : text,
 		fileIds: files.length > 0 ? files.map(f => f.id) : undefined,
 		replyId: props.reply ? props.reply.id : undefined,
 		renoteId: props.renote ? props.renote.id : quoteId ? quoteId : undefined,
 		channelId: props.channel ? props.channel.id : undefined,
 		poll: poll,
 		event: event,
-		cw: useCw ? cw ?? '' : undefined,
+		cw: useCw ? cw ?? '' : null,
 		localOnly: localOnly,
 		visibility: visibility,
 		visibleUserIds: visibility === 'specified' ? visibleUsers.map(u => u.id) : undefined,
 		reactionAcceptance,
 		disableRightClick: disableRightClick,
+		noteId: props.updateMode ? props.initialNote?.id : undefined,
 	};
 
 	if (withHashtags && hashtags && hashtags.trim() !== '') {
@@ -778,16 +781,19 @@ async function post(ev?: MouseEvent) {
 	}
 
 	posting = true;
-	os.api('notes/create', postData, token).then(() => {
+	os.api(props.updateMode ? 'notes/update' : 'notes/create', postData, token).then(() => {
 		if (props.freezeAfterPosted) {
 			posted = true;
 		} else {
 			clear();
 		}
 		nextTick(() => {
+			if (props.reply) os.noteToast(i18n.ts.replied, 'reply');
+			else if (props.renote) os.noteToast(i18n.ts.quoted, 'quote');
+			else os.noteToast(i18n.ts.posted, 'posted');
+
 			deleteDraft();
 			emit('posted');
-			os.noteToast(i18n.ts.posted);
 			if (postData.text && postData.text !== '') {
 				const hashtags_ = mfm.parse(postData.text).filter(x => x.type === 'hashtag').map(x => x.props.hashtag);
 				const history = JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]') as string[];
@@ -845,6 +851,7 @@ async function post(ev?: MouseEvent) {
 			text: err.message + '\n' + (err as any).id,
 		});
 	});
+	vibrate([10, 20, 10, 20, 10, 20, 60]);
 }
 
 function cancel() {
@@ -867,8 +874,10 @@ function showActions(ev) {
 		action: () => {
 			action.handler({
 				text: text,
+				cw: cw,
 			}, (key, value) => {
 				if (key === 'text') { text = value; }
+				if (key === 'cw') { useCw = value !== null; cw = value; }
 			});
 		},
 	})), ev.currentTarget ?? ev.target);
@@ -1007,6 +1016,10 @@ defineExpose({
 	display: inline-flex;
 	vertical-align: bottom;
 	flex: 0 1 50px;
+
+  &.fixed {
+    margin: 0 0 0 12px;
+  }
 }
 
 .avatar {

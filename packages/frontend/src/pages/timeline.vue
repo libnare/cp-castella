@@ -6,14 +6,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header>
-		<CPPageHeader v-if="isMobile && defaultStore.state.mobileTimelineHeaderChange" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
-		<MkPageHeader v-else-if="isMobile || !isFriendly" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
-		<MkPageHeader v-else v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 	</template>
 	<MkSpacer :contentMax="800">
 		<div ref="rootEl" v-hotkey.global="keymap">
 			<XTutorial v-if="$i && defaultStore.reactiveState.timelineTutorial.value != -1" class="_panel" style="margin-bottom: var(--margin);"/>
-			<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);"/>
+			<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);" :autofocus="false"/>
 
 			<transition
 				:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
@@ -34,9 +33,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.tl">
 				<MkTimeline
 					ref="tlComponent"
-					:key="src"
+					:key="src + withRenotes + withReplies + onlyFiles + onlyCats"
 					:src="src.split(':')[0]"
 					:list="src.split(':')[1]"
+					:withRenotes="withRenotes"
+					:withReplies="withReplies"
+					:onlyFiles="onlyFiles"
+					:onlyCats="onlyCats"
 					:sound="true"
 					@queue="queueUpdated"
 				/>
@@ -59,7 +62,7 @@ import { instance } from '@/instance.js';
 import { $i } from '@/account.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { antennasCache, userListsCache } from '@/cache';
+import { antennasCache, userListsCache } from '@/cache.js';
 import { globalEvents } from '@/events.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
@@ -67,7 +70,7 @@ import { unisonReload } from '@/scripts/unison-reload.js';
 let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
-if (!isFriendly.value && !defaultStore.state.mobileTimelineHeaderChange) provide('shouldOmitHeaderTitle', true);
+if (!isFriendly.value && !defaultStore.state.mobileHeaderChange) provide('shouldOmitHeaderTitle', true);
 
 const MOBILE_THRESHOLD = 500;
 
@@ -80,8 +83,6 @@ const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
 const isLocalTimelineAvailable = ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable);
 const isGlobalTimelineAvailable = ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable);
-const isMediaTimelineAvailable = ($i == null && instance.policies.mtlAvailable) || ($i != null && $i.policies.mtlAvailable);
-const isCatTimelineAvailable = ($i == null && instance.policies.ctlAvailable) || ($i != null && $i.policies.ctlAvailable);
 const keymap = {
 	't': focus,
 };
@@ -92,10 +93,23 @@ const rootEl = $shallowRef<HTMLElement>();
 let queue = $ref(0);
 let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
 const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
+const withRenotes = $ref(true);
+const withReplies = $ref(false);
+const onlyFiles = $ref(false);
+const onlyCats = $ref(false);
+const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
+const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 
 watch($$(src), () => {
 	queue = 0;
 	queueUpdated(queue);
+});
+
+watch([
+	friendlyEnableNotifications,
+	friendlyEnableWidgets,
+], async () => {
+	await reloadAsk();
 });
 
 onMounted(() => {
@@ -147,7 +161,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-function saveSrc(newSrc: 'home' | 'local' | 'media' | 'social' | 'cat' | 'global' | `list:${string}`): void {
+function saveSrc(newSrc: 'home' | 'local' | 'social' | 'global' | `list:${string}`): void {
 	let userList = null;
 	if (newSrc.startsWith('userList:')) {
 		const id = newSrc.substring('userList:'.length);
@@ -186,23 +200,48 @@ async function reloadAsk() {
 }
 
 const headerActions = $computed(() => [{
-	icon: friendlyEnableNotifications.value ? 'ti ti-notification' : 'ti ti-notification-off',
-	text: i18n.ts.friendlyEnableNotifications,
-	handler: () => {
-		friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
-		reloadAsk();
-	},
-}, {
-	icon: friendlyEnableWidgets.value ? 'ti ti-apps' : 'ti ti-apps-off',
-	text: i18n.ts.friendlyEnableWidgets,
-	handler: () => {
-		friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
-		reloadAsk();
+	icon: 'ti ti-dots',
+	text: i18n.ts.options,
+	handler: (ev) => {
+		os.popupMenu([{
+			type: 'switch',
+			text: i18n.ts.friendlyEnableNotifications,
+			icon: 'ti ti-notification',
+			ref: friendlyEnableNotifications,
+			action: () => {
+				friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
+			},
+		}, {
+			type: 'switch',
+			text: i18n.ts.friendlyEnableWidgets,
+			icon: 'ti ti-apps',
+			ref: friendlyEnableWidgets,
+			action: () => {
+				friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
+			},
+		}, {
+			type: 'switch',
+			text: i18n.ts.showRenotes,
+			icon: 'ti ti-repeat',
+			ref: $$(withRenotes),
+		}, {
+			type: 'switch',
+			text: i18n.ts.withReplies,
+			icon: 'ti ti-arrow-back-up',
+			ref: $$(withReplies),
+		}, {
+			type: 'switch',
+			text: i18n.ts.fileAttachedOnly,
+			icon: 'ti ti-photo',
+			ref: $$(onlyFiles),
+		}, {
+			type: 'switch',
+			text: i18n.ts.showCatOnly,
+			icon: 'ti ti-cat',
+			ref: $$(onlyCats),
+		}], ev.currentTarget ?? ev.target);
 	},
 }]);
-
-const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
-const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 
 const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
 	key: 'list:' + l.id,
@@ -219,20 +258,10 @@ const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLis
 	title: i18n.ts._timelines.local,
 	icon: 'ti ti-planet',
 	iconOnly: true,
-}, ...(isMediaTimelineAvailable && defaultStore.state.enableMediaTimeline ? [{
-	key: 'media',
-	title: i18n.ts._timelines.media,
-	icon: 'ti ti-photo',
-	iconOnly: true,
-}] : []), ...(defaultStore.state.enableSocialTimeline ? [{
+}, ...(defaultStore.state.enableSocialTimeline ? [{
 	key: 'social',
 	title: i18n.ts._timelines.social,
-	icon: 'ti ti-rocket',
-	iconOnly: true,
-}] : []), ...(isCatTimelineAvailable && defaultStore.state.enableCatTimeline ? [{
-	key: 'cat',
-	title: i18n.ts._timelines.cat,
-	icon: 'ti ti-cat',
+	icon: 'ti ti-universe',
 	iconOnly: true,
 }] : [])] : []), ...(isGlobalTimelineAvailable && defaultStore.state.enableGlobalTimeline ? [{
 	key: 'global',
@@ -273,7 +302,7 @@ const headerTabsWhenNotLogin = $computed(() => [
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
-	icon: src === 'local' ? 'ti ti-planet' : src === 'media' ? 'ti ti-photo' : src === 'social' ? 'ti ti-rocket' : src === 'cat' ? 'ti ti-cat' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
+	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-universe' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
 })));
 </script>
 

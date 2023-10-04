@@ -115,9 +115,9 @@ export const routes = [{
 		name: 'statusbar',
 		component: page(() => import('./pages/settings/statusbar.vue')),
 	}, {
-		path: '/sounds',
-		name: 'sounds',
-		component: page(() => import('./pages/settings/sounds.vue')),
+		path: '/sounds-and-vibrations',
+		name: 'sounds-and-vibrations',
+		component: page(() => import('./pages/settings/sounds-and-vibrations.vue')),
 	}, {
 		path: '/plugin/install',
 		name: 'plugin',
@@ -459,6 +459,10 @@ export const routes = [{
 		path: '/invites',
 		name: 'invites',
 		component: page(() => import('./pages/admin/invites.vue')),
+	}, {
+		path: '/update',
+		name: 'update',
+		component: page(() => import('./pages/admin/update.vue')),
 	}, {
 		path: '/',
 		component: page(() => import('./pages/_empty_.vue')),

@@ -215,21 +215,7 @@ export type Channels = {
         };
         receives: null;
     };
-    mediaTimeline: {
-        params: null;
-        events: {
-            note: (payload: Note) => void;
-        };
-        receives: null;
-    };
     hybridTimeline: {
-        params: null;
-        events: {
-            note: (payload: Note) => void;
-        };
-        receives: null;
-    };
-    catTimeline: {
         params: null;
         events: {
             note: (payload: Note) => void;
@@ -1587,7 +1573,7 @@ export type Endpoints = {
             receiveAnnouncementEmail?: boolean;
             alwaysMarkNsfw?: boolean;
             mutedWords?: string[][];
-            mutingNotificationTypes?: Notification_2['type'][];
+            notificationRecieveConfig?: any;
             emailNotificationTypes?: string[];
             alsoKnownAs?: string[];
         };
@@ -2474,6 +2460,7 @@ type LiteInstanceMetadata = {
     maintainerName: string | null;
     maintainerEmail: string | null;
     version: string;
+    basedMisskeyVersion: string;
     name: string | null;
     shortName: string | null;
     uri: string;
@@ -2484,8 +2471,6 @@ type LiteInstanceMetadata = {
     feedbackUrl: string;
     disableRegistration: boolean;
     disableLocalTimeline: boolean;
-    disableMediaTimeline: boolean;
-    disableTimeline: boolean;
     disableGlobalTimeline: boolean;
     driveCapacityPerLocalUserMb: number;
     driveCapacityPerRemoteUserMb: number;
@@ -2547,7 +2532,22 @@ type MeDetailed = UserDetailed & {
     isDeleted: boolean;
     isExplorable: boolean;
     mutedWords: string[][];
-    mutingNotificationTypes: string[];
+    notificationRecieveConfig: {
+        [notificationType in typeof notificationTypes_2[number]]?: {
+            type: 'all';
+        } | {
+            type: 'never';
+        } | {
+            type: 'following';
+        } | {
+            type: 'follower';
+        } | {
+            type: 'mutualFollow';
+        } | {
+            type: 'list';
+            userListId: string;
+        };
+    };
     noCrawle: boolean;
     receiveAnnouncementEmail: boolean;
     usePasswordLessLogin: boolean;
@@ -2611,11 +2611,20 @@ type ModerationLog = {
     type: 'addCustomEmoji';
     info: ModerationLogPayloads['addCustomEmoji'];
 } | {
+    type: 'updateCustomEmoji';
+    info: ModerationLogPayloads['updateCustomEmoji'];
+} | {
+    type: 'deleteCustomEmoji';
+    info: ModerationLogPayloads['deleteCustomEmoji'];
+} | {
     type: 'assignRole';
     info: ModerationLogPayloads['assignRole'];
 } | {
     type: 'unassignRole';
     info: ModerationLogPayloads['unassignRole'];
+} | {
+    type: 'createRole';
+    info: ModerationLogPayloads['createRole'];
 } | {
     type: 'updateRole';
     info: ModerationLogPayloads['updateRole'];
@@ -2629,6 +2638,30 @@ type ModerationLog = {
     type: 'promoteQueue';
     info: ModerationLogPayloads['promoteQueue'];
 } | {
+    type: 'deleteDriveFile';
+    info: ModerationLogPayloads['deleteDriveFile'];
+} | {
+    type: 'deleteNote';
+    info: ModerationLogPayloads['deleteNote'];
+} | {
+    type: 'createGlobalAnnouncement';
+    info: ModerationLogPayloads['createGlobalAnnouncement'];
+} | {
+    type: 'createUserAnnouncement';
+    info: ModerationLogPayloads['createUserAnnouncement'];
+} | {
+    type: 'updateGlobalAnnouncement';
+    info: ModerationLogPayloads['updateGlobalAnnouncement'];
+} | {
+    type: 'updateUserAnnouncement';
+    info: ModerationLogPayloads['updateUserAnnouncement'];
+} | {
+    type: 'deleteGlobalAnnouncement';
+    info: ModerationLogPayloads['deleteGlobalAnnouncement'];
+} | {
+    type: 'deleteUserAnnouncement';
+    info: ModerationLogPayloads['deleteUserAnnouncement'];
+} | {
     type: 'resetPassword';
     info: ModerationLogPayloads['resetPassword'];
 } | {
@@ -2637,10 +2670,28 @@ type ModerationLog = {
 } | {
     type: 'unsuspendRemoteInstance';
     info: ModerationLogPayloads['unsuspendRemoteInstance'];
+} | {
+    type: 'markSensitiveDriveFile';
+    info: ModerationLogPayloads['markSensitiveDriveFile'];
+} | {
+    type: 'unmarkSensitiveDriveFile';
+    info: ModerationLogPayloads['unmarkSensitiveDriveFile'];
+} | {
+    type: 'createInvitation';
+    info: ModerationLogPayloads['createInvitation'];
+} | {
+    type: 'createAd';
+    info: ModerationLogPayloads['createAd'];
+} | {
+    type: 'updateAd';
+    info: ModerationLogPayloads['updateAd'];
+} | {
+    type: 'deleteAd';
+    info: ModerationLogPayloads['deleteAd'];
 });
 
 // @public (undocumented)
-export const moderationLogTypes: readonly ["updateServerSettings", "suspend", "unsuspend", "updateUserNote", "addCustomEmoji", "assignRole", "unassignRole", "updateRole", "deleteRole", "clearQueue", "promoteQueue", "deleteDriveFile", "deleteNote", "createGlobalAnnouncement", "createUserAnnouncement", "resetPassword", "suspendRemoteInstance", "unsuspendRemoteInstance"];
+export const moderationLogTypes: readonly ["updateServerSettings", "suspend", "unsuspend", "updateUserNote", "addCustomEmoji", "updateCustomEmoji", "deleteCustomEmoji", "assignRole", "unassignRole", "createRole", "updateRole", "deleteRole", "clearQueue", "promoteQueue", "deleteDriveFile", "deleteNote", "createGlobalAnnouncement", "createUserAnnouncement", "updateGlobalAnnouncement", "updateUserAnnouncement", "deleteGlobalAnnouncement", "deleteUserAnnouncement", "resetPassword", "suspendRemoteInstance", "unsuspendRemoteInstance", "markSensitiveDriveFile", "unmarkSensitiveDriveFile", "resolveAbuseReport", "createInvitation", "createAd", "updateAd", "deleteAd"];
 
 // @public (undocumented)
 export const mutedNoteReasons: readonly ["word", "manual", "spam", "other"];
@@ -2649,6 +2700,8 @@ export const mutedNoteReasons: readonly ["word", "manual", "spam", "other"];
 type Note = {
     id: ID;
     createdAt: DateString;
+    updatedAt?: DateString | null;
+    noteEditHistory: string[];
     text: string | null;
     cw: string | null;
     user: User;
@@ -2993,7 +3046,8 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 // src/api.types.ts:16:32 - (ae-forgotten-export) The symbol "TODO" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:18:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:659:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
-// src/entities.ts:587:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/entities.ts:107:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
+// src/entities.ts:603:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

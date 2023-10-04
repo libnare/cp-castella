@@ -5,7 +5,7 @@
 
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { miLocalStorage } from './local-storage';
+import { miLocalStorage } from '@/local-storage.js';
 import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
@@ -54,27 +54,19 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: 0,
 	},
 	tlHomeHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	tlLocalHintClosed: {
-		where: "device",
-		default: false,
-	},
-	tlMediaHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	tlSocialHintClosed: {
-		where: "device",
-		default: false,
-	},
-	tlCatHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	tlGlobalHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	keepCw: {
@@ -137,10 +129,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: [] as string[],
 	},
-	showTimelineReplies: {
-		where: 'account',
-		default: true,
-	},
 
 	menu: {
 		where: 'deviceAccount',
@@ -193,7 +181,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	tl: {
 		where: 'deviceAccount',
 		default: {
-			src: 'home' as 'home' | 'local' | 'media' | 'social' | 'cat' | 'global' | `list:${string}`,
+			src: 'home' as 'home' | 'local' | 'social' | 'global' | `list:${string}`,
 			userList: null as Misskey.entities.UserList | null,
 		},
 	},
@@ -245,6 +233,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	disableShowingAnimatedImages: {
 		where: 'device',
 		default: window.matchMedia('(prefers-reduced-motion)').matches,
+	},
+	showingAnimatedImages: {
+		where: 'device',
+		default: /mobile|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
 	},
 	emojiStyle: {
 		where: 'device',
@@ -360,7 +352,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	forceShowAds: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	aiChanMode: {
 		where: 'device',
@@ -453,6 +445,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	allMediaNoteCollapse: {
+		where: 'device',
+		default: false,
+	},
 
 	// - Settings/Timeline
 	enableHomeTimeline: {
@@ -463,15 +459,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	enableMediaTimeline: {
-		where: 'device',
-		default: true,
-	},
 	enableSocialTimeline: {
-		where: 'device',
-		default: true,
-	},
-	enableCatTimeline: {
 		where: 'device',
 		default: true,
 	},
@@ -525,12 +513,16 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
-	mobileTimelineHeaderChange: {
+	mobileHeaderChange: {
 		where: 'device',
 		default: true,
 	},
 	renameTheButtonInPostFormToNya: {
 		where: 'account',
+		default: true,
+	},
+	enableLongPressOpenAccountMenu: {
+		where: 'device',
 		default: true,
 	},
 
@@ -583,6 +575,7 @@ export class ColdDeviceStorage {
 		syncDeviceDarkMode: true,
 		plugins: [] as Plugin[],
 		mediaVolume: 0.5,
+		vibrate: true,
 		sound_masterVolume: 0.5,
 		sound_note: { type: 'syuilo/down', volume: 0.5 },
 		sound_noteMy: { type: 'syuilo/up', volume: 0.5 },

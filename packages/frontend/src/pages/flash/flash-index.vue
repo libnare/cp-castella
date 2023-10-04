@@ -17,7 +17,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div v-else-if="tab === 'my'">
 			<div class="_gaps">
-				<MkButton gradate rounded style="margin: 0 auto;" @click="create()"><i class="ti ti-plus"></i></MkButton>
 				<MkPagination v-slot="{items}" :pagination="myFlashsPagination">
 					<div class="_gaps_s">
 						<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
@@ -41,7 +40,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed } from 'vue';
 import MkFlashPreview from '@/components/MkFlashPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
-import MkButton from '@/components/MkButton.vue';
 import { useRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';

@@ -174,6 +174,10 @@ export function getNoteMenu(props: {
 		});
 	}
 
+	function edit(): void {
+		os.post({ initialNote: appearNote, renote: appearNote.renote, reply: appearNote.reply, channel: appearNote.channel, updateMode: true });
+	}
+
 	function copyEdit(): void {
 		os.confirm({
 			type: 'info',
@@ -317,12 +321,17 @@ export function getNoteMenu(props: {
 				text: i18n.ts.copyAndEdit,
 				action: copyEdit,
 			} : undefined,
+			appearNote.userId === $i.id ? {
+				icon: 'ti ti-edit',
+				text: i18n.ts.deleteAndEdit,
+				action: delEdit,
+			} : undefined,
 			{
 				icon: 'ti ti-share',
 				text: i18n.ts.share,
 				action: share,
 			},
-			instance.translatorAvailable ? {
+			$i && $i.policies.canUseTranslator && instance.translatorAvailable ? {
 				icon: 'ti ti-language-hiragana',
 				text: i18n.ts.translate,
 				action: translate,
@@ -391,10 +400,10 @@ export function getNoteMenu(props: {
 			),
 			...(appearNote.userId === $i.id || $i.isModerator || $i.isAdmin ? [
 				null,
-				appearNote.userId === $i.id ? {
+				appearNote.userId === $i.id && $i.policies.canEditNote ? {
 					icon: 'ti ti-edit',
-					text: i18n.ts.deleteAndEdit,
-					action: delEdit,
+					text: i18n.ts.edit,
+					action: edit,
 				} : undefined,
 				{
 					icon: 'ti ti-trash',
@@ -407,8 +416,8 @@ export function getNoteMenu(props: {
 			.filter(x => x !== undefined);
 	} else {
 		menu = [{
-			icon: 'ti ti-external-link',
-			text: i18n.ts.detailed,
+			icon: 'ti ti-info-circle',
+			text: i18n.ts.details,
 			action: openDetail,
 		}, {
 			icon: 'ti ti-copy',

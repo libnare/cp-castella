@@ -1,4 +1,4 @@
-import { ModerationLogPayloads } from './consts.js';
+import { ModerationLogPayloads, notificationTypes } from './consts.js';
 
 export type ID = string;
 export type DateString = string;
@@ -104,7 +104,22 @@ export type MeDetailed = UserDetailed & {
 	isDeleted: boolean;
 	isExplorable: boolean;
 	mutedWords: string[][];
-	mutingNotificationTypes: string[];
+	notificationRecieveConfig: {
+		[notificationType in typeof notificationTypes[number]]?: {
+			type: 'all';
+		} | {
+			type: 'never';
+		} | {
+			type: 'following';
+		} | {
+			type: 'follower';
+		} | {
+			type: 'mutualFollow';
+		} | {
+			type: 'list';
+			userListId: string;
+		};
+	};
 	noCrawle: boolean;
 	receiveAnnouncementEmail: boolean;
 	usePasswordLessLogin: boolean;
@@ -162,6 +177,8 @@ export type GalleryPost = {
 export type Note = {
 	id: ID;
 	createdAt: DateString;
+	updatedAt?: DateString | null;
+	noteEditHistory: string[];
 	text: string | null;
 	cw: string | null;
 	user: User;
@@ -305,6 +322,7 @@ export type LiteInstanceMetadata = {
 	maintainerName: string | null;
 	maintainerEmail: string | null;
 	version: string;
+	basedMisskeyVersion: string;
 	name: string | null;
 	shortName: string | null;
 	uri: string;
@@ -315,8 +333,6 @@ export type LiteInstanceMetadata = {
 	feedbackUrl: string;
 	disableRegistration: boolean;
 	disableLocalTimeline: boolean;
-	disableMediaTimeline: boolean;
-	disableTimeline: boolean;
 	disableGlobalTimeline: boolean;
 	driveCapacityPerLocalUserMb: number;
 	driveCapacityPerRemoteUserMb: number;
@@ -598,11 +614,20 @@ export type ModerationLog = {
 	type: 'addCustomEmoji';
 	info: ModerationLogPayloads['addCustomEmoji'];
 } | {
+	type: 'updateCustomEmoji';
+	info: ModerationLogPayloads['updateCustomEmoji'];
+} | {
+	type: 'deleteCustomEmoji';
+	info: ModerationLogPayloads['deleteCustomEmoji'];
+} | {
 	type: 'assignRole';
 	info: ModerationLogPayloads['assignRole'];
 } | {
 	type: 'unassignRole';
 	info: ModerationLogPayloads['unassignRole'];
+} | {
+	type: 'createRole';
+	info: ModerationLogPayloads['createRole'];
 } | {
 	type: 'updateRole';
 	info: ModerationLogPayloads['updateRole'];
@@ -616,6 +641,30 @@ export type ModerationLog = {
 	type: 'promoteQueue';
 	info: ModerationLogPayloads['promoteQueue'];
 } | {
+	type: 'deleteDriveFile';
+	info: ModerationLogPayloads['deleteDriveFile'];
+} | {
+	type: 'deleteNote';
+	info: ModerationLogPayloads['deleteNote'];
+} | {
+	type: 'createGlobalAnnouncement';
+	info: ModerationLogPayloads['createGlobalAnnouncement'];
+} | {
+	type: 'createUserAnnouncement';
+	info: ModerationLogPayloads['createUserAnnouncement'];
+} | {
+	type: 'updateGlobalAnnouncement';
+	info: ModerationLogPayloads['updateGlobalAnnouncement'];
+} | {
+	type: 'updateUserAnnouncement';
+	info: ModerationLogPayloads['updateUserAnnouncement'];
+} | {
+	type: 'deleteGlobalAnnouncement';
+	info: ModerationLogPayloads['deleteGlobalAnnouncement'];
+} | {
+	type: 'deleteUserAnnouncement';
+	info: ModerationLogPayloads['deleteUserAnnouncement'];
+} | {
 	type: 'resetPassword';
 	info: ModerationLogPayloads['resetPassword'];
 } | {
@@ -624,4 +673,22 @@ export type ModerationLog = {
 } | {
 	type: 'unsuspendRemoteInstance';
 	info: ModerationLogPayloads['unsuspendRemoteInstance'];
+} | {
+	type: 'markSensitiveDriveFile';
+	info: ModerationLogPayloads['markSensitiveDriveFile'];
+} | {
+	type: 'unmarkSensitiveDriveFile';
+	info: ModerationLogPayloads['unmarkSensitiveDriveFile'];
+} | {
+	type: 'createInvitation';
+	info: ModerationLogPayloads['createInvitation'];
+} | {
+	type: 'createAd';
+	info: ModerationLogPayloads['createAd'];
+} | {
+	type: 'updateAd';
+	info: ModerationLogPayloads['updateAd'];
+} | {
+	type: 'deleteAd';
+	info: ModerationLogPayloads['deleteAd'];
 });

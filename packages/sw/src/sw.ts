@@ -5,7 +5,7 @@
 
 import { get } from 'idb-keyval';
 import * as Misskey from 'cherrypick-js';
-import type { PushNotificationDataMap } from '@/types';
+import type { PushNotificationDataMap } from '@/types.js';
 import { createEmptyNotification, createNotification } from '@/scripts/create-notification.js';
 import { swLang } from '@/scripts/lang.js';
 import * as swos from '@/scripts/operations.js';
@@ -27,7 +27,7 @@ globalThis.addEventListener('activate', ev => {
 });
 
 function offlineContentHTML(): string {
-	return `<!doctype html>Offline. Service Worker @${_VERSION_} <button onclick="location.reload()">reload</button>`;
+	return `<!doctype html>Offline. Service Worker @${_VERSION_} | @${_BASEDMISSKEYVERSION_} <button onclick="location.reload()">reload</button>`;
 }
 
 globalThis.addEventListener('fetch', ev => {
@@ -77,12 +77,12 @@ globalThis.addEventListener('push', ev => {
 				break;
 			case 'readAllMessagingMessages':
 				for (const n of await globalThis.registration.getNotifications()) {
-					if (n?.data?.type === 'unreadMessagingMessage') n.close();
+					if (n.data?.type === 'unreadMessagingMessage') n.close();
 				}
 				break;
 			case 'readAllMessagingMessagesOfARoom':
 				for (const n of await globalThis.registration.getNotifications()) {
-					if (n?.data?.type === 'unreadMessagingMessage'
+					if (n.data?.type === 'unreadMessagingMessage'
 						&& ('userId' in data.body
 							? data.body.userId === n.data.body.userId
 							: data.body.groupId === n.data.body.groupId)

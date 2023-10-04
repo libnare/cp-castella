@@ -83,6 +83,7 @@ export class NodeinfoServerService {
 					 */
 					name: 'cherrypick',
 					version: this.config.version,
+					basedMisskeyVersion: this.config.basedMisskeyVersion,
 					homepage: nodeinfo_homepage,
 					repository: meta.repositoryUrl,
 				},
@@ -110,8 +111,6 @@ export class NodeinfoServerService {
 					feedbackUrl: meta.feedbackUrl,
 					disableRegistration: meta.disableRegistration,
 					disableLocalTimeline: !basePolicies.ltlAvailable,
-					disableMediaTimeline: !basePolicies.mtlAvailable,
-					disableCatTimeline: !basePolicies.ctlAvailable,
 					disableGlobalTimeline: !basePolicies.gtlAvailable,
 					emailRequiredForSignup: meta.emailRequiredForSignup,
 					enableHcaptcha: meta.enableHcaptcha,
@@ -120,7 +119,7 @@ export class NodeinfoServerService {
 					enableEmail: meta.enableEmail,
 					enableServiceWorker: meta.enableServiceWorker,
 					proxyAccountName: proxyAccount ? proxyAccount.username : null,
-					themeColor: meta.themeColor ?? '#86b300',
+					themeColor: meta.themeColor ?? 'rgb(255, 188, 220)',
 				},
 			};
 			if (version >= 21) {

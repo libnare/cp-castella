@@ -87,6 +87,9 @@ type UploadFromUrlArgs = {
 
 @Injectable()
 export class DriveService {
+	public static NoSuchFolderError = class extends Error {};
+	public static InvalidFileNameError = class extends Error {};
+	public static CannotUnmarkSensitiveError = class extends Error {};
 	private registerLogger: Logger;
 	private downloaderLogger: Logger;
 	private deleteLogger: Logger;
@@ -664,6 +667,62 @@ export class DriveService {
 	}
 
 	@bindThis
+	public async updateFile(file: MiDriveFile, values: Partial<MiDriveFile>, updater: MiUser) {
+		const alwaysMarkNsfw = (await this.roleService.getUserPolicies(file.userId)).alwaysMarkNsfw;
+
+		if (values.name && !this.driveFileEntityService.validateFileName(file.name)) {
+			throw new DriveService.InvalidFileNameError();
+		}
+
+		if (values.isSensitive !== undefined && values.isSensitive !== file.isSensitive && alwaysMarkNsfw && !values.isSensitive) {
+			throw new DriveService.CannotUnmarkSensitiveError();
+		}
+
+		if (values.folderId != null) {
+			const folder = await this.driveFoldersRepository.findOneBy({
+				id: values.folderId,
+				userId: file.userId!,
+			});
+
+			if (folder == null) {
+				throw new DriveService.NoSuchFolderError();
+			}
+		}
+
+		await this.driveFilesRepository.update(file.id, values);
+
+		const fileObj = await this.driveFileEntityService.pack(file.id, { self: true });
+
+		// Publish fileUpdated event
+		if (file.userId) {
+			this.globalEventService.publishDriveStream(file.userId, 'fileUpdated', fileObj);
+		}
+
+		if (await this.roleService.isModerator(updater) && (file.userId !== updater.id)) {
+			if (values.isSensitive !== undefined && values.isSensitive !== file.isSensitive) {
+				const user = file.userId ? await this.usersRepository.findOneByOrFail({ id: file.userId }) : null;
+				if (values.isSensitive) {
+					this.moderationLogService.log(updater, 'markSensitiveDriveFile', {
+						fileId: file.id,
+						fileUserId: file.userId,
+						fileUserUsername: user?.username ?? null,
+						fileUserHost: user?.host ?? null,
+					});
+				} else {
+					this.moderationLogService.log(updater, 'unmarkSensitiveDriveFile', {
+						fileId: file.id,
+						fileUserId: file.userId,
+						fileUserUsername: user?.username ?? null,
+						fileUserHost: user?.host ?? null,
+					});
+				}
+			}
+		}
+
+		return fileObj;
+	}
+
+	@bindThis
 	public async deleteFile(file: MiDriveFile, isExpired = false, deleter?: MiUser) {
 		if (file.storedInternal) {
 			this.internalStorageService.del(file.accessKey!);
@@ -755,9 +814,12 @@ export class DriveService {
 		}
 
 		if (deleter && await this.roleService.isModerator(deleter) && (file.userId !== deleter.id)) {
+			const user = file.userId ? await this.usersRepository.findOneByOrFail({ id: file.userId }) : null;
 			this.moderationLogService.log(deleter, 'deleteDriveFile', {
 				fileId: file.id,
 				fileUserId: file.userId,
+				fileUserUsername: user?.username ?? null,
+				fileUserHost: user?.host ?? null,
 			});
 		}
 	}

@@ -6,23 +6,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ background: bg }">
 	<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
-		<button class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
+		<button v-vibrate="5" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
 	<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
-		<MkAvatar :class="$style.avatar" :user="$i"/>
+		<MkAvatar v-vibrate="5" :class="$style.avatar" :user="$i"/>
 	</div>
 	<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 	<div v-else-if="!thin_ && canBack && (actions && actions.length > 0)" :class="$style.buttonsLeft"/>
 
 	<template v-if="metadata">
 		<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]">
-			<MkAvatar v-if="metadata.avatar" :class="$style.titleAvatar" :user="metadata.avatar" indicator/>
+			<div v-if="metadata.avatar" :class="$style.titleAvatarContainer" @click="top">
+				<MkAvatar :class="$style.titleAvatar" :user="metadata.avatar" indicator/>
+			</div>
 			<i v-else-if="metadata.icon" :class="[$style.titleIcon, metadata.icon]" @click="top"></i>
 
 			<div :class="$style.title">
-				<MkUserName v-if="metadata.userName" :user="metadata.userName" :nowrap="true"/>
+				<MkUserName v-if="metadata.userName" :user="metadata.userName" :nowrap="true" @click="top"/>
 				<div v-else-if="metadata.title" @click="top">{{ metadata.title }}</div>
-				<div v-if="!narrow && metadata.subtitle" :class="$style.subtitle">
+				<div v-if="!narrow && metadata.subtitle" :class="$style.subtitle" @click="top">
 					{{ metadata.subtitle }}
 				</div>
 				<div v-if="narrow && hasTabs" :class="[$style.subtitle, $style.activeTab]" @click="showTabsPopup">
@@ -42,7 +44,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
 	<div v-else-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 		<template v-for="action in actions">
-			<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+			<button v-vibrate="5" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 		</template>
 	</div>
 	<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
@@ -218,7 +220,7 @@ onMounted(() => {
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
 
-  globalEvents.on('showFollowButton', (showFollowButton_receive) => {
+	globalEvents.on('showFollowButton', (showFollowButton_receive) => {
 		showFollowButton = showFollowButton_receive;
 	});
 });
@@ -357,6 +359,16 @@ onUnmounted(() => {
 
 .titleContainer_canBack {
 	margin-left: -32px;
+}
+
+.titleAvatarContainer {
+  $size: 32px;
+  contain: strict;
+  overflow: clip;
+  width: $size;
+  height: $size;
+  padding: 8px;
+  flex-shrink: 0;
 }
 
 .titleAvatar {

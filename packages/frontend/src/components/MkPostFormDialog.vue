@@ -30,6 +30,7 @@ const props = defineProps<{
 	instant?: boolean;
 	fixed?: boolean;
 	autofocus?: boolean;
+	updateMode?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -55,5 +56,9 @@ function onModalClosed() {
 	max-height: calc(100% - env(safe-area-inset-bottom));
 	margin: 0 auto auto auto;
 	overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 </style>
