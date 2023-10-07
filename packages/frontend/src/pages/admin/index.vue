@@ -78,7 +78,7 @@ fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 }).then(res => res.json())
 	.then(async res => {
 		const meta = await os.api('admin/meta');
-		if (meta.enableReceivePrerelease) releasesCherryPick = res.filter(x => x.prerelease === true);
+		if (meta.enableReceivePrerelease) releasesCherryPick = res;
 		else releasesCherryPick = res.filter(x => x.prerelease === false);
 		if ((version < releasesCherryPick[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick[0].tag_name)) updateAvailable = true;
 	});
@@ -213,6 +213,11 @@ const menuDef = $computed(() => [{
 		text: i18n.ts.proxyAccount,
 		to: '/admin/proxy-account',
 		active: currentPage?.route.name === 'proxy-account',
+	}, {
+		icon: 'ti ti-link',
+		text: i18n.ts.externalServices,
+		to: '/admin/external-services',
+		active: currentPage?.route.name === 'external-services',
 	}, {
 		icon: 'ti ti-adjustments',
 		text: i18n.ts.other,
