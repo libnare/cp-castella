@@ -606,8 +606,8 @@ export interface Locale {
     "sound": string;
     "vibrations": string;
     "soundsAndVibrations": string;
-    "playVibrationsOnClick": string;
-    "playVibrationsOnClickDescription": string;
+    "playVibrations": string;
+    "playVibrationsDescription": string;
     "listen": string;
     "none": string;
     "showInPage": string;
@@ -1215,11 +1215,26 @@ export interface Locale {
     "showRepliesToOthersInTimeline": string;
     "hideRepliesToOthersInTimeline": string;
     "externalServices": string;
+    "impressum": string;
+    "impressumUrl": string;
+    "impressumDescription": string;
+    "privacyPolicy": string;
+    "privacyPolicyUrl": string;
+    "tosAndPrivacyPolicy": string;
+    "showUnreadNotificationCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
+    "_vibrations": {
+        "click": string;
+        "note": string;
+        "notification": string;
+        "chat": string;
+        "chatBg": string;
+        "system": string;
+    };
     "_showingAnimatedImages": {
         "always": string;
         "interaction": string;
@@ -1806,6 +1821,10 @@ export interface Locale {
         "reduceFrequencyOfThisAd": string;
         "hide": string;
         "timezoneinfo": string;
+        "adsSettings": string;
+        "notesPerOneAd": string;
+        "setZeroToDisable": string;
+        "adsTooClose": string;
     };
     "_forgotPassword": {
         "enterEmail": string;
@@ -2062,9 +2081,6 @@ export interface Locale {
             "infoFg": string;
             "infoWarnBg": string;
             "infoWarnFg": string;
-            "cwBg": string;
-            "cwFg": string;
-            "cwHoverBg": string;
             "toastBg": string;
             "toastFg": string;
             "buttonBg": string;
@@ -2567,6 +2583,15 @@ export interface Locale {
         "createAd": string;
         "deleteAd": string;
         "updateAd": string;
+    };
+    "_fileViewer": {
+        "title": string;
+        "type": string;
+        "size": string;
+        "url": string;
+        "uploadedAt": string;
+        "attachedNotes": string;
+        "thisPageCanBeSeenFromTheAuthor": string;
     };
     "_abuse": {
         "_resolver": {

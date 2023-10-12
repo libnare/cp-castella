@@ -382,6 +382,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	showUnreadNotificationCount: {
+		where: 'deviceAccount',
+		default: false,
+	},
 
 	// #region CherryPick
 	// - Settings/General
@@ -572,6 +576,11 @@ export class ColdDeviceStorage {
 		plugins: [] as Plugin[],
 		mediaVolume: 0.5,
 		vibrate: true,
+		vibrateNote: true,
+		vibrateNotification: true,
+		vibrateChat: true,
+		vibrateChatBg: true,
+		vibrateSystem: true,
 		sound_masterVolume: 0.5,
 		sound_note: { type: 'syuilo/down', volume: 0.5 },
 		sound_noteMy: { type: 'syuilo/up', volume: 0.5 },

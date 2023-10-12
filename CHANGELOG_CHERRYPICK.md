@@ -33,7 +33,15 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 > 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
 
 ## NOTE
-- Misskey 2023.10.0 에서 삭제된 노트 편집 기능이 계속 유지됩니다.
+- Misskey 2023.10.0 에서 제거된 노트 편집 기능이 계속 유지됩니다.
+
+### General
+- Add: Mirerado 테마 추가 ([mirerado-theme](https://mi.rerac.dev/@notify/pages/mirerado-theme))
+- Feat: 읽지 않은 알림 수를 표시할 수 있음 (misskey-dev/misskey#11982)
+- Feat: 햅틱 피드백 개선
+  - 지원 범위 추가
+  - 설정을 세부적으로 변경할 수 있음
+- Fix: 서버 측에서 테스트 알림을 올바르게 수행할 수 있도록 수정 (misskey-dev/misskey#11982)
 
 ### Client
 - Feat: 클라이언트 업데이트 알림 개선
@@ -41,6 +49,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 다음 릴리즈 출시까지 알리지 않도록 설정할 수 있음
 - Enhance: 그룹 대화에서 읽음 표시를 개선
 - Enhance: cli, bios 페이지 개선
+- Enhance: 서버와 연결이 끊겼을 때 stream indicator가 즉시 표시되지 않도록 (MisskeyIO/misskey#172)
+- Fix: (Friendly) 길게 누르면 표시되는 계정 관리 다이얼로그의 UI 관련 오류 수정
 - Fix: 서브 노트 기능 오류
   - 서브 노트에서 더 보기 버튼을 사용할 수 없음
   - 리액션 변경 기능을 사용할 수 없음
@@ -52,9 +62,12 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 유저 선택 다이얼로그에서 검색 결과가 표시되지 않음
 
 ### Server
+- Feat: Note pack에서 SQL 디바운스 (MisskeyIO/misskey#176)
 - Revert: Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
 - Fix: Publish notes announced by relay (misskey-dev/misskey#11056)
 - Fix: Meilisearch가 설정된 상태에서 노트 검색 시 로컬/리모트 설정이 제대로 작동하지 않음
+- Fix: Redis의 TTL이 만료되지 않았다면 메모리에 값을 다시 쓰기 (MisskeyIO/misskey#174)
+- Fix: NoteEntityService의 pack 내에서 CustomEmojiService의 prefetchEmoji를 호출함 (MisskeyIO/misskey#179)
 
 ---
 
