@@ -21,6 +21,7 @@ import { bindThis } from '@/decorators.js';
 import { RoleService } from '@/core/RoleService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
 import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
+import { IdService } from '@/core/IdService.js';
 import type { OnModuleInit } from '@nestjs/common';
 import type { AnnouncementService } from '../AnnouncementService.js';
 import type { CustomEmojiService } from '../CustomEmojiService.js';
@@ -61,6 +62,7 @@ export class UserEntityService implements OnModuleInit {
 	private announcementService: AnnouncementService;
 	private roleService: RoleService;
 	private federatedInstanceService: FederatedInstanceService;
+	private idService: IdService;
 
 	constructor(
 		private moduleRef: ModuleRef,
@@ -118,13 +120,6 @@ export class UserEntityService implements OnModuleInit {
 
 		@Inject(DI.userMemosRepository)
 		private userMemosRepository: UserMemoRepository,
-
-		//private noteEntityService: NoteEntityService,
-		//private driveFileEntityService: DriveFileEntityService,
-		//private pageEntityService: PageEntityService,
-		//private customEmojiService: CustomEmojiService,
-		//private antennaService: AntennaService,
-		//private roleService: RoleService,
 	) {
 	}
 
@@ -137,6 +132,7 @@ export class UserEntityService implements OnModuleInit {
 		this.announcementService = this.moduleRef.get('AnnouncementService');
 		this.roleService = this.moduleRef.get('RoleService');
 		this.federatedInstanceService = this.moduleRef.get('FederatedInstanceService');
+		this.idService = this.moduleRef.get('IdService');
 	}
 
 	//#region Validators
@@ -153,64 +149,76 @@ export class UserEntityService implements OnModuleInit {
 
 	@bindThis
 	public async getRelation(me: MiUser['id'], target: MiUser['id']) {
-		const following = await this.followingsRepository.findOneBy({
-			followerId: me,
-			followeeId: target,
-		});
-		return awaitAll({
-			id: target,
+		const [
 			following,
-			isFollowing: following != null,
-			isFollowed: this.followingsRepository.count({
+			isFollowed,
+			hasPendingFollowRequestFromYou,
+			hasPendingFollowRequestToYou,
+			isBlocking,
+			isBlocked,
+			isMuted,
+			isRenoteMuted,
+		] = await Promise.all([
+			this.followingsRepository.findOneBy({
+				followerId: me,
+				followeeId: target,
+			}),
+			this.followingsRepository.exist({
 				where: {
 					followerId: target,
 					followeeId: me,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			hasPendingFollowRequestFromYou: this.followRequestsRepository.count({
+			}),
+			this.followRequestsRepository.exist({
 				where: {
 					followerId: me,
 					followeeId: target,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			hasPendingFollowRequestToYou: this.followRequestsRepository.count({
+			}),
+			this.followRequestsRepository.exist({
 				where: {
 					followerId: target,
 					followeeId: me,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			isBlocking: this.blockingsRepository.count({
+			}),
+			this.blockingsRepository.exist({
 				where: {
 					blockerId: me,
 					blockeeId: target,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			isBlocked: this.blockingsRepository.count({
+			}),
+			this.blockingsRepository.exist({
 				where: {
 					blockerId: target,
 					blockeeId: me,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			isMuted: this.mutingsRepository.count({
+			}),
+			this.mutingsRepository.exist({
 				where: {
 					muterId: me,
 					muteeId: target,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			isRenoteMuted: this.renoteMutingsRepository.count({
+			}),
+			this.renoteMutingsRepository.exist({
 				where: {
 					muterId: me,
 					muteeId: target,
 				},
-				take: 1,
-			}).then(n => n > 0),
-		});
+			}),
+		]);
+
+		return {
+			id: target,
+			following,
+			isFollowing: following != null,
+			isFollowed,
+			hasPendingFollowRequestFromYou,
+			hasPendingFollowRequestToYou,
+			isBlocking,
+			isBlocked,
+			isMuted,
+			isRenoteMuted,
+		};
 	}
 
 	@bindThis
@@ -261,17 +269,34 @@ export class UserEntityService implements OnModuleInit {
 	}
 
 	@bindThis
-	public async getHasUnreadNotification(userId: MiUser['id']): Promise<boolean> {
+	public async getNotificationsInfo(userId: MiUser['id']): Promise<{
+		hasUnread: boolean;
+		unreadCount: number;
+	}> {
+		const response = {
+			hasUnread: false,
+			unreadCount: 0,
+		};
+
 		const latestReadNotificationId = await this.redisClient.get(`latestReadNotification:${userId}`);
 
-		const latestNotificationIdsRes = await this.redisClient.xrevrange(
-			`notificationTimeline:${userId}`,
-			'+',
-			'-',
-			'COUNT', 1);
-		const latestNotificationId = latestNotificationIdsRes[0]?.[0];
+		if (!latestReadNotificationId) {
+			response.unreadCount = await this.redisClient.xlen(`notificationTimeline:${userId}`);
+		} else {
+			const latestNotificationIdsRes = await this.redisClient.xrevrange(
+				`notificationTimeline:${userId}`,
+				'+',
+				latestReadNotificationId,
+			);
 
-		return latestNotificationId != null && (latestReadNotificationId == null || latestReadNotificationId < latestNotificationId);
+			response.unreadCount = (latestNotificationIdsRes.length - 1 >= 0) ? latestNotificationIdsRes.length - 1 : 0;
+		}
+
+		if (response.unreadCount > 0) {
+			response.hasUnread = true;
+		}
+
+		return response;
 	}
 
 	@bindThis
@@ -353,6 +378,8 @@ export class UserEntityService implements OnModuleInit {
 		const isAdmin = isMe && opts.detail ? this.roleService.isAdministrator(user) : null;
 		const unreadAnnouncements = isMe && opts.detail ? await this.announcementService.getUnreadAnnouncements(user) : null;
 
+		const notificationsInfo = isMe && opts.detail ? await this.getNotificationsInfo(user.id) : null;
+
 		const falsy = opts.detail ? false : undefined;
 
 		const packed = {
@@ -362,8 +389,8 @@ export class UserEntityService implements OnModuleInit {
 			host: user.host,
 			avatarUrl: user.avatarUrl ?? this.getIdenticonUrl(user),
 			avatarBlurhash: user.avatarBlurhash,
-			isBot: user.isBot ?? falsy,
-			isCat: user.isCat ?? falsy,
+			isBot: user.isBot,
+			isCat: user.isCat,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,
@@ -389,14 +416,14 @@ export class UserEntityService implements OnModuleInit {
 					? Promise.all(user.alsoKnownAs.map(uri => this.apPersonService.fetchPerson(uri).then(user => user?.id).catch(() => null)))
 						.then(xs => xs.length === 0 ? null : xs.filter(x => x != null) as string[])
 					: null,
-				createdAt: user.createdAt.toISOString(),
+				createdAt: this.idService.parse(user.id).date.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,
 				bannerUrl: user.bannerUrl,
 				bannerBlurhash: user.bannerBlurhash,
 				isLocked: user.isLocked,
 				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
-				isSuspended: user.isSuspended ?? falsy,
+				isSuspended: user.isSuspended,
 				description: profile!.description,
 				location: profile!.location,
 				birthday: profile!.birthday,
@@ -468,8 +495,9 @@ export class UserEntityService implements OnModuleInit {
 				hasUnreadAntenna: this.getHasUnreadAntenna(user.id),
 				hasUnreadChannel: false, // 後方互換性のため
 				hasUnreadMessagingMessage: this.getHasUnreadMessagingMessage(user.id),
-				hasUnreadNotification: this.getHasUnreadNotification(user.id),
+				hasUnreadNotification: notificationsInfo?.hasUnread,
 				hasPendingReceivedFollowRequest: this.getHasPendingReceivedFollowRequest(user.id),
+				unreadNotificationCount: notificationsInfo?.unreadCount,
 				mutedWords: profile!.mutedWords,
 				mutedInstances: profile!.mutedInstances,
 				mutingNotificationTypes: [], // 後方互換性のため

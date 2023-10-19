@@ -47,6 +47,7 @@ import { $i } from '@/account.js';
 import { userName } from '@/filters/user.js';
 import { globalEvents } from '@/events.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import { ColdDeviceStorage, defaultStore } from '@/store.js';
 
 let showFollowButton = $ref(false);
 
@@ -64,6 +65,10 @@ const props = withDefaults(defineProps<{
 	// CherryPick
 	disableIfFollowing: false,
 });
+
+const emit = defineEmits<{
+	(_: 'update:user', value: Misskey.entities.UserDetailed): void
+}>();
 
 let isFollowing = $ref(props.user.isFollowing);
 let hasPendingFollowRequestFromYou = $ref(props.user.hasPendingFollowRequestFromYou);
@@ -108,8 +113,13 @@ async function onClick() {
 			} else {
 				await os.api('following/create', {
 					userId: props.user.id,
+					withReplies: defaultStore.state.defaultWithReplies,
 				});
-				vibrate([30, 40, 100]);
+				emit('update:user', {
+					...props.user,
+					withReplies: defaultStore.state.defaultWithReplies
+				});
+				vibrate(ColdDeviceStorage.get('vibrateSystem') ? [30, 40, 100] : '');
 				hasPendingFollowRequestFromYou = true;
 
 				claimAchievement('following1');

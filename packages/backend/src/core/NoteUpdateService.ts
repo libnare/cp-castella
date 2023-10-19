@@ -77,7 +77,6 @@ export class NoteUpdateService implements OnApplicationShutdown {
 		id: MiUser['id'];
 		username: MiUser['username'];
 		host: MiUser['host'];
-		createdAt: MiUser['createdAt'];
 		isBot: MiUser['isBot'];
 	}, data: Option, note: MiNote, silent = false): Promise<MiNote> {
 		if (data.updatedAt == null) data.updatedAt = new Date();
@@ -125,6 +124,8 @@ export class NoteUpdateService implements OnApplicationShutdown {
 
 	@bindThis
 	private async updateNote(user: { id: MiUser['id']; host: MiUser['host']; }, note: MiNote, data: Option, tags: string[], emojis: string[]) {
+		const updatedAtHistory = note.updatedAtHistory ? note.updatedAtHistory : [];
+
 		const values = new MiNote({
 			updatedAt: data.updatedAt!,
 			fileIds: data.files ? data.files.map(file => file.id) : [],
@@ -135,6 +136,8 @@ export class NoteUpdateService implements OnApplicationShutdown {
 			tags: tags.map(tag => normalizeForSearch(tag)),
 			emojis,
 			attachedFileTypes: data.files ? data.files.map(file => file.type) : [],
+			updatedAtHistory: [...updatedAtHistory, new Date()],
+			noteEditHistory: [...note.noteEditHistory, (note.cw ? note.cw + '\n' : '') + note.text!],
 		});
 
 		// 投稿を更新
@@ -238,7 +241,6 @@ export class NoteUpdateService implements OnApplicationShutdown {
 		id: MiUser['id'];
 		username: MiUser['username'];
 		host: MiUser['host'];
-		createdAt: MiUser['createdAt'];
 		isBot: MiUser['isBot'];
 	}, silent: boolean) {
 		if (!silent) {

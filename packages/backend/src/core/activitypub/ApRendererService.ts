@@ -28,6 +28,7 @@ import type { UsersRepository, UserProfilesRepository, NotesRepository, DriveFil
 import { bindThis } from '@/decorators.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { isNotNull } from '@/misc/is-not-null.js';
+import { IdService } from '@/core/IdService.js';
 import { LdSignatureService } from './LdSignatureService.js';
 import { ApMfmService } from './ApMfmService.js';
 import type { IAccept, IActivity, IAdd, IAnnounce, IApDocument, IApEmoji, IApHashtag, IApImage, IApMention, IBlock, ICreate, IDelete, IFlag, IFollow, IKey, ILike, IMove, IObject, IPost, IQuestion, IRead, IReject, IRemove, ITombstone, IUndo, IUpdate } from './type.js';
@@ -63,6 +64,7 @@ export class ApRendererService {
 		private userKeypairService: UserKeypairService,
 		private apMfmService: ApMfmService,
 		private mfmService: MfmService,
+		private idService: IdService,
 	) {
 	}
 
@@ -109,7 +111,7 @@ export class ApRendererService {
 			id: `${this.config.url}/notes/${note.id}/activity`,
 			actor: this.userEntityService.genLocalUserUri(note.userId),
 			type: 'Announce',
-			published: note.createdAt.toISOString(),
+			published: this.idService.parse(note.id).date.toISOString(),
 			updated: note.updatedAt?.toISOString() ?? undefined,
 			to,
 			cc,
@@ -142,7 +144,7 @@ export class ApRendererService {
 			id: `${this.config.url}/notes/${note.id}/activity`,
 			actor: this.userEntityService.genLocalUserUri(note.userId),
 			type: 'Create',
-			published: note.createdAt.toISOString(),
+			published: this.idService.parse(note.id).date.toISOString(),
 			object,
 		};
 
@@ -458,7 +460,7 @@ export class ApRendererService {
 			},
 			_misskey_quote: quote,
 			quoteUrl: quote,
-			published: note.createdAt.toISOString(),
+			published: this.idService.parse(note.id).date.toISOString(),
 			updated: note.updatedAt?.toISOString() ?? undefined,
 			to,
 			cc,

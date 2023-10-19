@@ -11,9 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="shape2"></div>
 	<img src="/client-assets/cherrypick.svg" class="cherrypick"/>
 	<div class="emojis">
-		<MkEmoji :normal="true" :noStyle="true" emoji="👍"/>
+		<MkEmoji :normal="true" :noStyle="true" emoji="🍮"/>
 		<MkEmoji :normal="true" :noStyle="true" emoji="❤"/>
-		<MkEmoji :normal="true" :noStyle="true" emoji="😆"/>
+		<MkEmoji :normal="true" :noStyle="true" emoji="🍮"/>
 		<MkEmoji :normal="true" :noStyle="true" emoji="🎉"/>
 		<MkEmoji :normal="true" :noStyle="true" emoji="🍮"/>
 	</div>

@@ -218,27 +218,8 @@
 		<code>${JSON.stringify(details)}</code>`;
 		errorsElement.appendChild(detailsElement);
 		addStyle(`
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/100.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/100-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/200.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/200-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/300.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/300-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/400.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/400-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/500.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/500-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/600.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/600-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/700.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/700-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/800.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/800-italic.css");
-		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
-		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-jp.css");
-
 		* {
-			font-family: "Pretendard JP", BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
+			font-family: BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
 		}
 
 		#cherypick_app,
@@ -248,8 +229,8 @@
 
 		body,
 		html {
-			background-color: rgb(28, 28, 37);
-			color: #dfddcc;
+			background-color: rgb(27, 26, 37);
+			color: rgb(242, 238, 252);
 			justify-content: center;
 			margin: auto;
 			padding: 10px;
@@ -269,12 +250,12 @@
 		}
 
 		.button-big {
-			background: linear-gradient(90deg, rgb(255, 207, 230), rgb(185, 216, 255));
+			background: linear-gradient(90deg, rgb(184, 185, 247), rgb(204, 184, 247));
 			line-height: 50px;
 		}
 
 		.button-big:hover {
-			background: rgb(255, 222, 241);
+			background: rgb(230, 230, 252);
 		}
 
 		.button-small {
@@ -283,18 +264,18 @@
 		}
 
 		.button-small:hover {
-			background: rgba(255, 255, 255, 0.1);
+			background: rgba(184, 185, 247, 0.15);
 		}
 
 		.button-label-big {
-			color: rgb(28, 28, 37);
+			color: rgb(33, 32, 41);
 			font-weight: bold;
 			font-size: 1.2em;
 			padding: 12px;
 		}
 
 		.button-label-small {
-			color: rgb(185, 216, 255);
+			color: rgba(184, 185, 247);
 			font-size: 16px;
 			padding: 12px;
 		}
@@ -321,11 +302,13 @@
 		}
 
 		code {
-			font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Fira, FiraCode, monospace;
+			color: #f8f8f2;
+			text-shadow: 0 1px rgba(0,0,0,.3);
+			font-family: Fira, FiraCode, monospace;
 		}
 
 		#errorInfo {
-			background: rgb(35, 35, 47);
+			background: #272822;
 			margin-bottom: 2rem;
 			padding: 0.5rem 1rem;
 			width: 40rem;
@@ -346,6 +329,7 @@
 			#errorInfo {
 				width: 50%;
 			}
+		}
 		`)
 	}
 })();
