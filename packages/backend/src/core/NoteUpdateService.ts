@@ -78,7 +78,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 		username: MiUser['username'];
 		host: MiUser['host'];
 		isBot: MiUser['isBot'];
-	}, data: Option, note: MiNote, silent = false): Promise<MiNote> {
+	}, data: Option, note: MiNote, silent = false): Promise<MiNote | null> {
 		if (data.updatedAt == null) data.updatedAt = new Date();
 
 		if (data.text) {
@@ -110,7 +110,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 
 		tags = tags.filter(tag => Array.from(tag ?? '').length <= 128).splice(0, 32);
 
-		const updatedNote = await this.updateNote(user, note, data, tags, emojis).then(updatedNote => updatedNote!)
+		const updatedNote = await this.updateNote(user, note, data, tags, emojis);
 
 		if (updatedNote) {
 			setImmediate('post updated', { signal: this.#shutdownController.signal }).then(
@@ -123,7 +123,9 @@ export class NoteUpdateService implements OnApplicationShutdown {
 	}
 
 	@bindThis
-	private async updateNote(user: { id: MiUser['id']; host: MiUser['host']; }, note: MiNote, data: Option, tags: string[], emojis: string[]) {
+	private async updateNote(user: {
+		id: MiUser['id']; host: MiUser['host'];
+		}, note: MiNote, data: Option, tags: string[], emojis: string[]): Promise<MiNote | null> {
 		const updatedAtHistory = note.updatedAtHistory ? note.updatedAtHistory : [];
 
 		const values = new MiNote({

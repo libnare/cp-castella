@@ -172,7 +172,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			const updatedNote = await this.noteUpdateService.update(me, data, note, false);
 
 			return {
-				updatedNote: await this.noteEntityService.pack(updatedNote, me),
+				updatedNote: await this.noteEntityService.pack(updatedNote!, me),
 			};
 		});
 	}

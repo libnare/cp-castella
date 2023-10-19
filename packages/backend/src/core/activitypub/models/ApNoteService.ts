@@ -340,7 +340,7 @@ export class ApNoteService {
 	}
 
 	@bindThis
-	public async updateNote(value: string | IObject, resolver?: Resolver, silent = false): Promise<MiNote> {
+	public async updateNote(value: string | IObject, resolver?: Resolver, silent = false): Promise<MiNote | null> {
 		if (resolver == null) resolver = this.apResolverService.createResolver();
 
 		const object = await resolver.resolve(value);
@@ -435,6 +435,7 @@ export class ApNoteService {
 			}, b_note, silent);
 		} catch (err: any) {
 			this.logger.info('note update error');
+			return err;
 		}
 	}
 
