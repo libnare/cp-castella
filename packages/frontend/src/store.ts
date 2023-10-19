@@ -250,6 +250,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
 	},
+	removeModalBgColorForBlur: {
+		where: 'device',
+		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
+	},
 	showFixedPostForm: {
 		where: 'device',
 		default: false,
@@ -381,6 +385,14 @@ export const defaultStore = markRaw(new Storage('base', {
 	keepScreenOn: {
 		where: 'device',
 		default: false,
+	},
+	tlWithReplies: {
+		where: 'device',
+		default: false,
+	},
+	defaultWithReplies: {
+		where: 'account',
+		default: true,
 	},
 	showUnreadNotificationCount: {
 		where: 'deviceAccount',
@@ -582,9 +594,10 @@ export class ColdDeviceStorage {
 		vibrateChatBg: true,
 		vibrateSystem: true,
 		sound_masterVolume: 0.5,
-		sound_note: { type: 'syuilo/down', volume: 0.5 },
-		sound_noteMy: { type: 'syuilo/up', volume: 0.5 },
-		sound_notification: { type: 'syuilo/pope2', volume: 0.5 },
+		sound_note: { type: 'syuilo/n-aec', volume: 0.5 },
+		sound_noteMy: { type: 'syuilo/n-cea-4va', volume: 0.5 },
+		sound_noteEdited: { type: 'syuilo/n-eca', volume: 0.5 },
+		sound_notification: { type: 'syuilo/n-ea', volume: 0.5 },
 		sound_chat: { type: 'syuilo/pope1', volume: 0.5 },
 		sound_chatBg: { type: 'syuilo/waon', volume: 0.5 },
 		sound_antenna: { type: 'syuilo/triple', volume: 0.5 },

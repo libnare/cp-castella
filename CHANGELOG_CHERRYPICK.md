@@ -28,6 +28,24 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 기반 Misskey 버전: 2023.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
+### Client
+- Feat: 노트 편집 시 토스트 알림을 표시하고 사운드를 재생
+- Enhance: 노트를 편집할 때 편집 중인 노트임을 강조함
+- Enhance: 타임라인에서 새 노트가 20개 이상이면 '20+'로 표기
+- Enhance: 노트를 편집한 시간이 개별적으로 표시됨
+- Fix: '새 노트 알림'을 '노트 수 표시'로 설정했을 때 한국어 이외의 언어에서 내용이 표시되지 않음
+
+### Server
+- Enhance: '내용 숨기기'로 설정된 노트의 주석도 노트 편집 기록에 표시됨
+- Revert: Perf: 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)
+
+---
+
+## 4.4.0
+출시일: 2023/10/17<br>
+기반 Misskey 버전: 2023.10.1<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023101](CHANGELOG.md#2023101) 문서를 참고하십시오.
+
 > 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
 > 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
 > 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
@@ -47,9 +65,17 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Feat: 클라이언트 업데이트 알림 개선
   - 알림 채널을 선택할 수 있음
   - 다음 릴리즈 출시까지 알리지 않도록 설정할 수 있음
+- Feat: 활동에서 팔로잉, 팔로워 차트를 볼 수 있음
+- Feat: 모달 디자인을 변경할 수 있음
+  - 흐림 효과를 활성화하면 디자인이 변경됨
+  - 흐림 효과가 활성화 된 상태에서 '모달 배경색 제거' 옵션을 활성화하면 일부 모달의 디자인이 변경됨
 - Enhance: 그룹 대화에서 읽음 표시를 개선
 - Enhance: cli, bios 페이지 개선
 - Enhance: 서버와 연결이 끊겼을 때 stream indicator가 즉시 표시되지 않도록 (MisskeyIO/misskey#172)
+- Enhance: 스피너 디자인 변경
+- Enhance: 후원 버튼의 디자인 개선
+  - 버튼을 하나로 병합함
+  - 버튼을 누르면 팝업 메뉴로 표시됨
 - Fix: (Friendly) 길게 누르면 표시되는 계정 관리 다이얼로그의 UI 관련 오류 수정
 - Fix: 서브 노트 기능 오류
   - 서브 노트에서 더 보기 버튼을 사용할 수 없음
@@ -60,9 +86,12 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 브랜딩에서 적용한 이미지가 대화 페이지에서 반영되지 않음
 - Fix: 유저 검색에서 로컬/리모트 설정이 제대로 작동하지 않음
 - Fix: 유저 선택 다이얼로그에서 검색 결과가 표시되지 않음
+- Fix: 게시 양식에서 사용자 변경 사항이 미리보기에 반영되지 않는 문제 (misskey-dev/misskey#12022)
+- Fix: 타임라인 메뉴 요소 수정
 
 ### Server
 - Feat: Note pack에서 SQL 디바운스 (MisskeyIO/misskey#176)
+- Enhance: 초기 로드 속도 개선
 - Revert: Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
 - Fix: Publish notes announced by relay (misskey-dev/misskey#11056)
 - Fix: Meilisearch가 설정된 상태에서 노트 검색 시 로컬/리모트 설정이 제대로 작동하지 않음
@@ -218,8 +247,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGE
 ### Server
 - Nodeinfo의 Software 이름을 CherryPick이 아닌 다른 이름으로 변경할 때 관련 주석 추가
 - Graceful Shutdown (MisskeyIO/misskey#156)
-- Perf : 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)
-- Enhance : 종료 시 DB 연결이 끊어지면 확실하게 종료 (MisskeyIO/misskey#159)
+- Perf: 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)
+- Enhance: 종료 시 DB 연결이 끊어지면 확실하게 종료 (MisskeyIO/misskey#159)
 - Fix: 실행 중인 앱 내에서 ServerStatsService 시작 (misskey-dev/misskey#11342)
 - Fix: deliver-delayed에서 URL 구문 분석에 실패할 때 모든 것이 꼬이는 문제 수정 (MisskeyIO/misskey#164)
 - Fix: 대기열에 예상치 못한 데이터가 있는 경우, 엔드포인트 URL 구문 분석 및 오류 로그 생성에 실패하는 문제 수정 (MisskeyIO/misskey#168)

@@ -20,7 +20,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 			>
-				<div v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'default'" :class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+				<div
+					v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'default'"
+					:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"
+				>
+					<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
+						<i class="ti ti-arrow-up"></i>
+						{{ i18n.ts.newNoteRecived }}
+					</button>
+				</div>
 			</transition>
 			<transition
 				:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
@@ -28,7 +36,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 			>
-				<div v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'count'" :class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" textTag="span"><template #n>{{ queue }}</template></I18n></button></div>
+				<div
+					v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'count'"
+					:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"
+				>
+					<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
+						<i class="ti ti-arrow-up"></i>
+						<I18n :src="i18n.ts.newNoteRecivedCount" textTag="span">
+							<template #n>{{ queue > 19 ? queue + '+' : queue }}</template>
+						</I18n>
+					</button>
+				</div>
 			</transition>
 			<div :class="$style.tl">
 				<MkTimeline
@@ -94,22 +112,29 @@ let queue = $ref(0);
 let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
 const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
 const withRenotes = $ref(true);
-const withReplies = $ref(false);
+const withReplies = $ref($i ? defaultStore.state.tlWithReplies : false);
 const onlyFiles = $ref(false);
 const onlyCats = $ref(false);
-const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
-const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
+const friendlyEnableNotifications = $ref(defaultStore.state.friendlyEnableNotifications);
+const friendlyEnableWidgets = $ref(defaultStore.state.friendlyEnableWidgets);
 
 watch($$(src), () => {
 	queue = 0;
 	queueUpdated(queue);
 });
 
-watch([
-	friendlyEnableNotifications,
-	friendlyEnableWidgets,
-], async () => {
-	await reloadAsk();
+watch($$(withReplies), (x) => {
+	if ($i) defaultStore.set('tlWithReplies', x);
+});
+
+watch($$(friendlyEnableNotifications), (x) => {
+	defaultStore.set('friendlyEnableNotifications', x);
+	reloadAsk();
+});
+
+watch($$(friendlyEnableWidgets), (x) => {
+	defaultStore.set('friendlyEnableWidgets', x);
+	reloadAsk();
 });
 
 onMounted(() => {
@@ -206,23 +231,14 @@ const headerActions = $computed(() => [{
 		os.popupMenu([{
 			type: 'switch',
 			text: i18n.ts.friendlyEnableNotifications,
-			icon: 'ti ti-notification',
-			ref: friendlyEnableNotifications,
-			action: () => {
-				friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
-			},
+			ref: $$(friendlyEnableNotifications),
 		}, {
 			type: 'switch',
 			text: i18n.ts.friendlyEnableWidgets,
-			icon: 'ti ti-apps',
-			ref: friendlyEnableWidgets,
-			action: () => {
-				friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
-			},
+			ref: $$(friendlyEnableWidgets),
 		}, {
 			type: 'switch',
 			text: i18n.ts.showRenotes,
-			icon: 'ti ti-repeat',
 			ref: $$(withRenotes),
 		}, src === 'local' || src === 'social' ? {
 			type: 'switch',
@@ -231,12 +247,10 @@ const headerActions = $computed(() => [{
 		} : undefined, {
 			type: 'switch',
 			text: i18n.ts.fileAttachedOnly,
-			icon: 'ti ti-photo',
 			ref: $$(onlyFiles),
 		}, {
 			type: 'switch',
 			text: i18n.ts.showCatOnly,
-			icon: 'ti ti-cat',
 			ref: $$(onlyCats),
 		}], ev.currentTarget ?? ev.target);
 	},
@@ -309,9 +323,6 @@ definePageMetadata(computed(() => ({
 .transition_new_enterActive,
 .transition_new_leaveActive {
 	transform: translateY(-64px);
-}
-.transition_new_enterFrom,
-.transition_new_leaveTo {
 }
 
 .new {
