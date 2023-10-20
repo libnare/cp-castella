@@ -1770,12 +1770,6 @@ export type Endpoints = {
                 expiresAt?: null | number;
                 expiredAfter?: null | number;
             };
-            event?: null | {
-                title: string;
-                start: number;
-                end?: null | number;
-                metadata: Record<string, string>;
-            };
         };
         res: {
             createdNote: Note;
@@ -2721,12 +2715,6 @@ type Note = {
     replyId: Note['id'];
     renote?: Note;
     renoteId: Note['id'];
-    event?: {
-        title: string;
-        start: DateString;
-        end: DateString | null;
-        metadata: Record<string, string>;
-    };
     files: DriveFile[];
     fileIds: DriveFile['id'][];
     visibility: 'public' | 'home' | 'followers' | 'specified';
@@ -3061,9 +3049,9 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 //
 // src/api.types.ts:16:32 - (ae-forgotten-export) The symbol "TODO" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:18:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
-// src/api.types.ts:662:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
+// src/api.types.ts:644:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
 // src/entities.ts:110:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
-// src/entities.ts:616:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/entities.ts:610:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
