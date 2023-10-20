@@ -30,14 +30,21 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Client
 - Feat: 노트 편집 시 토스트 알림을 표시하고 사운드를 재생
+- Feat: PostForm 접두사에 현재 공개 범위 표시 ([tanukey-dev/tanukey@1cc0071](https://github.com/tanukey-dev/tanukey/commit/1cc0071bbd424949d9305bcec554f5d755a73554))
+- Feat: 플러그인 및 테마를 외부 사이트에서 직접 설치할 수 있음 (misskey-dev/misskey#12034)
+  - 외부 사이트에서 구현해야 합니다. 자세한 내용은 Misskey Hub를 참조하세요.
+    https://misskey-hub.net/docs/advanced/publish-on-your-website.html
 - Enhance: 노트를 편집할 때 편집 중인 노트임을 강조함
 - Enhance: 타임라인에서 새 노트가 20개 이상이면 '20+'로 표기
 - Enhance: 노트를 편집한 시간이 개별적으로 표시됨
 - Fix: '새 노트 알림'을 '노트 수 표시'로 설정했을 때 한국어 이외의 언어에서 내용이 표시되지 않음
+- Fix: 알림에 여는 인용문 사용 (misskey-dev/misskey#12082)
 
 ### Server
 - Enhance: '내용 숨기기'로 설정된 노트의 주석도 노트 편집 기록에 표시됨
 - Revert: Perf: 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)
+- Fix: 이모지를 여러 개 추가할 때도 이름의 중복을 확인하도록
+- Fix: 유저 페이지 및 이벤트 검색에서 '미래순'으로 정렬할 수 없음
 
 ---
 
