@@ -55,7 +55,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkNoteSimple v-if="reply" :class="$style.targetNote" :note="reply"/>
 	<MkNoteSimple v-if="renote" :class="$style.targetNote" :note="renote"/>
 	<div v-if="quoteId" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
-	<MkEventEditor v-if="event" v-model="event" @destroyed="event = null"/>
 	<div v-if="visibility === 'specified'" :class="$style.toSpecified">
 		<span style="margin-right: 8px;">{{ i18n.ts.recipient }}</span>
 		<div :class="$style.visibleUsers">
@@ -82,11 +81,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.footerLeft">
 			<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ti ti-photo-plus"></i></button>
 			<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ti ti-chart-arrows"></i></button>
-			<button v-tooltip="i18n.ts.event" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: event }]" @click="toggleEvent"><i class="ti ti-calendar"></i></button>
 			<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ti ti-eye-off"></i></button>
 			<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ti ti-at"></i></button>
 			<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ti ti-hash"></i></button>
-			<button v-tooltip="i18n.ts.disableRightClick" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: disableRightClick }]" @click="disableRightClick = !disableRightClick"><i class="ti ti-mouse-off"></i></button>
 			<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugin" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
 			<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
 		</div>
@@ -111,7 +108,6 @@ import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
 import MkPollEditor from '@/components/MkPollEditor.vue';
-import MkEventEditor from '@/components/MkEventEditor.vue';
 import { host, url } from '@/config.js';
 import { erase, unique } from '@/scripts/array.js';
 import { extractMentions } from '@/scripts/extract-mentions.js';
@@ -201,7 +197,6 @@ let hasNotSpecifiedMentions = $ref(false);
 let recentHashtags = $ref(JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]'));
 let imeText = $ref('');
 let showingOptions = $ref(false);
-let disableRightClick = $ref(false);
 
 const draftKey = $computed((): string => {
 	let key = props.channel ? `channel:${props.channel.id}` : '';
@@ -361,7 +356,6 @@ function watchForDraft() {
 	watch($$(text), () => saveDraft());
 	watch($$(useCw), () => saveDraft());
 	watch($$(cw), () => saveDraft());
-	watch($$(disableRightClick), () => saveDraft());
 	watch($$(poll), () => saveDraft());
 	watch($$(event), () => saveDraft());
 	watch($$(files), () => saveDraft(), { deep: true });
@@ -690,7 +684,6 @@ function saveDraft() {
 			text: text,
 			useCw: useCw,
 			cw: cw,
-			disableRightClick: disableRightClick,
 			visibility: visibility,
 			localOnly: localOnly,
 			files: files,
@@ -763,7 +756,6 @@ async function post(ev?: MouseEvent) {
 		visibility: visibility,
 		visibleUserIds: visibility === 'specified' ? visibleUsers.map(u => u.id) : undefined,
 		reactionAcceptance,
-		disableRightClick: disableRightClick,
 		noteId: props.updateMode ? props.initialNote?.id : undefined,
 	};
 
@@ -934,7 +926,6 @@ onMounted(() => {
 				text = draft.data.text;
 				useCw = draft.data.useCw;
 				cw = draft.data.cw;
-				disableRightClick = draft.data.disableRightClick;
 				visibility = draft.data.visibility;
 				localOnly = draft.data.localOnly;
 				files = (draft.data.files || []).filter(draftFile => draftFile);
@@ -973,7 +964,6 @@ onMounted(() => {
 			visibility = init.visibility;
 			localOnly = init.localOnly;
 			quoteId = init.renote ? init.renote.id : null;
-			disableRightClick = init.disableRightClick != null;
 		}
 
 		nextTick(() => watchForDraft());

@@ -14,7 +14,6 @@ import { extractCustomEmojisFromMfm } from '@/misc/extract-custom-emojis-from-mf
 import { extractHashtags } from '@/misc/extract-hashtags.js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import { MiNote } from '@/models/Note.js';
-import { MiEvent, IEvent } from '@/models/Event.js';
 import type { ChannelFollowingsRepository, ChannelsRepository, FollowingsRepository, InstancesRepository, MiFollowing, MutingsRepository, NotesRepository, NoteThreadMutingsRepository, UserListMembershipsRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiApp } from '@/models/App.js';
@@ -135,10 +134,8 @@ type Option = {
 	renote?: MiNote | null;
 	files?: MiDriveFile[] | null;
 	poll?: IPoll | null;
-	event?: IEvent | null;
 	localOnly?: boolean | null;
 	reactionAcceptance?: MiNote['reactionAcceptance'];
-	disableRightClick?: boolean | null;
 	cw?: string | null;
 	visibility?: string;
 	visibleUsers?: MinimumUser[] | null;
@@ -249,7 +246,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 		if (data.createdAt == null) data.createdAt = new Date();
 		if (data.visibility == null) data.visibility = 'public';
 		if (data.localOnly == null) data.localOnly = false;
-		if (data.disableRightClick == null) data.disableRightClick = false;
 		if (data.channel != null) data.visibility = 'public';
 		if (data.channel != null) data.visibleUsers = [];
 		if (data.channel != null) data.localOnly = true;
@@ -388,14 +384,12 @@ export class NoteCreateService implements OnApplicationShutdown {
 			name: data.name,
 			text: data.text,
 			hasPoll: data.poll != null,
-			hasEvent: data.event != null,
 			cw: data.cw ?? null,
 			tags: tags.map(tag => normalizeForSearch(tag)),
 			emojis,
 			userId: user.id,
 			localOnly: data.localOnly!,
 			reactionAcceptance: data.reactionAcceptance,
-			disableRightClick: data.disableRightClick!,
 			visibility: data.visibility as any,
 			visibleUserIds: data.visibility === 'specified'
 				? data.visibleUsers
@@ -434,7 +428,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 
 		// 投稿を作成
 		try {
-			if (insert.hasPoll || insert.hasEvent) {
+			if (insert.hasPoll) {
 				// Start transaction
 				await this.db.transaction(async transactionalEntityManager => {
 					await transactionalEntityManager.insert(MiNote, insert);
@@ -452,21 +446,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 						});
 
 						await transactionalEntityManager.insert(MiPoll, poll);
-					}
-
-					if (insert.hasEvent) {
-						const event = new MiEvent({
-							noteId: insert.id,
-							start: data.event!.start,
-							end: data.event!.end ?? undefined,
-							title: data.event!.title,
-							metadata: data.event!.metadata,
-							noteVisibility: insert.visibility,
-							userId: user.id,
-							userHost: user.host,
-						});
-
-						await transactionalEntityManager.insert(MiEvent, event);
 					}
 				});
 			} else {

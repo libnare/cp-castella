@@ -191,12 +191,6 @@ export type Note = {
 	replyId: Note['id'];
 	renote?: Note;
 	renoteId: Note['id'];
-	event?: {
-		title: string,
-		start: DateString,
-		end: DateString | null,
-		metadata: Record<string, string>,
-	};
 	files: DriveFile[];
 	fileIds: DriveFile['id'][];
 	visibility: 'public' | 'home' | 'followers' | 'specified';

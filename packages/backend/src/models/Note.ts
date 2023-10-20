@@ -70,11 +70,6 @@ export class MiNote {
 	})
 	public threadId: string | null;
 
-	@Column('boolean', {
-		default: false,
-	})
-	public hasEvent: boolean;
-
 	// TODO: varcharにしたい
 	@Column('text', {
 		nullable: true,
@@ -113,11 +108,6 @@ export class MiNote {
 		length: 64, nullable: true,
 	})
 	public reactionAcceptance: 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null;
-
-	@Column('boolean', {
-		default: false,
-	})
-	public disableRightClick: boolean;
 
 	@Column('smallint', {
 		default: 0,

@@ -67,7 +67,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 		<div style="container-type: inline-size;">
-			<MkEvent v-if="appearNote.event" :note="appearNote"/>
 			<p v-if="appearNote.cw != null" :class="$style.cw">
 				<Mfm v-if="appearNote.cw != ''" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
 				<MkCwButton v-model="showContent" :note="appearNote" style="margin: 4px 0;"/>
@@ -94,8 +93,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 				<div v-if="appearNote.files.length > 0">
-					<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
-					<MkMediaList v-else :mediaList="appearNote.files"/>
+					<MkMediaList :mediaList="appearNote.files"/>
 				</div>
 				<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
 				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
@@ -188,7 +186,6 @@ import MkCwButton from '@/components/MkCwButton.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
-import MkEvent from '@/components/MkEvent.vue';
 import { pleaseLogin } from '@/scripts/please-login.js';
 import { focusPrev, focusNext } from '@/scripts/focus.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';

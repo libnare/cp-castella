@@ -37,7 +37,6 @@ import { ApPersonService } from './ApPersonService.js';
 import { extractApHashtags } from './tag.js';
 import { ApMentionService } from './ApMentionService.js';
 import { ApQuestionService } from './ApQuestionService.js';
-import { ApEventService } from './ApEventService.js';
 import { ApImageService } from './ApImageService.js';
 import { NoteUpdateService } from '@/core/NoteUpdateService.js';
 
@@ -74,7 +73,6 @@ export class ApNoteService {
 		private apMentionService: ApMentionService,
 		private apImageService: ApImageService,
 		private apQuestionService: ApQuestionService,
-		private apEventService: ApEventService,
 		private metaService: MetaService,
 		private messagingService: MessagingService,
 		private appLockService: AppLockService,
@@ -295,7 +293,6 @@ export class ApNoteService {
 		const apEmojis = emojis.map(emoji => emoji.name);
 
 		const poll = await this.apQuestionService.extractPollFromQuestion(note, resolver).catch(() => undefined);
-		const event = await this.apEventService.extractEventFromNote(note, resolver).catch(() => undefined);
 
 		if (isMessaging) {
 			for (const recipient of visibleUsers) {
@@ -315,14 +312,12 @@ export class ApNoteService {
 				cw,
 				text,
 				localOnly: false,
-				disableRightClick: false,
 				visibility,
 				visibleUsers,
 				apMentions,
 				apHashtags,
 				apEmojis,
 				poll,
-				event,
 				uri: note.id,
 				url: url,
 			}, silent);
