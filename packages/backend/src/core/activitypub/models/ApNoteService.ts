@@ -351,8 +351,6 @@ export class ApNoteService {
 			throw new Error('invalid note');
 		}
 
-		this.logger.info('Update Note Process... 1');
-
 		const note = object as IPost;
 
 		// 投稿者をフェッチ
@@ -374,8 +372,6 @@ export class ApNoteService {
 			return x;
 		});
 
-		this.logger.info('Update Note Process... 2');
-
 		const limit = promiseLimit<MiDriveFile>(2);
 		const files = (await Promise.all(toArray(note.attachment).map(attach => (
 			limit(() => this.apImageService.resolveImage(actor, {
@@ -385,8 +381,6 @@ export class ApNoteService {
 		))));
 
 		const cw = note.summary === '' ? null : note.summary;
-
-		this.logger.info('Update Note Process... 3');
 
 		// テキストのパース
 		let text: string | null = null;
@@ -407,15 +401,9 @@ export class ApNoteService {
 
 		const apEmojis = emojis.map(emoji => emoji.name);
 
-		this.logger.info('Update Note Process... 4');
-
 		const poll = await this.apQuestionService.extractPollFromQuestion(note, resolver).catch(() => undefined);
 
-		this.logger.info('Update Note Process... 5');
-		this.logger.info(`updateNote: ${note.id}, ${note.updated}, ${note.name}, ${cw}, ${text}, ${apHashtags}, ${apEmojis}, ${poll}, ${event}`);
-
 		try {
-			this.logger.info('Update Note Process... 6');
 			return await this.noteUpdateService.update(actor, {
 				updatedAt: note.updated ? new Date(note.updated) : null,
 				files,
@@ -427,7 +415,7 @@ export class ApNoteService {
 				poll,
 			}, b_note, silent);
 		} catch (err: any) {
-			this.logger.info('note update error');
+			this.logger.warn(`note update failed: ${err}`);
 			return err;
 		}
 	}

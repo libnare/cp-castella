@@ -798,18 +798,13 @@ export class ApInboxService {
 			throw e;
 		});
 
-		this.logger.info('Update Inbox: 1');
-
 		if (isActor(object)) {
-			this.logger.info('Update Inbox: 2');
 			await this.apPersonService.updatePerson(actor.uri, resolver, object);
 			return 'ok: Person updated';
 		} /*else if (getApType(object) === 'Question') {
-			this.logger.info('Update Inbox: 3');
 			await this.apQuestionService.updateQuestion(object, resolver).catch(err => console.error(err));
 			return 'ok: Question updated';
 		}*/ else if (getApType(object) === 'Note' || getApType(object) === 'Question') {
-			this.logger.info('Update Inbox: 4');
 			await this.updateNote(resolver, actor, object, false, activity);
 			return 'ok: Note updated';
 		} else {
@@ -820,8 +815,6 @@ export class ApInboxService {
 	@bindThis
 	private async updateNote(resolver: Resolver, actor: MiRemoteUser, note: IObject, silent = false, activity?: IUpdate): Promise<string> {
 		const uri = getApId(note);
-
-		this.logger.info('Update Note Inbox... 1');
 
 		if (typeof note === 'object') {
 			if (actor.uri !== note.attributedTo) {
@@ -835,16 +828,11 @@ export class ApInboxService {
 			}
 		}
 
-		this.logger.info('Update Note Inbox... 2');
-
 		const unlock = await this.appLockService.getApLock(uri);
 
 		try {
 			//const exist = await this.apNoteService.fetchNote(note);
 			//if (exist) return 'skip: note exists';
-
-			this.logger.info('Update Note Inbox... 3');
-
 			await this.apNoteService.updateNote(note, resolver, silent);
 			return 'ok';
 		} catch (err) {
