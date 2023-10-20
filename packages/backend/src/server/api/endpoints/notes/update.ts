@@ -88,16 +88,6 @@ export const paramDef = {
 			},
 			required: ['choices'],
 		},
-		event: {
-			type: 'object',
-			nullable: true,
-			properties: {
-				title: {type: 'string', minLength: 1, maxLength: 128, nullable: false},
-				start: {type: 'integer', nullable: false},
-				end: {type: 'integer', nullable: true},
-				metadata: {type: 'object'},
-			},
-		},
 		cw: { type: 'string', nullable: true, maxLength: 100 },
 		disableRightClick: { type: 'boolean', default: false },
 	},
@@ -160,12 +150,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					choices: ps.poll.choices,
 					multiple: ps.poll.multiple ?? false,
 					expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt) : null,
-				} : undefined,
-				event: ps.event ? {
-					start: new Date(ps.event.start!),
-					end: ps.event.end ? new Date(ps.event.end) : null,
-					title: ps.event.title!,
-					metadata: ps.event.metadata ?? {},
 				} : undefined,
 			};
 

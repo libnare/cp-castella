@@ -410,7 +410,6 @@ export class ApNoteService {
 		this.logger.info('Update Note Process... 4');
 
 		const poll = await this.apQuestionService.extractPollFromQuestion(note, resolver).catch(() => undefined);
-		const event = await this.apEventService.extractEventFromNote(note, resolver).catch(() => undefined);
 
 		this.logger.info('Update Note Process... 5');
 		this.logger.info(`updateNote: ${note.id}, ${note.updated}, ${note.name}, ${cw}, ${text}, ${apHashtags}, ${apEmojis}, ${poll}, ${event}`);
@@ -426,7 +425,6 @@ export class ApNoteService {
 				apHashtags,
 				apEmojis,
 				poll,
-				event,
 			}, b_note, silent);
 		} catch (err: any) {
 			this.logger.info('note update error');

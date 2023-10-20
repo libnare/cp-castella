@@ -23,7 +23,6 @@ import { SearchService } from '@/core/SearchService.js';
 import { normalizeForSearch } from "@/misc/normalize-for-search.js";
 import { MiDriveFile } from '@/models/_.js';
 import { MiPoll, IPoll } from '@/models/Poll.js';
-import { MiEvent, IEvent } from '@/models/Event.js';
 import * as mfm from "cherrypick-mfm-js";
 import { concat } from "@/misc/prelude/array.js";
 import { extractHashtags } from "@/misc/extract-hashtags.js";
@@ -46,7 +45,6 @@ type Option = {
 	apHashtags?: string[] | null;
 	apEmojis?: string[] | null;
 	poll?: IPoll | null;
-	event?: IEvent | null;
 };
 
 @Injectable()
@@ -133,7 +131,6 @@ export class NoteUpdateService implements OnApplicationShutdown {
 			fileIds: data.files ? data.files.map(file => file.id) : [],
 			text: data.text,
 			hasPoll: data.poll != null,
-			hasEvent: data.event != null,
 			cw: data.cw ?? null,
 			tags: tags.map(tag => normalizeForSearch(tag)),
 			emojis,
@@ -144,7 +141,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 
 		// 投稿を更新
 		try {
-			if ((note.hasPoll || note.hasEvent) && (values.hasPoll || values.hasEvent)) {
+			if (note.hasPoll && values.hasPoll) {
 				// Start transaction
 				await this.db.transaction(async transactionalEntityManager => {
 					await transactionalEntityManager.update(MiNote, { id: note.id }, values);
@@ -166,19 +163,8 @@ export class NoteUpdateService implements OnApplicationShutdown {
 							await transactionalEntityManager.insert(MiPoll, poll);
 						}
 					}
-
-					if (values.hasEvent) {
-						const event = new MiEvent({
-							start: data.event!.start,
-							end: data.event!.end ?? undefined,
-							title: data.event!.title,
-							metadata: data.event!.metadata,
-						});
-
-						await transactionalEntityManager.update(MiEvent, { noteId: note.id }, event);
-					}
 				});
-			} else if ((!note.hasPoll || !note.hasEvent) && (values.hasPoll || values.hasEvent)) {
+			} else if (!note.hasPoll && values.hasPoll) {
 				// Start transaction
 				await this.db.transaction(async transactionalEntityManager => {
 					await transactionalEntityManager.update(MiNote, { id: note.id }, values);
@@ -197,33 +183,14 @@ export class NoteUpdateService implements OnApplicationShutdown {
 
 						await transactionalEntityManager.insert(MiPoll, poll);
 					}
-
-					if (values.hasEvent) {
-						const event = new MiEvent({
-							noteId: note.id,
-							start: data.event!.start,
-							end: data.event!.end ?? undefined,
-							title: data.event!.title,
-							metadata: data.event!.metadata,
-							noteVisibility: note.visibility,
-							userId: user.id,
-							userHost: user.host,
-						});
-
-						await transactionalEntityManager.insert(MiEvent, event);
-					}
 				});
-			} else if ((note.hasPoll || note.hasEvent) && (!values.hasPoll || !values.hasEvent)) {
+			} else if (note.hasPoll && !values.hasPoll) {
 				// Start transaction
 				await this.db.transaction(async transactionalEntityManager => {
 					await transactionalEntityManager.update(MiNote, {id: note.id}, values);
 
 					if (!values.hasPoll) {
 						await transactionalEntityManager.delete(MiPoll, {noteId: note.id});
-					}
-
-					if (!values.hasEvent) {
-						await transactionalEntityManager.delete(MiEvent, {noteId: note.id});
 					}
 				});
 			} else {
