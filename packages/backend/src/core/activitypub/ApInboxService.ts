@@ -786,13 +786,6 @@ export class ApInboxService {
 
 		const resolver = this.apResolverService.createResolver();
 
-		//@ts-ignore
-		for (const key in activity.object) {
-			// @ts-ignore
-			this.logger.info(`Update Inbox: ${key}: ${activity.object[key]}`);
-		}
-
-
 		const object = await resolver.resolve(activity.object).catch(e => {
 			this.logger.error(`Resolution failed: ${e}`);
 			throw e;
