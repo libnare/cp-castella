@@ -94,8 +94,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 				<div v-if="appearNote.files.length > 0">
-					<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
-					<MkMediaList v-else :mediaList="appearNote.files"/>
+					<MkMediaList :mediaList="appearNote.files"/>
 				</div>
 				<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
 				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>

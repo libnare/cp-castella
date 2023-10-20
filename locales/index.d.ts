@@ -47,7 +47,6 @@ export interface Locale {
     "friendlyDisableWidgets": string;
     "useBoldFont": string;
     "newNoteReceivedNotification": string;
-    "disableRightClick": string;
     "cherrypickUpdatedCacheClearTitle": string;
     "cherrypickUpdatedCacheClear": string;
     "cherrypickUpdatedCacheClearLater": string;

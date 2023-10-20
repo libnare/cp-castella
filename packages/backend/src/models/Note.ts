@@ -114,11 +114,6 @@ export class MiNote {
 	})
 	public reactionAcceptance: 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null;
 
-	@Column('boolean', {
-		default: false,
-	})
-	public disableRightClick: boolean;
-
 	@Column('smallint', {
 		default: 0,
 	})

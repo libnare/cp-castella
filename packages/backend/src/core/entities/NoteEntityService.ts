@@ -351,7 +351,6 @@ export class NoteEntityService implements OnModuleInit {
 			localOnly: note.localOnly,
 			reactionAcceptance: note.reactionAcceptance,
 			visibleUserIds: note.visibility === 'specified' ? note.visibleUserIds : undefined,
-			disableRightClick: note.disableRightClick || undefined,
 			renoteCount: note.renoteCount,
 			repliesCount: note.repliesCount,
 			reactions: this.reactionService.convertLegacyReactions(note.reactions),

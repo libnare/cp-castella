@@ -105,7 +105,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ti ti-eye-off"></i></button>
 				<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ti ti-at"></i></button>
 				<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ti ti-hash"></i></button>
-				<button v-tooltip="i18n.ts.disableRightClick" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: disableRightClick }]" @click="disableRightClick = !disableRightClick"><i class="ti ti-mouse-off"></i></button>
 				<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugin" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
 				<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
 			</div>
@@ -224,7 +223,6 @@ let hasNotSpecifiedMentions = $ref(false);
 let recentHashtags = $ref(JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]'));
 let imeText = $ref('');
 let showingOptions = $ref(false);
-let disableRightClick = $ref(false);
 
 const draftKey = $computed((): string => {
 	let key = props.channel ? `channel:${props.channel.id}` : '';
@@ -382,7 +380,6 @@ function watchForDraft() {
 	watch($$(text), () => saveDraft());
 	watch($$(useCw), () => saveDraft());
 	watch($$(cw), () => saveDraft());
-	watch($$(disableRightClick), () => saveDraft());
 	watch($$(poll), () => saveDraft());
 	watch($$(event), () => saveDraft());
 	watch($$(files), () => saveDraft(), { deep: true });
@@ -711,7 +708,6 @@ function saveDraft() {
 			text: text,
 			useCw: useCw,
 			cw: cw,
-			disableRightClick: disableRightClick,
 			visibility: visibility,
 			localOnly: localOnly,
 			files: files,
@@ -784,7 +780,6 @@ async function post(ev?: MouseEvent) {
 		visibility: visibility,
 		visibleUserIds: visibility === 'specified' ? visibleUsers.map(u => u.id) : undefined,
 		reactionAcceptance,
-		disableRightClick: disableRightClick,
 		noteId: props.updateMode ? props.initialNote?.id : undefined,
 	};
 
@@ -988,7 +983,6 @@ onMounted(() => {
 				text = draft.data.text;
 				useCw = draft.data.useCw;
 				cw = draft.data.cw;
-				disableRightClick = draft.data.disableRightClick;
 				visibility = draft.data.visibility;
 				localOnly = draft.data.localOnly;
 				files = (draft.data.files || []).filter(draftFile => draftFile);
@@ -1027,7 +1021,6 @@ onMounted(() => {
 			visibility = init.visibility;
 			localOnly = init.localOnly;
 			quoteId = init.renote ? init.renote.id : null;
-			disableRightClick = init.disableRightClick != null;
 		}
 
 		nextTick(() => watchForDraft());
