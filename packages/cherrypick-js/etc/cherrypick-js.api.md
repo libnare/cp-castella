@@ -1861,24 +1861,6 @@ export type Endpoints = {
         };
         res: null;
     };
-    'notes/events/search': {
-        req: {
-            query?: string;
-            sinceId?: Note['id'];
-            untilId?: Note['id'];
-            limit?: number;
-            offset?: number;
-            users?: User['id'][];
-            sinceDate?: number;
-            untilDate?: number;
-            sortBy?: 'startDate' | 'craetedAt';
-            filters?: {
-                key: string[];
-                values: (string | null)[];
-            }[];
-        };
-        res: Note[];
-    };
     'notes/reactions': {
         req: {
             noteId: Note['id'];

@@ -5,7 +5,7 @@
 
 import { Module } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import { MiAbuseReportResolver, MiAbuseUserReport, MiAccessToken, MiAd, MiAnnouncement, MiAnnouncementRead, MiAntenna, MiApp, MiAuthSession, MiBlocking, MiChannel, MiChannelFavorite, MiChannelFollowing, MiClip, MiClipFavorite, MiClipNote, MiDriveFile, MiDriveFolder, MiEmoji, MiEvent, MiFlash, MiFlashLike, MiFollowRequest, MiFollowing, MiGalleryLike, MiGalleryPost, MiHashtag, MiInstance, MiMessagingMessage, MiMeta, MiModerationLog, MiMuting, MiNote, MiNoteFavorite, MiNoteReaction, MiNoteThreadMuting, MiNoteUnread, MiPage, MiPageLike, MiPasswordResetRequest, MiPoll, MiPollVote, MiPromoNote, MiPromoRead, MiRegistrationTicket, MiRegistryItem, MiRelay, MiRenoteMuting, MiRetentionAggregation, MiRole, MiRoleAssignment, MiSignin, MiSwSubscription, MiUsedUsername, MiUser, MiUserGroup, MiUserGroupJoining, MiUserGroupInvitation, MiUserIp, MiUserKeypair, MiUserList, MiUserListFavorite, MiUserListMembership, MiUserMemo, MiUserNotePining, MiUserPending, MiUserProfile, MiUserPublickey, MiUserSecurityKey, MiWebhook } from './_.js';
+import { MiAbuseReportResolver, MiAbuseUserReport, MiAccessToken, MiAd, MiAnnouncement, MiAnnouncementRead, MiAntenna, MiApp, MiAuthSession, MiBlocking, MiChannel, MiChannelFavorite, MiChannelFollowing, MiClip, MiClipFavorite, MiClipNote, MiDriveFile, MiDriveFolder, MiEmoji, MiFlash, MiFlashLike, MiFollowRequest, MiFollowing, MiGalleryLike, MiGalleryPost, MiHashtag, MiInstance, MiMessagingMessage, MiMeta, MiModerationLog, MiMuting, MiNote, MiNoteFavorite, MiNoteReaction, MiNoteThreadMuting, MiNoteUnread, MiPage, MiPageLike, MiPasswordResetRequest, MiPoll, MiPollVote, MiPromoNote, MiPromoRead, MiRegistrationTicket, MiRegistryItem, MiRelay, MiRenoteMuting, MiRetentionAggregation, MiRole, MiRoleAssignment, MiSignin, MiSwSubscription, MiUsedUsername, MiUser, MiUserGroup, MiUserGroupJoining, MiUserGroupInvitation, MiUserIp, MiUserKeypair, MiUserList, MiUserListFavorite, MiUserListMembership, MiUserMemo, MiUserNotePining, MiUserPending, MiUserProfile, MiUserPublickey, MiUserSecurityKey, MiWebhook } from './_.js';
 import type { DataSource } from 'typeorm';
 import type { Provider } from '@nestjs/common';
 
@@ -180,12 +180,6 @@ const $instancesRepository: Provider = {
 const $emojisRepository: Provider = {
 	provide: DI.emojisRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiEmoji),
-	inject: [DI.db],
-};
-
-const $eventsRepository: Provider = {
-	provide: DI.eventsRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiEvent),
 	inject: [DI.db],
 };
 
@@ -462,7 +456,6 @@ const $abuseReportResolversRepository: Provider = {
 		$followRequestsRepository,
 		$instancesRepository,
 		$emojisRepository,
-		$eventsRepository,
 		$driveFilesRepository,
 		$driveFoldersRepository,
 		$metasRepository,
@@ -534,7 +527,6 @@ const $abuseReportResolversRepository: Provider = {
 		$followRequestsRepository,
 		$instancesRepository,
 		$emojisRepository,
-		$eventsRepository,
 		$driveFilesRepository,
 		$driveFoldersRepository,
 		$metasRepository,

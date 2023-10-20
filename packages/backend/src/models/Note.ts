@@ -70,11 +70,6 @@ export class MiNote {
 	})
 	public threadId: string | null;
 
-	@Column('boolean', {
-		default: false,
-	})
-	public hasEvent: boolean;
-
 	// TODO: varcharにしたい
 	@Column('text', {
 		nullable: true,
