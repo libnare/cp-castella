@@ -127,6 +127,7 @@ type MinimumUser = {
 
 type Option = {
 	createdAt?: Date | null;
+	updatedAt?: Date | null;
 	name?: string | null;
 	text?: string | null;
 	reply?: MiNote | null;
