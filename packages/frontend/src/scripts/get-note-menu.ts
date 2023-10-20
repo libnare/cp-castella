@@ -316,16 +316,6 @@ export function getNoteMenu(props: {
 					window.open(appearNote.url ?? appearNote.uri, '_blank');
 				},
 			} : undefined,
-			(appearNote.userId === $i.id) ? {
-				icon: 'ti ti-edit',
-				text: i18n.ts.copyAndEdit,
-				action: copyEdit,
-			} : undefined,
-			appearNote.userId === $i.id ? {
-				icon: 'ti ti-edit',
-				text: i18n.ts.deleteAndEdit,
-				action: delEdit,
-			} : undefined,
 			{
 				icon: 'ti ti-share',
 				text: i18n.ts.share,
@@ -404,6 +394,11 @@ export function getNoteMenu(props: {
 					icon: 'ti ti-edit',
 					text: i18n.ts.edit,
 					action: edit,
+				} : undefined,
+				appearNote.userId === $i.id ? {
+					icon: 'ti ti-edit',
+					text: i18n.ts.deleteAndEdit,
+					action: delEdit,
 				} : undefined,
 				{
 					icon: 'ti ti-trash',
