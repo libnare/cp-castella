@@ -161,6 +161,7 @@ const collapsed = $ref(isLong || (isMFM && defaultStore.state.collapseDefault) |
 useNoteCapture({
 	rootEl: el,
 	note: $$(note),
+	pureNote: $$(note),
 	isDeletedRef: isDeleted,
 });
 
