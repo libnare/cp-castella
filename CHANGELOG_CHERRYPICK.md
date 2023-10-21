@@ -23,6 +23,25 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.x.x
+출시일: unreleased<br>
+기반 Misskey 버전: 2023.x.x<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+
+### Changes
+- 타임라인에서 '다른 사람에 대한 답장 포함하기'를 기본 활성화로 변경
+
+### Client
+- Feat: 본문 미리보기의 프로필을 표시하지 않도록 설정할 수 있음
+- Enhance: 노트 작성 폼에서 노트를 게시한 뒤에 textarea의 높이를 원래대로 되돌리도록
+- Fix: 외부 리소스 설치 페이지에서 페이지 캐시가 작동하는 문제 수정 (misskey-dev/misskey#12105)
+
+### Server
+- Enhance: 사용자 차단 개선 (Renote Part) (misskey-dev/misskey#12089)
+- Fix: 마이그레이션이 매우 길게 진행될 수 있음
+
+---
+
 ## 4.4.1
 출시일: 2023/10/21<br>
 기반 Misskey 버전: 2023.10.2<br>
