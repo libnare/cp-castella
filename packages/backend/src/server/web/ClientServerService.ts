@@ -168,6 +168,7 @@ export class ClientServerService {
 	@bindThis
 	private generateCommonPugData(meta: MiMeta) {
 		return {
+			clientAssetsBaseUrl: this.config.clientAssetsBaseUrl,
 			instanceName: meta.name ?? 'CherryPick',
 			icon: meta.iconUrl,
 			appleTouchIcon: meta.app512IconUrl,

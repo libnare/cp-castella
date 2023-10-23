@@ -49,6 +49,18 @@ export function getConfig(): UserConfig {
 			port: 5173,
 		},
 
+		experimental: {
+			renderBuiltUrl(filename: string, { hostId, hostType, type }: { hostId: string, hostType: 'js' | 'css' | 'html', type: 'public' | 'asset' }) {
+				if (filename.includes('draw-blurhash') || filename.includes('test-webgl2')) {
+					return '/vite/' + filename
+				} else if (process.env.CLIENT_ASSETS_BASE_URL && process.env.CLIENT_ASSETS_DIR) {
+					return `${process.env.CLIENT_ASSETS_BASE_URL}/${process.env.CLIENT_ASSETS_DIR}/vite/${filename}`
+				} else {
+					return '/vite/' + filename
+				}
+			}
+		},
+
 		plugins: [
 			pluginVue({
 				reactivityTransform: true,

@@ -157,6 +157,7 @@ export type Config = {
 	}
 
 	apFileBaseUrl: string | undefined;
+	clientAssetsBaseUrl: string | undefined;
 	proxyRemoteFiles: boolean | undefined;
 	signToActivityPubGet: boolean | undefined;
 
@@ -225,6 +226,10 @@ export function loadConfig(): Config {
 	const internalMediaProxy = `${scheme}://${host}/proxy`;
 	const redis = convertRedisOptions(config.redis, host);
 
+	const CLIENT_ASSETS_BASE_URL = process.env.CLIENT_ASSETS_BASE_URL;
+	const CLIENT_ASSETS_DIR = process.env.CLIENT_ASSETS_DIR;
+	const clientAssetsBaseUrl = CLIENT_ASSETS_BASE_URL && CLIENT_ASSETS_DIR ? `${CLIENT_ASSETS_BASE_URL}/${CLIENT_ASSETS_DIR}` : "";
+
 	return {
 		version,
 		basedMisskeyVersion,
@@ -269,6 +274,7 @@ export function loadConfig(): Config {
 		proxyRemoteFiles: config.proxyRemoteFiles,
 		signToActivityPubGet: config.signToActivityPubGet,
 		apFileBaseUrl: config.apFileBaseUrl,
+		clientAssetsBaseUrl: clientAssetsBaseUrl,
 		mediaProxy: externalMediaProxy ?? internalMediaProxy,
 		externalMediaProxyEnabled: externalMediaProxy !== null && externalMediaProxy !== internalMediaProxy,
 		videoThumbnailGenerator: config.videoThumbnailGenerator ?

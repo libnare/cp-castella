@@ -78,7 +78,7 @@
 			lang = 'en-US';
 		}
 
-		const localRes = await window.fetch(`/assets/locales/${lang}.${v}.json`);
+		const localRes = await window.fetch(`${CLIENT_ASSETS_BASE_URL}/assets/locales/${lang}.${v}.json`);
 		if (localRes.status === 200) {
 			localStorage.setItem('lang', lang);
 			localStorage.setItem('locale', await localRes.text());
@@ -92,7 +92,7 @@
 
 	//#region Script
 	function importAppScript() {
-		import(`/vite/${CLIENT_ENTRY}`)
+		import(`${CLIENT_ASSETS_BASE_URL}/vite/${CLIENT_ENTRY}`)
 			.catch(async e => {
 				console.error(e);
 				renderError('APP_IMPORT', e);
