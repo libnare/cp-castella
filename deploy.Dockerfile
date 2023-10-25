@@ -39,7 +39,7 @@ COPY --link . ./
 RUN git submodule update --init
 RUN sed -i '/packages\/frontend/ s/^/# /' pnpm-workspace.yaml \
     && sed -i '/packages\/cherrypick-js/ s/^/# /' pnpm-workspace.yaml
-RUN pnpm build
+RUN pnpm build-d
 RUN sed -i '/packages\/frontend/ s/^# //' pnpm-workspace.yaml \
     && sed -i '/packages\/cherrypick-js/ s/^# //' pnpm-workspace.yaml
 RUN rm -rf .git/
