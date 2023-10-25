@@ -23,9 +23,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 4.x.x
+## 4.5.0
 출시일: unreleased<br>
-기반 Misskey 버전: 2023.x.x<br>
+기반 Misskey 버전: 2023.11.0<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### Client
@@ -38,11 +38,12 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Enhance: 노트 작성 폼에서 노트를 게시한 뒤에 textarea의 높이를 원래대로 되돌림
 - Enhance: 노트 상세 페이지의 답글 목록 개선
 - Enhance: 유저 페이지 개선
-  - 요약 탭의 하이라이트를 제거
-  - 노트 탭으로 하이라이트를 이동
+  - 요약 탭의 하이라이트를 제거 & 노트 탭으로 하이라이트를 이동
+  - 요약 탭의 리액션을 제거 & 노트 탭으로 리액션을 이동
 - chore: 이모티콘 이름 필드에서 autocapitalize를 끄기 (misskey-dev/misskey#12139)
 - Fix: 외부 리소스 설치 페이지에서 페이지 캐시가 작동하는 문제 수정 (misskey-dev/misskey#12105)
 - Fix: 채널 생성/업데이트 시 실패하면 아무 것도 표시되지 않는 문제 수정 misskey-dev/misskey#11983 (misskey-dev/misskey#12142)
+- Fix: 유저 페이지의 미디어 타임라인에서 미디어가 없는 답글이 표시됨 #388
 
 ### Server
 - Feat: 연합에서 노트 수정이 반영됨 (libnare/cp-castella#1)
