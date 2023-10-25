@@ -369,6 +369,7 @@ export interface Locale {
     "createFolder": string;
     "renameFolder": string;
     "deleteFolder": string;
+    "Folder": string;
     "addFile": string;
     "emptyDrive": string;
     "emptyFolder": string;
@@ -1233,6 +1234,15 @@ export interface Locale {
     "privacyPolicyUrl": string;
     "tosAndPrivacyPolicy": string;
     "avatarDecorations": string;
+    "attach": string;
+    "detach": string;
+    "angle": string;
+    "flip": string;
+    "showAvatarDecorations": string;
+    "releaseToRefresh": string;
+    "refreshing": string;
+    "pullDownToRefresh": string;
+    "disableStreamingTimeline": string;
     "showUnreadNotificationCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
@@ -1376,6 +1386,7 @@ export interface Locale {
         "manifestJsonOverride": string;
         "shortName": string;
         "shortNameDescription": string;
+        "fanoutTimelineDescription": string;
     };
     "_accountMigration": {
         "moveFrom": string;
