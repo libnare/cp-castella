@@ -13,6 +13,9 @@ const watch = process.argv[2]?.includes('watch');
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
+const CLIENT_ASSETS_BASE_URL = process.env.CLIENT_ASSETS_BASE_URL;
+const CLIENT_ASSETS_DIR = process.env.CLIENT_ASSETS_DIR;
+
 console.log('Starting SW building...');
 
 /** @type {esbuild.BuildOptions} */
@@ -26,6 +29,7 @@ const buildOptions = {
 		_PERF_PREFIX_: JSON.stringify('CherryPick:'),
 		_VERSION_: JSON.stringify(meta.version),
 		_BASEDMISSKEYVERSION_: JSON.stringify(meta.basedMisskeyVersion),
+		_CLIENT_ASSETS_BASE_URL_: JSON.stringify(CLIENT_ASSETS_BASE_URL && CLIENT_ASSETS_DIR ? `${CLIENT_ASSETS_BASE_URL}/${CLIENT_ASSETS_DIR}` : ""),
 	},
 	entryPoints: [`${__dirname}/src/sw.ts`],
 	format: 'esm',

@@ -61,19 +61,25 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: pnpm/action-setup@v2
-      - name: Install frontend dependencies
+      - name: Install static dependencies
         run: |
           git submodule update --init
           NODE_ENV=production pnpm --filter cherrypick-js install
           NODE_ENV=production pnpm --filter frontend install
-      - name: Build frontend
+      - name: Build static
         run: |
-          sed -i "s/outDir: __dirname + '\/..\/..\/built\/_vite_'/outDir: __dirname + '\/..\/..\/vite'/" packages/frontend/vite.config.ts
+          NODE_ENV=production pnpm build-pre
           NODE_ENV=production pnpm --filter cherrypick-js build
           NODE_ENV=production pnpm --filter frontend build
-          sed -i "s/outDir: __dirname + '\/..\/..\/vite'/outDir: __dirname + '\/..\/..\/built\/_vite_'/" packages/frontend/vite.config.ts
-      - name: Deploy frontend
-        run: echo "${{ secrets.UPLOAD_SCRIPT }}" | base64 -d | node
+          NODE_ENV=production pnpm build-locales
+      - name: Deploy static
+        run: |
+          mv built/_frontend_dist_ built/assets
+          mv built/_vite_ built/vite
+          mv built ${{ env.CLIENT_ASSETS_DIR }}
+          echo "${{ secrets.UPLOAD_SCRIPT }}" | base64 -d | node
+          mv ${{ env.CLIENT_ASSETS_DIR }}/vite ${{ env.CLIENT_ASSETS_DIR }}/_vite_
+          mv ${{ env.CLIENT_ASSETS_DIR }}/assets ${{ env.CLIENT_ASSETS_DIR }}/_frontend_dist_
       - name: Build and Push to Container registry
         uses: docker/build-push-action@v5
         env:

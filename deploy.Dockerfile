@@ -26,6 +26,10 @@ COPY --link ["packages/sw/package.json", "./packages/sw/"]
 COPY --link ["packages/cherrypick-js/package.json", "./packages/cherrypick-js/"]
 
 ARG NODE_ENV=production
+ARG ARGS_CLIENT_ASSETS_BASE_URL
+ARG ARGS_CLIENT_ASSETS_DIR
+ARG CLIENT_ASSETS_BASE_URL=${ARGS_CLIENT_ASSETS_BASE_URL}
+ARG CLIENT_ASSETS_DIR=${ARGS_CLIENT_ASSETS_DIR}
 
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
 	pnpm i --frozen-lockfile --aggregate-output
@@ -33,9 +37,11 @@ RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
 COPY --link . ./
 
 RUN git submodule update --init
-RUN sed -i '/packages\/frontend/ s/^/# /' pnpm-workspace.yaml
+RUN sed -i '/packages\/frontend/ s/^/# /' pnpm-workspace.yaml \
+    && sed -i '/packages\/cherrypick-js/ s/^/# /' pnpm-workspace.yaml
 RUN pnpm build
-RUN sed -i '/packages\/frontend/ s/^# //' pnpm-workspace.yaml
+RUN sed -i '/packages\/frontend/ s/^# //' pnpm-workspace.yaml \
+    && sed -i '/packages\/cherrypick-js/ s/^# //' pnpm-workspace.yaml
 RUN rm -rf .git/
 
 # build native dependencies for target platform
@@ -88,7 +94,8 @@ COPY --chown=cherrypick:cherrypick --from=native-builder /cherrypick/packages/ba
 COPY --chown=cherrypick:cherrypick --from=native-builder /cherrypick/fluent-emojis /cherrypick/fluent-emojis
 COPY --chown=cherrypick:cherrypick . ./
 
-RUN mv ./vite ./built/_vite_
+RUN cp -rf ./${ARGS_CLIENT_ASSETS_DIR}/* ./built \
+    && rm -rf ./${ARGS_CLIENT_ASSETS_DIR}
 
 ENV LD_PRELOAD=/usr/local/lib/libjemalloc.so
 ENV MALLOC_CONF=background_thread:true,metadata_thp:auto,dirty_decay_ms:30000,muzzy_decay_ms:30000

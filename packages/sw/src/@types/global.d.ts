@@ -12,3 +12,4 @@ declare const _BASEDMISSKEYVERSION_: string;
 declare const _ENV_: string;
 declare const _DEV_: boolean;
 declare const _PERF_PREFIX_: string;
+declare const _CLIENT_ASSETS_BASE_URL_: string;
