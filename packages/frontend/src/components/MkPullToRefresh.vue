@@ -26,6 +26,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted } from 'vue';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { i18n } from '@/i18n.js';
+import { vibrate } from '@/scripts/vibrate.js';
+import { ColdDeviceStorage } from '@/store.js';
 
 const SCROLL_STOP = 10;
 const MAX_PULL_DISTANCE = Infinity;
@@ -44,6 +46,8 @@ const rootEl = $shallowRef<HTMLDivElement>();
 let scrollEl: HTMLElement | null = null;
 
 let disabled = false;
+
+let isVibrate = false;
 
 const emits = defineEmits<{
 	(ev: 'refresh'): void;
@@ -147,6 +151,12 @@ function moving(event) {
 	currentHeight = Math.min(Math.max(moveHeight, 0), MAX_PULL_DISTANCE);
 
 	isPullEnd = currentHeight >= FIRE_THRESHOLD;
+
+	if (!isPullEnd) isVibrate = false;
+	else if (isPullEnd && !isVibrate) {
+		vibrate(ColdDeviceStorage.get('vibrateSystem') ? 10 : []);
+		isVibrate = true;
+	}
 }
 
 /**
@@ -226,10 +236,11 @@ defineExpose({
 			transform: rotate(180deg);
 		}
 	}
+}
 
-	> .text {
-		margin: 5px 0;
-	}
+.text {
+  margin: 5px 0;
+  font-size: 11px;
 }
 
 .slotClip {

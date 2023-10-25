@@ -34,14 +34,18 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - PC의 경우 오른쪽 상단의 버튼을 통해서도 다시 불러올 수 있습니다
 - Feat: 타임라인 자동 업데이트를 비활성화할 수 있음 (misskey-dev/misskey#12113)
 - Feat: 이모티콘 피커의 카테고리를 다중 계층 폴더로 분류할 수 있음 (misskey-dev/misskey#12132)
+- Feat: AiScript 함수 `Mk:nyaize()`가 추가됨 (misskey-dev/misskey#12136)
 - Enhance: 노트 작성 폼에서 노트를 게시한 뒤에 textarea의 높이를 원래대로 되돌림
 - Enhance: 노트 상세 페이지의 답글 목록 개선
 - Enhance: 유저 페이지 개선
   - 요약 탭의 하이라이트를 제거
   - 노트 탭으로 하이라이트를 이동
+- chore: 이모티콘 이름 필드에서 autocapitalize를 끄기 (misskey-dev/misskey#12139)
 - Fix: 외부 리소스 설치 페이지에서 페이지 캐시가 작동하는 문제 수정 (misskey-dev/misskey#12105)
+- Fix: 채널 생성/업데이트 시 실패하면 아무 것도 표시되지 않는 문제 수정 misskey-dev/misskey#11983 (misskey-dev/misskey#12142)
 
 ### Server
+- Feat: 연합에서 노트 수정이 반영됨 (libnare/cp-castella#1)
 - Enhance: 사용자 차단 개선 (Renote Part) (misskey-dev/misskey#12089)
 - Fix: 장시간 기다려도 마이그레이션이 완료되지 않을 수 있음
 - Fix: Redis 에서 TL 캐시를 반환하지 않으면 '고양이만 보기'가 작동하지 않을 수 있음
