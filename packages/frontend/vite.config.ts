@@ -41,6 +41,10 @@ function toBase62(n: number): string {
 	return result;
 }
 
+const CLIENT_ASSETS_BASE_URL = process.env.CLIENT_ASSETS_BASE_URL;
+const CLIENT_ASSETS_DIR = process.env.CLIENT_ASSETS_DIR;
+const clientAssetsBaseUrl = CLIENT_ASSETS_BASE_URL && CLIENT_ASSETS_DIR ? `${CLIENT_ASSETS_BASE_URL}/${CLIENT_ASSETS_DIR}` : "";
+
 export function getConfig(): UserConfig {
 	return {
 		base: '/vite/',
@@ -54,7 +58,7 @@ export function getConfig(): UserConfig {
 				if (filename.includes('draw-blurhash') || filename.includes('test-webgl2')) {
 					return '/vite/' + filename
 				} else if (process.env.CLIENT_ASSETS_BASE_URL && process.env.CLIENT_ASSETS_DIR) {
-					return `${process.env.CLIENT_ASSETS_BASE_URL}/${process.env.CLIENT_ASSETS_DIR}/vite/${filename}`
+					return `${clientAssetsBaseUrl}/vite/${filename}`
 				} else {
 					return '/vite/' + filename
 				}
@@ -114,6 +118,7 @@ export function getConfig(): UserConfig {
 			_DATA_TRANSFER_DRIVE_FILE_: JSON.stringify('mk_drive_file'),
 			_DATA_TRANSFER_DRIVE_FOLDER_: JSON.stringify('mk_drive_folder'),
 			_DATA_TRANSFER_DECK_COLUMN_: JSON.stringify('mk_deck_column'),
+			_CLIENT_ASSETS_BASE_URL_: JSON.stringify(clientAssetsBaseUrl),
 			__VUE_OPTIONS_API__: true,
 			__VUE_PROD_DEVTOOLS__: false,
 		},
