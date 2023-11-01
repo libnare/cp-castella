@@ -20,9 +20,17 @@ async function copyFrontendLocales() {
   }
 }
 
+async function copyFrontendShikiAssets() {
+  await fs.cp('./packages/frontend/node_modules/shiki/dist', './built/_frontend_dist_/shiki/dist', { dereference: true, recursive: true });
+  await fs.cp('./packages/frontend/node_modules/shiki/languages', './built/_frontend_dist_/shiki/languages', { dereference: true, recursive: true });
+  await fs.cp('./packages/frontend/node_modules/aiscript-vscode/aiscript/syntaxes', './built/_frontend_dist_/shiki/languages', { dereference: true, recursive: true });
+  await fs.cp('./packages/frontend/node_modules/shiki/themes', './built/_frontend_dist_/shiki/themes', { dereference: true, recursive: true });
+}
+
 async function build() {
   await Promise.all([
     copyFrontendLocales(),
+    copyFrontendShikiAssets(),
   ]);
 }
 

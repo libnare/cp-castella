@@ -1,7 +1,7 @@
 import { setWasm, setCDN, Highlighter, getHighlighter as _getHighlighter } from 'shiki';
 
-setWasm('/assets/shiki/dist/onig.wasm');
-setCDN('/assets/shiki/');
+setWasm(`${_CLIENT_ASSETS_BASE_URL_}/assets/shiki/dist/onig.wasm`);
+setCDN(`${_CLIENT_ASSETS_BASE_URL_}/assets/shiki/`);
 
 let _highlighter: Highlighter | null = null;
 

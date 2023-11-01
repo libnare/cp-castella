@@ -18,7 +18,7 @@
 		"build-pre": "node ./scripts/build-pre.js",
 		"build-assets": "node ./scripts/build-assets.mjs",
 		"build-assets-d": "node ./scripts/build-assets-d.mjs",
-		"build-locales": "node ./scripts/build-locales.mjs",
+		"build-deploy": "node ./scripts/build-deploy.mjs",
 		"build": "pnpm build-pre && pnpm -r build && pnpm build-assets",
 		"build-d": "pnpm -r build && pnpm build-assets-d",
 		"build-storybook": "pnpm --filter frontend build-storybook",
