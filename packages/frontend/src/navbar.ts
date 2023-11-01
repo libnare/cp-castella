@@ -165,56 +165,11 @@ export const navbarItemDef = reactive({
 			}], ev.currentTarget ?? ev.target);
 		},
 	},
-	help: {
-		title: i18n.ts.help,
-		icon: 'ti ti-help-circle',
-		action: (ev) => {
-			os.popupMenu([{
-				text: i18n.ts.help,
-				icon: 'ti ti-help-circle',
-				action: () => {
-					window.open('https://misskey-hub.net/help.html', '_blank');
-				},
-			}, {
-				type: 'link',
-				text: i18n.ts._mfm.cheatSheet,
-				icon: 'ti ti-help-circle',
-				to: '/mfm-cheat-sheet',
-			}, null, {
-				type: 'button',
-				text: i18n.ts.replayUserSetupDialog,
-				icon: 'ti ti-list-numbers',
-				action: () => {
-					defaultStore.set('accountSetupWizard', 0);
-					os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
-				},
-			}, {
-				type: 'button',
-				text: i18n.ts.replayTutorial,
-				icon: 'ti ti-checkup-list',
-				action: () => {
-					defaultStore.set('timelineTutorial', 0);
-					defaultStore.set('tlHomeHintClosed', false);
-					defaultStore.set('tlLocalHintClosed', false);
-					defaultStore.set('tlSocialHintClosed', false);
-					defaultStore.set('tlGlobalHintClosed', false);
-					setTimeout(unisonReload, 100);
-				},
-			}], ev.currentTarget ?? ev.target);
-		},
-	},
 	about: {
 		title: i18n.ts.about,
 		icon: 'ti ti-info-circle',
 		action: (ev) => {
 			openInstanceMenu(ev);
-		},
-	},
-	tools: {
-		title: i18n.ts.tools,
-		icon: 'ti ti-tool',
-		action: (ev) => {
-			openToolsMenu(ev);
 		},
 	},
 	reload: {
