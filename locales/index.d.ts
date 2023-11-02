@@ -1244,6 +1244,7 @@ export interface Locale {
     "refreshing": string;
     "pullDownToRefresh": string;
     "disableStreamingTimeline": string;
+    "useGroupedNotifications": string;
     "showUnreadNotificationsCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
@@ -2497,6 +2498,9 @@ export interface Locale {
         "checkNotificationBehavior": string;
         "sendTestNotification": string;
         "notificationWillBeDisplayedLikeThis": string;
+        "reactedBySomeUsers": string;
+        "renotedBySomeUsers": string;
+        "followedBySomeUsers": string;
         "_types": {
             "all": string;
             "note": string;
