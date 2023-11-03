@@ -1,7 +1,7 @@
 {
 	"name": "cherrypick",
-	"version": "4.5.0-beta.3",
-	"basedMisskeyVersion": "2023.11.0-beta.8",
+	"version": "4.5.0-beta.4",
+	"basedMisskeyVersion": "2023.11.0-beta.9",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
@@ -44,7 +44,7 @@
 		"clean": "node ./scripts/clean.js",
 		"clean-all": "node ./scripts/clean-all.js",
 		"cleanall": "pnpm clean-all",
-		"schemasync": "cd packages/backend && pnpm typeorm schema:sync -d ormconfig.js"
+		"schema:sync": "cd packages/backend && pnpm typeorm schema:sync -d ormconfig.js"
 	},
 	"resolutions": {
 		"chokidar": "3.5.3",

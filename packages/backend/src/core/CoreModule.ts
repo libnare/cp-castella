@@ -66,6 +66,7 @@ import { ClipService } from './ClipService.js';
 import { FeaturedService } from './FeaturedService.js';
 import { FunoutTimelineService } from './FunoutTimelineService.js';
 import { ChannelFollowingService } from './ChannelFollowingService.js';
+import { RegistryApiService } from './RegistryApiService.js';
 import { ChartLoggerService } from './chart/ChartLoggerService.js';
 import FederationChart from './chart/charts/federation.js';
 import NotesChart from './chart/charts/notes.js';
@@ -202,6 +203,7 @@ const $ClipService: Provider = { provide: 'ClipService', useExisting: ClipServic
 const $FeaturedService: Provider = { provide: 'FeaturedService', useExisting: FeaturedService };
 const $FunoutTimelineService: Provider = { provide: 'FunoutTimelineService', useExisting: FunoutTimelineService };
 const $ChannelFollowingService: Provider = { provide: 'ChannelFollowingService', useExisting: ChannelFollowingService };
+const $RegistryApiService: Provider = { provide: 'RegistryApiService', useExisting: RegistryApiService };
 
 const $ChartLoggerService: Provider = { provide: 'ChartLoggerService', useExisting: ChartLoggerService };
 const $FederationChart: Provider = { provide: 'FederationChart', useExisting: FederationChart };
@@ -342,6 +344,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		FeaturedService,
 		FunoutTimelineService,
 		ChannelFollowingService,
+		RegistryApiService,
 		ChartLoggerService,
 		FederationChart,
 		NotesChart,
@@ -475,6 +478,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$FeaturedService,
 		$FunoutTimelineService,
 		$ChannelFollowingService,
+		$RegistryApiService,
 		$ChartLoggerService,
 		$FederationChart,
 		$NotesChart,
@@ -609,6 +613,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		FeaturedService,
 		FunoutTimelineService,
 		ChannelFollowingService,
+		RegistryApiService,
 		FederationChart,
 		NotesChart,
 		UsersChart,
@@ -741,6 +746,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$FeaturedService,
 		$FunoutTimelineService,
 		$ChannelFollowingService,
+		$RegistryApiService,
 		$FederationChart,
 		$NotesChart,
 		$UsersChart,
