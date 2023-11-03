@@ -479,7 +479,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	nsfwOpenBehavior: {
 		where: 'device',
-		default: 'click' as 'click' | 'doubleClick',
+		default: 'doubleClick' as 'click' | 'doubleClick',
 	},
 
 	// - Settings/Timeline
