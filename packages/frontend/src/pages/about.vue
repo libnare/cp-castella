@@ -24,13 +24,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<FormSection>
 				<div class="_gaps_m">
-					<MkKeyValue :copy="version">
-						<template #key>CherryPick</template>
-						<template #value>{{ version }}</template>
-					</MkKeyValue>
+          <FormSplit>
+					  <MkKeyValue :copy="version">
+					  	<template #key>CherryPick</template>
+					  	<template #value>{{ version }}</template>
+					  </MkKeyValue>
+            <MkKeyValue :copy="commit">
+              <template #key>Commit</template>
+              <template #value>{{ commit }}</template>
+            </MkKeyValue>
+          </FormSplit>
 					<div v-html="i18n.t('poweredByMisskeyDescription', { name: instance.name ?? host })">
 					</div>
 					<FormLink to="/about-misskey">{{ i18n.ts.aboutMisskey }}</FormLink>
+          <FormLink v-if="sourceCode" :to="sourceCode" external>{{ i18n.ts._aboutMisskey.source }}</FormLink>
 				</div>
 			</FormSection>
 
@@ -105,7 +112,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, watch } from 'vue';
 import XEmojis from './about.emojis.vue';
 import XFederation from './about.federation.vue';
-import { version, host } from '@/config.js';
+import {version, host, commit, sourceCode} from '@/config.js';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSuspense from '@/components/form/suspense.vue';

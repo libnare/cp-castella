@@ -7,6 +7,7 @@ import * as fs from 'node:fs/promises';
 import locales from '../locales/index.js';
 import generateDTS from '../locales/generateDTS.js';
 import meta from '../package.json' assert { type: "json" };
+import built_meta from '../built/meta.json' assert { type: "json" };
 
 async function copyFrontendLocales() {
   generateDTS();
@@ -16,7 +17,7 @@ async function copyFrontendLocales() {
   const v = { '_version_': meta.version };
 
   for (const [lang, locale] of Object.entries(locales)) {
-    await fs.writeFile(`./built/_frontend_dist_/locales/${lang}.${meta.version}.json`, JSON.stringify({ ...locale, ...v }), 'utf-8');
+    await fs.writeFile(`./built/_frontend_dist_/locales/${lang}.${built_meta.version}.json`, JSON.stringify({ ...locale, ...v }), 'utf-8');
   }
 }
 

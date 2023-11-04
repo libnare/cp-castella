@@ -7,6 +7,7 @@ import ReactivityTransform from '@vue-macros/reactivity-transform/vite';
 
 import locales from '../../locales';
 import meta from '../../package.json';
+import built_meta from '../../built/meta.json';
 import pluginUnwindCssModuleClassName from './lib/rollup-plugin-unwind-css-module-class-name';
 import pluginJson5 from './vite.json5';
 
@@ -111,6 +112,8 @@ export function getConfig(): UserConfig {
 
 		define: {
 			_VERSION_: JSON.stringify(meta.version),
+			_COMMIT_: JSON.stringify(built_meta.commit),
+			_SOURCE_CODE_: JSON.stringify(built_meta.sourceCode),
 			_BASEDMISSKEYVERSION_: JSON.stringify(meta.basedMisskeyVersion),
 			_LANGS_: JSON.stringify(Object.entries(locales).map(([k, v]) => [k, v._lang_])),
 			_ENV_: JSON.stringify(process.env.NODE_ENV),

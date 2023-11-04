@@ -18,6 +18,8 @@ export const langs = _LANGS_;
 const preParseLocale = miLocalStorage.getItem('locale');
 export let locale = preParseLocale ? JSON.parse(preParseLocale) : null;
 export const version = _VERSION_;
+export const commit = _COMMIT_;
+export const sourceCode = _SOURCE_CODE_;
 export const basedMisskeyVersion = _BASEDMISSKEYVERSION_;
 export const instanceName = siteName === 'CherryPick' ? host : siteName;
 export const ui = miLocalStorage.getItem('ui');

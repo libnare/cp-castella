@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import * as esbuild from 'esbuild';
 import locales from '../../locales/index.js';
 import meta from '../../package.json' assert { type: "json" };
+import built_meta from '../../built/meta.json' assert { type: "json" };
 const watch = process.argv[2]?.includes('watch');
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -30,6 +31,8 @@ const buildOptions = {
 		_PERF_PREFIX_: JSON.stringify('CherryPick:'),
 		_VERSION_: JSON.stringify(meta.version),
 		_BASEDMISSKEYVERSION_: JSON.stringify(meta.basedMisskeyVersion),
+		_COMMIT_: JSON.stringify(built_meta.commit),
+		_SOURCE_CODE_: JSON.stringify(built_meta.sourceCode),
 		_CLIENT_ASSETS_BASE_URL_: JSON.stringify(clientAssetsBaseUrl),
 	},
 	entryPoints: [`${__dirname}/src/sw.ts`],

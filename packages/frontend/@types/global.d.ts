@@ -7,6 +7,8 @@ type FIXME = any;
 
 declare const _LANGS_: string[][];
 declare const _VERSION_: string;
+declare const _COMMIT_: string;
+declare const _SOURCE_CODE_: string;
 declare const _BASEDMISSKEYVERSION_: string;
 declare const _ENV_: string;
 declare const _DEV_: boolean;
