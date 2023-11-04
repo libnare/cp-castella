@@ -26,7 +26,7 @@
 		"build-assets-d": "node ./scripts/build-assets-d.mjs",
 		"build-deploy": "node ./scripts/build-deploy.mjs",
 		"build": "pnpm build-pre && pnpm -r build && pnpm build-assets",
-		"build-d": "pnpm -r build && pnpm build-assets-d",
+		"build-d": "pnpm build-pre && pnpm -r build && pnpm build-assets-d",
 		"build-storybook": "pnpm --filter frontend build-storybook",
 		"start": "pnpm check:connect && cd packages/backend && node ./built/boot/entry.js",
 		"start:docker": "pnpm check:connect && cd packages/backend && exec node ./built/boot/entry.js",
