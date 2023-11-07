@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
 				<p v-if="note.cw != null" :class="$style.cw">
-					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'account'" :i="$i"/>
+					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'account'"/>
 					<MkCwButton v-model="showContent" style="width: 100%" :note="note"/>
 				</p>
 				<div v-show="note.cw == null || showContent">

@@ -32,9 +32,13 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 > 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
 > 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
 
+### General
+- Change: 프로필을 번역할 때 nyaize를 사용하지 않음
+
 ### Client
 - Feat: 본문 미리보기의 프로필을 표시하지 않도록 설정할 수 있음
 - Feat: 이모티콘 피커의 카테고리를 다중 계층 폴더로 분류할 수 있음 (misskey-dev/misskey#12132)
+- Feat: 열람 주의로 설정된 미디어를 두 번 탭 하여 표시하도록 할 수 있음 #392
 - Enhance: 스와이프하여 타임라인을 다시 불러올 수 있음 (misskey-dev/misskey#12113)
 	- PC의 경우 오른쪽 상단의 버튼을 통해서도 다시 불러올 수 있습니다
 - Enhance: 타임라인 자동 업데이트를 비활성화할 수 있음 (misskey-dev/misskey#12113)
@@ -44,6 +48,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Enhance: 유저 페이지 개선
   - 요약 탭의 하이라이트를 제거 & 노트 탭으로 하이라이트를 이동
   - 요약 탭의 리액션을 제거 & 노트 탭으로 리액션을 이동
+- Enhance: 모바일에서 채팅 좌우 여백 조정
 - chore: 이모티콘 이름 필드에서 autocapitalize를 끄기 (misskey-dev/misskey#12139)
 - Fix: 외부 리소스 설치 페이지에서 페이지 캐시가 작동하는 문제 수정 (misskey-dev/misskey#12105)
 - Fix: 채널 생성/업데이트 시 실패하면 아무 것도 표시되지 않는 문제 수정 misskey-dev/misskey#11983 (misskey-dev/misskey#12142)
@@ -54,12 +59,14 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 일부 페이지에서 잘못된 디자인이 표시됨
   - 일부 페이지에서 액션 항목이 존재해도 버튼이 표시되지 않을 수 있음
 - Fix: 네비게이션 메뉴의 하단 프로필 영역이 잘못된 디자인으로 표시됨
+- Fix: 노트를 인용할 때 입력란에 자동으로 포커스가 맞춰지지 않음
 
 ### Server
 - Feat: 연합에서 노트 수정이 반영됨 (libnare/cp-castella#1)
 - Enhance: 사용자 차단 개선 (Renote Part) (misskey-dev/misskey#12089)
 - Fix: 장시간 기다려도 마이그레이션이 완료되지 않을 수 있음
 - Fix: Redis 에서 TL 캐시를 반환하지 않으면 '고양이만 보기'가 작동하지 않을 수 있음
+- Fix: latestRequestReceivedAt이 제대로 반영되지 않음 (misskey-dev/misskey#12270)
 
 ---
 

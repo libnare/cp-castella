@@ -1249,6 +1249,7 @@ export interface Locale {
     "useGroupedNotifications": string;
     "signupPendingError": string;
     "cwNotationRequired": string;
+    "doReaction": string;
     "showUnreadNotificationsCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
@@ -1286,6 +1287,8 @@ export interface Locale {
         "readConfirmText": string;
         "shouldNotBeUsedToPresentPermanentInfo": string;
         "dialogAnnouncementUxWarn": string;
+        "silence": string;
+        "silenceDescription": string;
     };
     "_group": {
         "leader": string;
