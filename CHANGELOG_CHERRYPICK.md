@@ -48,7 +48,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Enhance: 유저 페이지 개선
   - 요약 탭의 하이라이트를 제거 & 노트 탭으로 하이라이트를 이동
   - 요약 탭의 리액션을 제거 & 노트 탭으로 리액션을 이동
-- Enhance: 모바일에서 채팅 좌우 여백 조정
 - chore: 이모티콘 이름 필드에서 autocapitalize를 끄기 (misskey-dev/misskey#12139)
 - Fix: 외부 리소스 설치 페이지에서 페이지 캐시가 작동하는 문제 수정 (misskey-dev/misskey#12105)
 - Fix: 채널 생성/업데이트 시 실패하면 아무 것도 표시되지 않는 문제 수정 misskey-dev/misskey#11983 (misskey-dev/misskey#12142)
@@ -60,6 +59,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 일부 페이지에서 액션 항목이 존재해도 버튼이 표시되지 않을 수 있음
 - Fix: 네비게이션 메뉴의 하단 프로필 영역이 잘못된 디자인으로 표시됨
 - Fix: 노트를 인용할 때 입력란에 자동으로 포커스가 맞춰지지 않음
+- Fix: '모든 미디어 노트 간략화하기' 옵션을 활성화하면 미디어가 아닌 노트에도 '닫기' 버튼이 표시될 수 있음
+- Fix: 유저 프로필에서 헤더 디자인이 잘못 표시되는 문제
 
 ### Server
 - Feat: 연합에서 노트 수정이 반영됨 (libnare/cp-castella#1)
