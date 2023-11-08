@@ -134,6 +134,20 @@ type Blocking = {
 // @public (undocumented)
 type Channel = {
     id: ID;
+    lastNotedAt: Date | null;
+    userId: User['id'] | null;
+    user: User | null;
+    name: string;
+    description: string | null;
+    bannerId: DriveFile['id'] | null;
+    banner: DriveFile | null;
+    pinnedNoteIds: string[];
+    color: string;
+    isArchived: boolean;
+    notesCount: number;
+    usersCount: number;
+    isSensitive: boolean;
+    allowRenoteToExternal: boolean;
 };
 
 // Warning: (ae-forgotten-export) The symbol "AnyOf" needs to be exported by the entry point index.d.ts
@@ -1510,10 +1524,6 @@ export type Endpoints = {
         };
         res: null;
     };
-    'i/registry/scopes': {
-        req: NoParams;
-        res: string[][];
-    };
     'i/registry/set': {
         req: {
             key: string;
@@ -2731,6 +2741,8 @@ type Note = {
     fileIds: DriveFile['id'][];
     visibility: 'public' | 'home' | 'followers' | 'specified';
     visibleUserIds?: User['id'][];
+    channel?: Channel;
+    channelId?: Channel['id'];
     localOnly?: boolean;
     myReaction?: string;
     reactions: Record<string, number>;
@@ -3067,9 +3079,9 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 //
 // src/api.types.ts:16:32 - (ae-forgotten-export) The symbol "TODO" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:18:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
-// src/api.types.ts:644:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
+// src/api.types.ts:643:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
 // src/entities.ts:116:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
-// src/entities.ts:616:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/entities.ts:631:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
