@@ -111,7 +111,7 @@ export function getConfig(): UserConfig {
 		},
 
 		define: {
-			_VERSION_: JSON.stringify(meta.version),
+			_VERSION_: JSON.stringify(built_meta.version),
 			_COMMIT_: JSON.stringify(built_meta.commit),
 			_SOURCE_CODE_: JSON.stringify(built_meta.sourceCode),
 			_BASEDMISSKEYVERSION_: JSON.stringify(meta.basedMisskeyVersion),
