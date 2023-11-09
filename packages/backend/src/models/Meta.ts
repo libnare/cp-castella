@@ -144,6 +144,18 @@ export class MiMeta {
 		length: 1024,
 		nullable: true,
 	})
+	public app769IconUrl: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public app1024IconUrl: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
 	public serverErrorImageUrl: string | null;
 
 	@Column('varchar', {

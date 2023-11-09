@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<MkInput v-model="app192IconUrl" type="url">
 						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/192px)</template>
+						<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/192px | Disabled)</template>
 						<template #caption>
 							<div>{{ i18n.t('_serverSettings.appIconDescription', { host: instance.name ?? host }) }}</div>
 							<div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
@@ -41,6 +41,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<div><strong>{{ i18n.t('_serverSettings.appIconResolutionMustBe', { resolution: '512x512px' }) }}</strong></div>
 						</template>
 					</MkInput>
+
+          <MkInput v-model="app769IconUrl" type="url">
+            <template #prefix><i class="ti ti-link"></i></template>
+            <template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/769px)</template>
+            <template #caption>
+              <div>{{ i18n.t('_serverSettings.appIconDescription', { host: instance.name ?? host }) }}</div>
+              <div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
+              <div>{{ i18n.ts._serverSettings.appIconStyleRecommendation }}</div>
+              <div><strong>{{ i18n.t('_serverSettings.appIconResolutionMustBe', { resolution: '769x769px' }) }}</strong></div>
+            </template>
+          </MkInput>
+
+          <MkInput v-model="app1024IconUrl" type="url">
+            <template #prefix><i class="ti ti-link"></i></template>
+            <template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/1024px)</template>
+            <template #caption>
+              <div>{{ i18n.t('_serverSettings.appIconDescription', { host: instance.name ?? host }) }}</div>
+              <div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
+              <div>{{ i18n.ts._serverSettings.appIconStyleRecommendation }}</div>
+              <div><strong>{{ i18n.t('_serverSettings.appIconResolutionMustBe', { resolution: '1024x1024px' }) }}</strong></div>
+            </template>
+          </MkInput>
 
 					<MkInput v-model="bannerUrl" type="url">
 						<template #prefix><i class="ti ti-link"></i></template>
@@ -120,6 +142,8 @@ let iconUrl: string | null = $ref(null);
 let appleIconUrl: string | null = $ref(null);
 let app192IconUrl: string | null = $ref(null);
 let app512IconUrl: string | null = $ref(null);
+let app769IconUrl: string | null = $ref(null);
+let app1024IconUrl: string | null = $ref(null);
 let bannerUrl: string | null = $ref(null);
 let backgroundImageUrl: string | null = $ref(null);
 let themeColor: any = $ref(null);
@@ -136,6 +160,8 @@ async function init() {
 	appleIconUrl = meta.appleIconUrl;
 	app192IconUrl = meta.app192IconUrl;
 	app512IconUrl = meta.app512IconUrl;
+	app769IconUrl = meta.app769IconUrl;
+	app1024IconUrl = meta.app1024IconUrl;
 	bannerUrl = meta.bannerUrl;
 	backgroundImageUrl = meta.backgroundImageUrl;
 	themeColor = meta.themeColor;
@@ -153,6 +179,8 @@ function save() {
 		appleIconUrl,
 		app192IconUrl,
 		app512IconUrl,
+		app769IconUrl,
+		app1024IconUrl,
 		bannerUrl,
 		backgroundImageUrl,
 		themeColor: themeColor === '' ? null : themeColor,

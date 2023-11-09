@@ -404,6 +404,8 @@ export type AdminInstanceMetadata = DetailedInstanceMetadata & {
 	appleIconUrl: string | null;
 	app192IconUrl: string | null;
 	app512IconUrl: string | null;
+	app769IconUrl: string | null;
+	app1024IconUrl: string | null;
 	manifestJsonOverride: string;
 };
 

@@ -127,20 +127,27 @@ export class ClientServerService {
 			'icons': [{
 				// 空文字列の場合右辺を使いたいため
 				// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-				'src': instance.app192IconUrl || '/static-assets/icons/192.png',
-				'sizes': '192x192',
+				'src': instance.app512IconUrl || '/static-assets/icons/None-512.png',
+				'sizes': '512x512',
 				'type': 'image/png',
 				'purpose': 'maskable',
 			}, {
 				// 空文字列の場合右辺を使いたいため
 				// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-				'src': instance.app512IconUrl || '/static-assets/icons/512.png',
-				'sizes': '512x512',
+				'src': instance.app769IconUrl || '/static-assets/icons/None-769.png',
+				'sizes': '769x769',
+				'type': 'image/png',
+				'purpose': 'maskable',
+			}, {
+				// 空文字列の場合右辺を使いたいため
+				// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+				'src': instance.app1024IconUrl || '/static-assets/icons/None-1024.png',
+				'sizes': '1024x1024',
 				'type': 'image/png',
 				'purpose': 'maskable',
 			}, {
 				'src': '/static-assets/splash.png',
-				'sizes': '300x300',
+				'sizes': '1024x1024',
 				'type': 'image/png',
 				'purpose': 'any',
 			}],
