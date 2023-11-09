@@ -171,7 +171,7 @@ export class ClientServerService {
 			clientAssetsBaseUrl: this.config.clientAssetsBaseUrl,
 			instanceName: meta.name ?? 'CherryPick',
 			icon: meta.iconUrl,
-			appleTouchIcon: meta.app512IconUrl,
+			appleTouchIcon: meta.appleIconUrl,
 			themeColor: meta.themeColor,
 			serverErrorImageUrl: meta.serverErrorImageUrl ?? 'https://xn--931a.moe/assets/error.jpg',
 			infoImageUrl: meta.infoImageUrl ?? 'https://xn--931a.moe/assets/info.jpg',

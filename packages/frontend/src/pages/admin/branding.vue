@@ -15,6 +15,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts._serverSettings.iconUrl }}</template>
 					</MkInput>
 
+					<MkInput v-model="appleIconUrl" type="url">
+						<template #prefix><i class="ti ti-link"></i></template>
+						<template #label>Apple Touch Icon URL</template>
+					</MkInput>
+
 					<MkInput v-model="app192IconUrl" type="url">
 						<template #prefix><i class="ti ti-link"></i></template>
 						<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/192px)</template>
@@ -112,6 +117,7 @@ import MkColorInput from '@/components/MkColorInput.vue';
 import { host } from '@/config.js';
 
 let iconUrl: string | null = $ref(null);
+let appleIconUrl: string | null = $ref(null);
 let app192IconUrl: string | null = $ref(null);
 let app512IconUrl: string | null = $ref(null);
 let bannerUrl: string | null = $ref(null);
@@ -127,6 +133,7 @@ let manifestJsonOverride: string = $ref('{}');
 async function init() {
 	const meta = await os.api('admin/meta');
 	iconUrl = meta.iconUrl;
+	appleIconUrl = meta.appleIconUrl;
 	app192IconUrl = meta.app192IconUrl;
 	app512IconUrl = meta.app512IconUrl;
 	bannerUrl = meta.bannerUrl;
@@ -143,6 +150,7 @@ async function init() {
 function save() {
 	os.apiWithDialog('admin/update-meta', {
 		iconUrl,
+		appleIconUrl,
 		app192IconUrl,
 		app512IconUrl,
 		bannerUrl,

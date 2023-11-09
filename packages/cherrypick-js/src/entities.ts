@@ -401,6 +401,7 @@ export type AdminInstanceMetadata = DetailedInstanceMetadata & {
 	// TODO: There are more fields.
 	blockedHosts: string[];
 	silencedHosts: string[];
+	appleIconUrl: string | null;
 	app192IconUrl: string | null;
 	app512IconUrl: string | null;
 	manifestJsonOverride: string;
