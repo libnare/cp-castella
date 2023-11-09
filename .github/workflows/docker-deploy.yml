@@ -24,7 +24,7 @@ jobs:
           android: true
           dotnet: true
           haskell: true
-          large-packages: true
+          large-packages: false
           swap-storage: true
       - name: Check out the repo
         uses: actions/checkout@v4.1.1
@@ -89,7 +89,7 @@ jobs:
           mv built/_vite_ built/vite
           mv built ${{ env.CLIENT_ASSETS_DIR }}
           echo ${{ env.COMMIT_SHA_FULL }} > ${{ env.CLIENT_ASSETS_DIR }}/commit_sha
-          echo "${{ secrets.UPLOAD_SCRIPT }}" | base64 -d | node
+          gcloud storage cp --project ${{ secrets.GCP_PROJECT_ID }} --recursive ${{ env.CLIENT_ASSETS_DIR }} gs://${{ secrets.GCS_BUCKET_NAME }}/static/
           rm -rf ${{ env.CLIENT_ASSETS_DIR }}/commit_sha
           mv ${{ env.CLIENT_ASSETS_DIR }}/vite ${{ env.CLIENT_ASSETS_DIR }}/_vite_
           mv ${{ env.CLIENT_ASSETS_DIR }}/assets ${{ env.CLIENT_ASSETS_DIR }}/_frontend_dist_
