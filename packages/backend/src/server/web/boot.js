@@ -78,7 +78,7 @@
 			lang = 'en-US';
 		}
 
-		const localRes = await window.fetch(`${CLIENT_ASSETS_BASE_URL}/assets/locales/${lang}.${v}.json`);
+		const localRes = await window.fetch(`${CLIENT_ASSETS_BASE_URL}/assets/locales/${encodeURIComponent(`${lang}.${v}`)}.json`);
 		if (localRes.status === 200) {
 			localStorage.setItem('lang', lang);
 			localStorage.setItem('locale', await localRes.text());

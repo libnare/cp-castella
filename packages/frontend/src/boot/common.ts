@@ -103,7 +103,7 @@ export async function common(createVue: () => App<Element>) {
 	const localeVersion = miLocalStorage.getItem('localeVersion');
 	const localeOutdated = (localeVersion == null || localeVersion !== version || lastBasedMisskeyVersion !== basedMisskeyVersion);
 	if (localeOutdated) {
-		const res = await window.fetch(`${_CLIENT_ASSETS_BASE_URL_}/assets/locales/${lang}.${version}.json`);
+		const res = await window.fetch(`${_CLIENT_ASSETS_BASE_URL_}/assets/locales/${encodeURIComponent(`${lang}.${version}`)}.json`);
 		if (res.status === 200) {
 			const newLocale = await res.text();
 			const parsedNewLocale = JSON.parse(newLocale);
