@@ -49,7 +49,6 @@ import type { ApLoggerService } from '../ApLoggerService.js';
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { ApImageService } from './ApImageService.js';
 import type { IActor, IObject } from '../type.js';
-import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
 
 const nameLength = 128;
 const summaryLength = 2048;
