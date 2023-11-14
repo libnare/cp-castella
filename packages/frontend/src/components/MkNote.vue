@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div style="container-type: inline-size;">
 			<p v-if="appearNote.cw != null" :class="$style.cw">
-				<Mfm v-if="appearNote.cw != ''" :text="appearNote.cw" :author="appearNote.user" :nyaize="'account'"/>
+				<Mfm v-if="appearNote.cw != ''" :text="appearNote.cw" :author="appearNote.user" :nyaize="noNyaize ? false : 'account'"/>
 				<MkCwButton v-model="showContent" :note="appearNote" style="margin: 4px 0;"/>
 			</p>
 			<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
@@ -80,12 +80,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:parsedNodes="parsed"
 						:text="appearNote.text"
 						:author="appearNote.user"
-						:nyaize="'account'"
+						:nyaize="noNyaize ? false : 'account'"
 						:emojiUrls="appearNote.emojis"
 						:enableEmojiMenu="true"
 						:enableEmojiMenuReaction="true"
 					/>
-					<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && appearNote.text" style="padding-top: 5px; color: var(--accent);">
+					<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && appearNote.text" style="padding-top: 5px; color: var(--accent);">
 						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
 						<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
 					</div>
@@ -93,12 +93,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkLoading v-if="translating" mini/>
 						<div v-else>
 							<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-							<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :emojiUrls="appearNote.emojis"/>
+							<Mfm :text="translation.text" :author="appearNote.user" :nyaize="false" :emojiUrls="appearNote.emojis"/>
 							<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 								<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 								<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 							</div>
 						</div>
+					</div>
+					<div v-if="viewTextSource">
+						<hr style="margin: 10px 0;">
+						<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
+						<button class="_button" style="padding-top: 5px; color: var(--accent);" @mousedown="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 					</div>
 				</div>
 				<div v-if="appearNote.files.length > 0">
@@ -285,6 +290,8 @@ const isDeleted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref<any>(null);
 const translating = ref(false);
+const viewTextSource = ref(false);
+const noNyaize = ref(false);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || (appearNote.visibility === 'followers' && appearNote.userId === $i.id));
 let renoteCollapsed = $ref(defaultStore.state.collapseRenotes && isRenote && (($i && ($i.id === note.userId || $i.id === appearNote.userId)) || (appearNote.myReaction != null)));
 
@@ -523,7 +530,7 @@ function onContextmenu(ev: MouseEvent): void {
 		ev.preventDefault();
 		react();
 	} else {
-		const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, menuButton, isDeleted, currentClip: currentClip?.value });
+		const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
 		os.contextMenu(menu, ev).then(focus).finally(cleanup);
 	}
 }
@@ -533,7 +540,7 @@ function menu(viaKeyboard = false): void {
 		return;
 	}
 
-	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, menuButton, isDeleted, currentClip: currentClip?.value });
+	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);

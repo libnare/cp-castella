@@ -294,6 +294,16 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				}))
 				.getMany();
 
+			console.log(this.adsRepository.createQueryBuilder('ads')
+				.where('ads.expiresAt > :now', { now: new Date() })
+				.andWhere('ads.startsAt <= :now', { now: new Date() })
+				.andWhere(new Brackets(qb => {
+					// 曜日のビットフラグを確認する
+					qb.where('ads.dayOfWeek & :dayOfWeek > 0', { dayOfWeek: 1 << new Date().getDay() })
+						.orWhere('ads.dayOfWeek = 0');
+				}))
+				.getQuery());
+
 			const response: any = {
 				maintainerName: instance.maintainerName,
 				maintainerEmail: instance.maintainerEmail,

@@ -14,13 +14,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:parsedNodes="parsed"
 			:text="note.text"
 			:author="note.user"
-			:nyaize="'account'"
+			:nyaize="noNyaize ? false : 'account'"
 			:emojiUrls="note.emojis"
 			:enableEmojiMenu="true"
 			:enableEmojiMenuReaction="true"
 		/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
-		<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && note.text" style="padding-top: 5px; color: var(--accent);">
+		<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && note.text" style="padding-top: 5px; color: var(--accent);">
 			<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
 			<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
 		</div>
@@ -28,12 +28,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkLoading v-if="translating" mini/>
 			<div v-else>
 				<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-				<Mfm :text="translation.text" :author="note.user" :nyaize="'account'" :emojiUrls="note.emojis"/>
+				<Mfm :text="translation.text" :author="note.user" :nyaize="false" :emojiUrls="note.emojis"/>
 				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 					<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 					<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 				</div>
 			</div>
+		</div>
+		<div v-if="viewTextSource">
+			<hr style="margin: 10px 0;">
+			<pre style="margin: initial;"><small>{{ note.text }}</small></pre>
+			<button class="_button" style="padding-top: 5px; color: var(--accent);" @mousedown="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 		</div>
 		<div v-show="showContent">
 			<div v-if="note.files.length > 0">
@@ -163,6 +168,9 @@ const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', nul
 const showContent = ref(true);
 const translation = ref<any>(null);
 const translating = ref(false);
+
+const viewTextSource = ref(false);
+const noNyaize = ref(false);
 
 const parsed = props.note.text ? mfm.parse(props.note.text) : null;
 
@@ -367,7 +375,7 @@ function menu(viaKeyboard = false): void {
 		return;
 	}
 
-	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, menuButton, isDeleted, currentClip: currentClip?.value });
+	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);

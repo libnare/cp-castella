@@ -38,6 +38,7 @@ import { MetaService } from '@/core/MetaService.js';
 import { DriveFileEntityService } from '@/core/entities/DriveFileEntityService.js';
 import type { AccountMoveService } from '@/core/AccountMoveService.js';
 import { checkHttps } from '@/misc/check-https.js';
+import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
 import { getApId, getApType, getOneApHrefNullable, isActor, isCollection, isCollectionOrOrderedCollection, isPropertyValue } from '../type.js';
 import { extractApHashtags } from './tag.js';
 import type { OnModuleInit } from '@nestjs/common';

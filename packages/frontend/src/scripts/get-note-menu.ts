@@ -125,6 +125,8 @@ export function getNoteMenu(props: {
 	menuButton: Ref<HTMLElement>;
 	translation: Ref<any>;
 	translating: Ref<boolean>;
+	viewTextSource: Ref<boolean>;
+	noNyaize: Ref<boolean>;
 	isDeleted: Ref<boolean>;
 	currentClip?: Misskey.entities.Clip;
 }) {
@@ -175,8 +177,40 @@ export function getNoteMenu(props: {
 		});
 	}
 
-	function edit(): void {
-		os.post({ initialNote: appearNote, renote: appearNote.renote, reply: appearNote.reply, channel: appearNote.channel, updateMode: true });
+	async function edit(): Promise<void> {
+		const neverShowInfo = miLocalStorage.getItem('neverShowNoteEditInfo');
+
+		if (neverShowInfo !== 'true') {
+			const confirm = await os.actions({
+				type: 'warning',
+				title: i18n.ts.disableNoteEditConfirm,
+				text: i18n.ts.disableNoteEditConfirmWarn,
+				actions: [
+					{
+						value: 'yes' as const,
+						text: i18n.ts.disableNoteEditOk,
+					},
+					{
+						value: 'neverShow' as const,
+						text: `${i18n.ts.disableNoteEditOk} (${i18n.ts.neverShow})`,
+						danger: true,
+					},
+					{
+						value: 'no' as const,
+						text: i18n.ts.cancel,
+						primary: true,
+					},
+				],
+			});
+			if (confirm.canceled) return;
+			if (confirm.result === 'no') return;
+
+			if (confirm.result === 'neverShow') {
+				miLocalStorage.setItem('neverShowNoteEditInfo', 'true');
+			}
+		}
+
+		await os.post({ initialNote: appearNote, renote: appearNote.renote, reply: appearNote.reply, channel: appearNote.channel, updateMode: true });
 	}
 
 	function copyEdit(): void {
@@ -279,6 +313,18 @@ export function getNoteMenu(props: {
 		props.translation.value = res;
 	}
 
+	function showViewTextSource(): void {
+		props.viewTextSource.value = true;
+	}
+
+	function noNyaizeText(): void {
+		props.noNyaize.value = true;
+	}
+
+	function revertNoNyaizeText(): void {
+		props.noNyaize.value = false;
+	}
+
 	let menu: MenuItem[];
 	if ($i) {
 		const statePromise = os.api('notes/state', {
@@ -310,7 +356,7 @@ export function getNoteMenu(props: {
 				text: i18n.ts.copyContent,
 				action: copyContent,
 			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-			, (appearNote.url || appearNote.uri) ? {
+			, (appearNote.url ?? appearNote.uri) ? {
 				icon: 'ti ti-external-link',
 				text: i18n.ts.showOnRemote,
 				action: () => {
@@ -327,6 +373,32 @@ export function getNoteMenu(props: {
 				text: i18n.ts.translate,
 				action: translate,
 			} : undefined,
+			(appearNote.userId === $i.id) ? null : undefined,
+			(appearNote.userId === $i.id) ? {
+				icon: 'ti ti-edit',
+				text: i18n.ts.copyAndEdit,
+				action: copyEdit,
+			} : undefined,
+			appearNote.userId === $i.id ? {
+				icon: 'ti ti-edit',
+				text: i18n.ts.deleteAndEdit,
+				action: delEdit,
+			} : undefined,
+			null,
+			{
+				icon: 'ti ti-code',
+				text: i18n.ts.viewTextSource,
+				action: showViewTextSource,
+			},
+			props.noNyaize.value ? {
+				icon: 'ti ti-paw-filled',
+				text: i18n.ts.revertNoNyaization,
+				action: revertNoNyaizeText,
+			} : {
+				icon: 'ti ti-paw-off',
+				text: i18n.ts.noNyaization,
+				action: noNyaizeText,
+			},
 			null,
 			statePromise.then(state => state.isFavorited ? {
 				icon: 'ti ti-star-off',

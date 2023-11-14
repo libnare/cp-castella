@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</header>
 		<div :class="$style.noteContent">
 			<p v-if="appearNote.cw != null" :class="$style.cw">
-				<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'account'"/>
+				<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="noNyaize ? false : 'account'"/>
 				<MkCwButton v-model="showContent" :note="appearNote"/>
 			</p>
 			<div v-show="appearNote.cw == null || showContent">
@@ -99,13 +99,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:parsedNodes="parsed"
 					:text="appearNote.text"
 					:author="appearNote.user"
-					:nyaize="'account'"
+					:nyaize="noNyaize ? false : 'account'"
 					:emojiUrls="appearNote.emojis"
 					:enableEmojiMenu="true"
 					:enableEmojiMenuReaction="true"
 				/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
-				<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && appearNote.text" style="padding-top: 5px; color: var(--accent);">
+				<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && appearNote.text" style="padding-top: 5px; color: var(--accent);">
 					<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
 					<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
 				</div>
@@ -113,12 +113,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkLoading v-if="translating" mini/>
 					<div v-else>
 						<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-						<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :emojiUrls="appearNote.emojis"/>
+						<Mfm :text="translation.text" :author="appearNote.user" :nyaize="false" :emojiUrls="appearNote.emojis"/>
 						<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 							<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 							<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 						</div>
 					</div>
+				</div>
+				<div v-if="viewTextSource">
+					<hr style="margin: 10px 0;">
+					<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
+					<button class="_button" style="padding-top: 5px; color: var(--accent);" @mousedown="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 				</div>
 				<div v-if="appearNote.files.length > 0">
 					<MkMediaList :mediaList="appearNote.files"/>
@@ -350,6 +355,8 @@ const isDeleted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
+const viewTextSource = ref(false);
+const noNyaize = ref(false);
 const parsed = appearNote.text ? mfm.parse(appearNote.text) : null;
 const urls = parsed ? extractUrlFromMfm(parsed) : null;
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
@@ -561,13 +568,13 @@ function onContextmenu(ev: MouseEvent): void {
 		ev.preventDefault();
 		react();
 	} else {
-		const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, menuButton, isDeleted });
+		const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted });
 		os.contextMenu(menu, ev).then(focus).finally(cleanup);
 	}
 }
 
 function menu(viaKeyboard = false): void {
-	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, menuButton, isDeleted });
+	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);
