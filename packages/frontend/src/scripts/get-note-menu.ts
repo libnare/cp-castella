@@ -431,11 +431,6 @@ export function getNoteMenu(props: {
                         icon: 'ti ti-edit',
                         text: i18n.ts.copyAndEdit,
                         action: copyEdit,
-                    } : undefined
-                    , appearNote.userId === $i.id ? {
-                        icon: 'ti ti-edit',
-                        text: i18n.ts.deleteAndEdit,
-                        action: delEdit,
                     } : undefined],
             },
             {
@@ -472,6 +467,11 @@ export function getNoteMenu(props: {
                             icon: 'ti ti-edit',
                             text: i18n.ts.edit,
                             action: edit,
+                        } : undefined,
+                        appearNote.userId === $i.id ? {
+                            icon: 'ti ti-edit',
+                            text: i18n.ts.deleteAndEdit,
+                            action: delEdit,
                         } : undefined,
                         {
                             icon: 'ti ti-trash',
