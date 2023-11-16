@@ -29,9 +29,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 > 문제가 발생하면 <b>'설정 - 캐시 비우기'</b>를 진행하거나, <b>브라우저 캐시를 삭제</b>하십시오.
 
 ## 4.5.0
-출시일: unreleased<br>
+출시일: 2023/11/16<br>
 기반 Misskey 버전: 2023.11.0<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023110](CHANGELOG.md#2023110) 문서를 참고하십시오.
 
 ### General
 - Change: 프로필과 노트를 번역할 때 nyaize를 사용하지 않음
@@ -54,6 +54,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 요약 탭의 하이라이트를 제거 & 노트 탭으로 하이라이트를 이동
   - 요약 탭의 리액션을 제거 & 노트 탭으로 리액션을 이동
 - Enhance: 노트 편집 시 관련 안내 추가
+- Enhance: 계정을 고양이로 설정하면 자동으로 노트 작성 버튼을 '노트'에서 '냥!'으로 변경함
+  - 임의로 해당 옵션을 조작한 경우에는 설정을 변경하지 않음
+- Enhance: 노트 메뉴를 보기 쉽도록 자주 사용하지 않는 메뉴 이동
 - chore: 이모티콘 이름 필드에서 autocapitalize를 끄기 (misskey-dev/misskey#12139)
 - Fix: 외부 리소스 설치 페이지에서 페이지 캐시가 작동하는 문제 수정 (misskey-dev/misskey#12105)
 - Fix: 채널 생성/업데이트 시 실패하면 아무 것도 표시되지 않는 문제 수정 misskey-dev/misskey#11983 (misskey-dev/misskey#12142)
@@ -68,6 +71,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: '모든 미디어 노트 간략화하기' 옵션을 활성화하면 미디어가 아닌 노트에도 '닫기' 버튼이 표시될 수 있음
 - Fix: 유저 프로필에서 헤더 디자인이 잘못 표시되는 문제
 - Fix: 비로그인 상태에서 노트 번역을 시도할 수 있음
+- Fix: 클립이 없는 상태에서 노트 메뉴의 클립 추가 버튼 위에 줄이 표시됨
 
 ### Server
 - Feat: 연합에서 노트 수정이 반영됨 (libnare/cp-castella#1)
