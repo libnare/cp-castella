@@ -16,7 +16,7 @@ import type { Config } from '@/config.js';
 import type { EmojisRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
 import type Logger from '@/logger.js';
-import * as Acct from '@/misc/acct.js';
+import * as Acct from '@libnare/mk-square';
 import { genIdenticon } from '@/misc/gen-identicon.js';
 import { createTemp } from '@/misc/create-temp.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';

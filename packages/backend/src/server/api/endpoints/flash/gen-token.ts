@@ -5,7 +5,7 @@
 
 import { Injectable } from '@nestjs/common';
 import ms from 'ms';
-import { secureRndstr } from '@/misc/secure-rndstr.js';
+import { secureRndstr } from '@libnare/mk-square';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { CacheService } from '@/core/CacheService.js';
 

@@ -9,7 +9,7 @@ import type { MiAntenna } from '@/models/Antenna.js';
 import type { MiNote } from '@/models/Note.js';
 import type { MiUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
-import * as Acct from '@/misc/acct.js';
+import * as Acct from '@libnare/mk-square';
 import type { Packed } from '@/misc/json-schema.js';
 import { DI } from '@/di-symbols.js';
 import type { AntennasRepository, UserGroupJoiningsRepository, UserListMembershipsRepository } from '@/models/_.js';

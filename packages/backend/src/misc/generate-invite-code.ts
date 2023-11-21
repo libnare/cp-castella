@@ -3,14 +3,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { secureRndstr } from './secure-rndstr.js';
+import { secureRndstr } from '@libnare/mk-square';
 
 const CHARS = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'; // [0-9A-Z] w/o [01IO] (32 patterns)
 
 export function generateInviteCode(): string {
-	const code = secureRndstr(8, {
-		chars: CHARS,
-	});
+	const code = secureRndstr(8, CHARS);
 
 	const uniqueId = [];
 	let n = Math.floor(Date.now() / 1000 / 60);

@@ -18,7 +18,7 @@ import { GetterService } from '@/server/api/GetterService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 
-import * as Acct from '@/misc/acct.js';
+import * as Acct from '@libnare/mk-square';
 
 export const meta = {
 	tags: ['users'],

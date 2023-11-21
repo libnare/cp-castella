@@ -13,7 +13,7 @@ import { EmailService } from '@/core/EmailService.js';
 import type { Config } from '@/config.js';
 import { DI } from '@/di-symbols.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
-import { L_CHARS, secureRndstr } from '@/misc/secure-rndstr.js';
+import { L_CHARS, secureRndstr } from '@libnare/mk-square';
 import { UserAuthService } from '@/core/UserAuthService.js';
 import { ApiError } from '../../error.js';
 
@@ -109,7 +109,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			this.globalEventService.publishMainStream(me.id, 'meUpdated', iObj);
 
 			if (ps.email != null) {
-				const code = secureRndstr(16, { chars: L_CHARS });
+				const code = secureRndstr(16, L_CHARS);
 
 				await this.userProfilesRepository.update(me.id, {
 					emailVerifyCode: code,

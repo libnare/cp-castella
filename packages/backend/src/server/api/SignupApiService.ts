@@ -18,7 +18,7 @@ import { EmailService } from '@/core/EmailService.js';
 import { MiLocalUser } from '@/models/User.js';
 import { FastifyReplyError } from '@/misc/fastify-reply-error.js';
 import { bindThis } from '@/decorators.js';
-import { L_CHARS, secureRndstr } from '@/misc/secure-rndstr.js';
+import { L_CHARS, secureRndstr } from '@libnare/mk-square';
 import { SigninService } from './SigninService.js';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 
@@ -170,7 +170,7 @@ export class SignupApiService {
 				throw new FastifyReplyError(400, 'DENIED_USERNAME');
 			}
 
-			const code = secureRndstr(16, { chars: L_CHARS });
+			const code = secureRndstr(16, L_CHARS);
 
 			// Generate hash of password
 			const salt = await bcrypt.genSalt(8);
