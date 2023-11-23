@@ -734,4 +734,10 @@ export type ModerationLog = {
 } | {
 	type: 'resolveAbuseReport';
 	info: ModerationLogPayloads['resolveAbuseReport'];
+} | {
+	type: 'unsetUserAvatar';
+	info: ModerationLogPayloads['unsetUserAvatar'];
+} | {
+	type: 'unsetUserBanner';
+	info: ModerationLogPayloads['unsetUserBanner'];
 });

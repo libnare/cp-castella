@@ -122,9 +122,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</span>
 							</span>
 						</a>
-						<a href="https://github.com/taichanNE30" target="_blank" :class="$style.contributor">
+						<a href="https://github.com/tai-cha" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/40626578?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@taichanNE30
+							<span :class="$style.contributorUsername">@tai-cha
 								<span :class="$style.contributorClient">
 									<span :class="$style.misskey">Misskey</span>
 								</span>
@@ -237,10 +237,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js';
 import { $i } from '@/account.js';
 
-const patronsWithIconWithCherryPick = [{
-	name: '아르페',
-	icon: 'https://c10.patreonusercontent.com/4/patreon-media/p/user/12167100/e2bc361ba5864c0ab40fc435626f4754/eyJ3IjoyMDB9/1.jpeg?token-time=2145916800&token-hash=fTnx80yG8wG6EdVyv8zDULe8qKnrRlnUV5PEVFS5CfA%3D',
-}];
+const patronsWithIconWithCherryPick = [];
 
 const patronsWithIconWithMisskey = [{
 	name: 'カイヤン',
