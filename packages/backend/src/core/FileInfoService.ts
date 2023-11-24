@@ -13,11 +13,9 @@ import * as fileType from 'file-type';
 import FFmpeg from 'fluent-ffmpeg';
 import isSvg from 'is-svg';
 import probeImageSize from 'probe-image-size';
-import { type predictionType } from 'nsfwjs';
 import sharp from 'sharp';
 import { encode } from 'blurhash';
 import { createTempDir } from '@/misc/create-temp.js';
-import { AiService } from '@/core/AiService.js';
 import { detectSensitivity } from '@libnare/mk-square';
 import { bindThis } from '@/decorators.js';
 
@@ -50,7 +48,6 @@ const TYPE_SVG = {
 @Injectable()
 export class FileInfoService {
 	constructor(
-		private aiService: AiService,
 	) {
 	}
 
@@ -165,30 +162,16 @@ export class FileInfoService {
 		let sensitive = false;
 		let porn = false;
 
-		function judgePrediction(result: readonly predictionType[]): [sensitive: boolean, porn: boolean] {
-			let sensitive = false;
-			let porn = false;
-
-			if ((result.find(x => x.className === 'Sexy')?.probability ?? 0) > sensitiveThreshold) sensitive = true;
-			if ((result.find(x => x.className === 'Hentai')?.probability ?? 0) > sensitiveThreshold) sensitive = true;
-			if ((result.find(x => x.className === 'Porn')?.probability ?? 0) > sensitiveThreshold) sensitive = true;
-
-			if ((result.find(x => x.className === 'Porn')?.probability ?? 0) > sensitiveThresholdForPorn) porn = true;
-
-			return [sensitive, porn];
-		}
-
 		if ([
 			'image/jpeg',
 			'image/png',
 			'image/webp',
-			'image/gif',
 		].includes(mime)) {
 			const result = await detectSensitivity(source, mime, sensitiveThreshold, sensitiveThresholdForPorn, false);
 			if (result) {
 				[sensitive, porn] = [result.sensitive, result.porn]
 			}
-		} else if (analyzeVideo && (mime === 'image/apng' || mime.startsWith('video/'))) {
+		} else if (analyzeVideo && (mime === 'image/apng' || mime === 'image/gif' || mime.startsWith('video/'))) {
 			const [outDir, disposeOutDir] = await createTempDir();
 			try {
 				const command = FFmpeg()
@@ -231,7 +214,7 @@ export class FileInfoService {
 					.format('image2')
 					.output(join(outDir, '%d.png'))
 					.outputOptions(['-vsync', '0']); // 可変フレームレートにすることで穴埋めをさせない
-				const results: ReturnType<typeof judgePrediction>[] = [];
+				const results = [[sensitive, porn]];
 				let frameIndex = 0;
 				let targetIndex = 0;
 				let nextIndex = 1;
@@ -243,9 +226,9 @@ export class FileInfoService {
 						}
 						targetIndex = nextIndex;
 						nextIndex += index; // fibonacci sequence によってフレーム数制限を掛ける
-						const result = await this.aiService.detectSensitive(path);
+						const result = await detectSensitivity(path, 'image/png', sensitiveThreshold, sensitiveThresholdForPorn, true)
 						if (result) {
-							results.push(judgePrediction(result));
+							results.push([result.sensitive, result.porn]);
 						}
 					} finally {
 						fs.promises.unlink(path);
