@@ -60,6 +60,7 @@ export type Endpoints = {
 	'admin/emoji/list-remote': { req: TODO; res: TODO; };
 	'admin/emoji/list': { req: TODO; res: TODO; };
 	'admin/emoji/remove': { req: TODO; res: TODO; };
+	'admin/emoji/steal': { req: TODO; res: TODO; };
 	'admin/emoji/update': { req: TODO; res: TODO; };
 	'admin/federation/delete-all-files': { req: { host: string; }; res: null; };
 	'admin/federation/refresh-remote-instance-metadata': { req: TODO; res: TODO; };
@@ -439,7 +440,8 @@ export type Endpoints = {
 		injectFeaturedNote?: boolean;
 		receiveAnnouncementEmail?: boolean;
 		alwaysMarkNsfw?: boolean;
-		mutedWords?: string[][];
+		mutedWords?: (string[] | string)[];
+		hardMutedWords?: (string[] | string)[];
 		notificationRecieveConfig?: any;
 		emailNotificationTypes?: string[];
 		alsoKnownAs?: string[];
@@ -651,7 +653,7 @@ export type Endpoints = {
 			$default: UserDetailed;
 		};
 	}; };
-
+	'users/stats': { req: TODO; res: TODO; };
 	// fetching external data
 	'fetch-rss': { req: { url: string; }; res: TODO; };
 	'fetch-external-resources': {

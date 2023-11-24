@@ -30,6 +30,7 @@ import { customEmojisMap } from '@/custom-emojis.js';
 import * as os from '@/os.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
 
 const props = defineProps<{
 	name: string;
@@ -92,9 +93,18 @@ function onClick(ev: MouseEvent) {
 				copyToClipboard(`:${props.name}:`);
 				os.success();
 			},
-		}, ...(props.menuReaction && react ? [{
-			text: i18n.ts.doReaction,
+		}, ...(props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis) ? [{
+			text: i18n.ts.import,
 			icon: 'ti ti-plus',
+			action: () => {
+				os.apiWithDialog('admin/emoji/steal', {
+					name: customEmojiName.value,
+					host: props.host,
+				});
+			},
+		}] : []), ...(props.menuReaction && react ? [{
+			text: i18n.ts.doReaction,
+			icon: 'ti ti-mood-plus',
 			action: () => {
 				react(`:${props.name}:`);
 			},
