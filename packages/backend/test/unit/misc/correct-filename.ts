@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { correctFilename } from '@/misc/correct-filename.js';
+import { correctFilename } from '@libnare/mk-square';
 
 describe(correctFilename, () => {
 	it('no ext to null', () => {

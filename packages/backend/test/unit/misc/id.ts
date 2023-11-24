@@ -5,8 +5,8 @@
 
 import { ulid } from 'ulid';
 import { describe, test, expect } from '@jest/globals';
-import { aidRegExp, genAid, parseAid } from '@/misc/id/aid.js';
-import { aidxRegExp, genAidx, parseAidx } from '@/misc/id/aidx.js';
+import { aidRegExp, genAid, parseAid } from '@libnare/mk-square';
+import { aidxRegExp, genAidx, parseAidx } from '@libnare/mk-square';
 import { genMeid, meidRegExp, parseMeid } from '@/misc/id/meid.js';
 import { genMeidg, meidgRegExp, parseMeidg } from '@/misc/id/meidg.js';
 import { genObjectId, objectIdRegExp, parseObjectId } from '@/misc/id/object-id.js';
@@ -16,14 +16,14 @@ describe('misc:id', () => {
 	test('aid', () => {
 		const date = Date.now();
 		const gotAid = genAid(date);
-		expect(gotAid).toMatch(aidRegExp);
+		expect(gotAid).toMatch(new RegExp(aidRegExp));
 		expect(parseAid(gotAid).date.getTime()).toBe(date);
 	});
 
 	test('aidx', () => {
 		const date = Date.now();
 		const gotAidx = genAidx(date);
-		expect(gotAidx).toMatch(aidxRegExp);
+		expect(gotAidx).toMatch(new RegExp(aidxRegExp));
 		expect(parseAidx(gotAidx).date.getTime()).toBe(date);
 	});
 
