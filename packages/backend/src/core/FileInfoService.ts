@@ -18,6 +18,7 @@ import sharp from 'sharp';
 import { encode } from 'blurhash';
 import { createTempDir } from '@/misc/create-temp.js';
 import { AiService } from '@/core/AiService.js';
+import { detectSensitivity } from '@libnare/mk-square';
 import { bindThis } from '@/decorators.js';
 
 export type FileInfo = {
@@ -181,10 +182,11 @@ export class FileInfoService {
 			'image/jpeg',
 			'image/png',
 			'image/webp',
+			'image/gif',
 		].includes(mime)) {
-			const result = await this.aiService.detectSensitive(source);
+			const result = await detectSensitivity(source, mime, sensitiveThreshold, sensitiveThresholdForPorn, false);
 			if (result) {
-				[sensitive, porn] = judgePrediction(result);
+				[sensitive, porn] = [result.sensitive, result.porn]
 			}
 		} else if (analyzeVideo && (mime === 'image/apng' || mime.startsWith('video/'))) {
 			const [outDir, disposeOutDir] = await createTempDir();
