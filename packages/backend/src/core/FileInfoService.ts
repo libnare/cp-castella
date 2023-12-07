@@ -167,7 +167,7 @@ export class FileInfoService {
 			'image/png',
 			'image/webp',
 		].includes(mime)) {
-			const result = await detectSensitivity(source, mime, sensitiveThreshold, sensitiveThresholdForPorn, false);
+			const result = await detectSensitivity(source, mime, sensitiveThreshold, sensitiveThresholdForPorn);
 			if (result) {
 				[sensitive, porn] = [result.sensitive, result.porn]
 			}
@@ -226,7 +226,7 @@ export class FileInfoService {
 						}
 						targetIndex = nextIndex;
 						nextIndex += index; // fibonacci sequence によってフレーム数制限を掛ける
-						const result = await detectSensitivity(path, 'image/png', sensitiveThreshold, sensitiveThresholdForPorn, true)
+						const result = await detectSensitivity(path, 'image/png', sensitiveThreshold, sensitiveThresholdForPorn)
 						if (result) {
 							results.push([result.sensitive, result.porn]);
 						}
