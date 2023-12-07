@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="$style.root">
+<div :class="$style.root" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick">
 	<div style="display: flex; padding-bottom: 10px;">
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
 		<div :class="$style.main">
@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div>
 		<p v-if="note.cw != null" :class="$style.cw">
 			<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'respect'" :emojiUrls="note.emojis"/>
-			<MkCwButton v-model="showContent" :note="note"/>
+			<MkCwButton v-model="showContent" :text="note.text" :files="note.files" :poll="note.poll"/>
 		</p>
 		<div v-show="note.cw == null || showContent">
 			<MkSubNoteContent :class="$style.text" :note="note"/>
@@ -31,22 +31,30 @@ import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import { $i } from '@/account.js';
 import { globalEvents } from '@/events.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter, useRouter } from '@/router.js';
 import { defaultStore } from '@/store.js';
-
-let showEl = $ref(false);
+import { notePage } from '@/filters/note.js';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
 }>();
 
+let showEl = $ref(false);
+
 const showContent = $ref(false);
+const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
+const router = useRouter();
 
 onMounted(() => {
 	globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });
+
+function noteClick(ev: MouseEvent) {
+	if (document.getSelection().type === 'Range' || !expandOnNoteClick) ev.stopPropagation();
+	else router.push(notePage(props.note));
+}
 </script>
 
 <style lang="scss" module>
@@ -79,7 +87,7 @@ onMounted(() => {
 }
 
 .cw {
-	cursor: default;
+	// cursor: default;
 	display: grid;
 	margin: 0;
 	padding: 0;
@@ -87,7 +95,7 @@ onMounted(() => {
 }
 
 .text {
-	cursor: default;
+	// cursor: default;
 	margin: 0;
 	padding: 0;
 }

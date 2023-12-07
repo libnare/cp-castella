@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:enableEmojiMenuReaction="true"
 		/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
-		<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && note.text" style="padding-top: 5px; color: var(--accent);">
+		<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && note.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
 			<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
 			<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
 		</div>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkLoading v-if="translating" mini/>
 			<div v-else>
 				<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-				<Mfm :text="translation.text" :author="note.user" :nyaize="false" :emojiUrls="note.emojis"/>
+				<Mfm :text="translation.text" :author="note.user" :nyaize="noNyaize ? false : 'respect'" :emojiUrls="note.emojis" @click.stop/>
 				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 					<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 					<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
@@ -42,30 +42,30 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-show="showContent">
 			<div v-if="note.files.length > 0">
-				<MkMediaList :mediaList="note.files"/>
+				<MkMediaList :mediaList="note.files" @click.stop/>
 			</div>
 			<div v-if="note.poll">
-				<MkPoll :note="note"/>
+				<MkPoll :note="note" @click.stop/>
 			</div>
 		</div>
 	</div>
-	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll) && collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.fade" class="_button" @click="collapsed = false;">
+	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll) && collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.fade" class="_button" @click.stop="collapsed = false;">
 		<span :class="$style.fadeLabel">
 			{{ i18n.ts.showMore }}
 			<span v-if="note.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
 		</span>
 	</button>
-	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll) && !collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.showLess" class="_button" @click="collapsed = true;">
+	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll) && !collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.showLess" class="_button" @click.stop="collapsed = true;">
 		<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 	</button>
 	<div v-if="showSubNoteFooterButton">
-		<MkReactionsViewer v-show="note.cw == null || showContent" :note="note" :maxNumber="16" @mockUpdateMyReaction="emitUpdReaction">
+		<MkReactionsViewer v-show="note.cw == null || showContent" :note="note" :maxNumber="16" @click.stop @mockUpdateMyReaction="emitUpdReaction">
 			<template #more>
 				<div :class="$style.reactionOmitted">{{ i18n.ts.more }}</div>
 			</template>
 		</MkReactionsViewer>
 		<footer :class="$style.footer">
-			<button v-if="!note.isHidden" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.reply" :class="$style.footerButton" class="_button" @click="reply()">
+			<button v-if="!note.isHidden" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.reply" :class="$style.footerButton" class="_button" @click.stop="reply()">
 				<i class="ti ti-arrow-back-up"></i>
 				<p v-if="note.repliesCount > 0" :class="$style.footerButtonCount">{{ note.repliesCount }}</p>
 			</button>
@@ -94,10 +94,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i v-if="note.myReaction == null" v-tooltip="i18n.ts.reaction" class="ti ti-mood-plus"></i>
 				<i v-else v-tooltip="i18n.ts.editReaction" class="ti ti-mood-edit"></i>
 			</button>
-			<button v-if="note.myReaction != null && note.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.removeReaction" :class="$style.footerButton" class="_button" @click="undoReact(note)">
+			<button v-if="note.myReaction != null && note.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.removeReaction" :class="$style.footerButton" class="_button" @click.stop="undoReact(note)">
 				<i class="ti ti-heart-minus"></i>
 			</button>
-			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click="quote()">
+			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click.stop="quote()">
 				<i class="ti ti-quote"></i>
 			</button>
 			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @mousedown="clip()">
@@ -119,6 +119,7 @@ import { computed, defineAsyncComponent, inject, provide, Ref, ref, shallowRef, 
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
+import * as sound from '@/scripts/sound.js';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
@@ -141,6 +142,7 @@ import { claimAchievement } from '@/scripts/achievements.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { concat } from '@/scripts/array.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import detectLanguage from '@/scripts/detect-language.js';
 
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;
@@ -278,6 +280,8 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (props.note.reactionAcceptance === 'likeOnly') {
+		sound.play('reaction');
+
 		if (props.mock) {
 			return;
 		}
@@ -315,6 +319,8 @@ async function toggleReaction(reaction) {
 		});
 		if (confirm.canceled) return;
 
+		sound.play('reaction');
+
 		os.api('notes/reactions/delete', {
 			noteId: note.id,
 		}).then(() => {
@@ -326,6 +332,8 @@ async function toggleReaction(reaction) {
 			}
 		});
 	} else {
+		sound.play('reaction');
+
 		os.api('notes/reactions/create', {
 			noteId: note.id,
 			reaction: reaction,
@@ -339,6 +347,8 @@ async function toggleReaction(reaction) {
 function heartReact(): void {
 	pleaseLogin();
 	showMovedDialog();
+
+	sound.play('reaction');
 
 	if (props.mock) {
 		return;
@@ -392,6 +402,12 @@ async function clip() {
 
 	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
 }
+
+const isForeignLanguage: boolean = note.text != null && (() => {
+	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
+	const postLang = detectLanguage(note.text);
+	return postLang !== '' && postLang !== targetLang;
+})();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;

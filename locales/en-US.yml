@@ -1,5 +1,12 @@
 ---
 _lang_: "English"
+cannotBeUsedFunc: "This feature is currently unavailable."
+maxinumLayerError: "You cannot stack more than 6 layers. Please delete other layers."
+layer: "Layer"
+Xcoordinate: "X-Coordinate"
+Ycoordinate: "Y-Coordinate"
+scale: "Scale"
+opacity: "Opacity"
 noteUpdatedAt: "Edited: {date} {time}"
 editReaction: "Edit reactions"
 removeReaction: "Remove reactions"
@@ -504,7 +511,6 @@ share: "Share"
 notFound: "Not found"
 notFoundDescription: "No page corresponding to this URL could be found."
 uploadFolder: "Default folder for uploads"
-cacheClear: "Clear cache"
 markAsReadAllNotifications: "Mark all notifications as read"
 markAsReadAllUnreadNotes: "Mark all notes as read"
 markAsReadAllTalkMessages: "Mark all messages as read"
@@ -1260,6 +1266,8 @@ useGroupedNotifications: "Display grouped notifications"
 signupPendingError: "There was a problem verifying the email address. The link may have expired."
 cwNotationRequired: "If \"Hide content\" is enabled, a description must be provided."
 doReaction: "Add reaction"
+code: "Code"
+tryReloadIfNotApplied: "If the settings are not reflected, please try refresh."
 showUnreadNotificationsCount: "Show the number of unread notifications"
 showCatOnly: "Show only cats"
 additionalPermissionsForFlash: "Allow to add permission to Play"
@@ -1310,6 +1318,8 @@ _cherrypick:
   postFormVisibilityHotkeyDescription: "When writing a note, press Ctrl(control) + Shift to switch the visibility range. The hotkey to make it Local only is Ctrl(command or control) + Alt(option)."
   showRenoteConfirmPopup: "Show confirmation popup when renote"
   showRenoteConfirmPopupDescription: "This setting must have the \"General - Show renote and quote buttons separately\" setting turned on."
+  expandOnNoteClick: "Open note on click"
+  expandOnNoteClickDescription: "If disabled, you can still open 'Details' in the notes menu or by clicking the timestamp."
   displayHeaderNavBarWhenScroll: "Show elements when scrolling (header, floating buttons, navigation bar)"
   _displayHeaderNavBarWhenScroll:
     all: "Display all"
@@ -2589,6 +2599,19 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "Failed to install theme"
       description: "A problem occurred during theme installation. Please try again. Error details can be viewed in the Javascript console."
+_dataSaver:
+  _media:
+    title: "Load media"
+    description: "Prevents images/videos from being loaded automatically. Hidden images/videos will be loaded when tapped."
+  _avatar:
+    title: "User icon image"
+    description: "Animation of user's icon images stops. Since animated images can be larger in file size than normal images, data traffic can be further reduced."
+  _urlPreview:
+    title: "URL preview thumbnail"
+    description: "URL preview thumbnail images will no longer load."
+  _code:
+    title: "Code Highlights"
+    description: "If code highlighting notation is used, such as MFM, it will not be loaded until tapped. Code highlighting requires loading the definition file for each language to be highlighted, but since these files are no longer loaded automatically, a reduction in communication volume can be expected."
 _abuse:
   _resolver:
     1hour: "one hour"

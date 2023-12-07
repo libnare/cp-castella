@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-else>invalid url</span>
 	</div>
 	<div :class="$style.action">
-		<MkButton :small="true" inline @click="playerEnabled = false">
+		<MkButton :small="true" inline @click.stop="playerEnabled = false">
 			<i class="ti ti-x"></i> {{ i18n.ts.disablePlayer }}
 		</MkButton>
 	</div>
@@ -38,14 +38,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		></iframe>
 	</div>
 	<div :class="$style.action">
-		<MkButton :small="true" inline @click="tweetExpanded = false">
+		<MkButton :small="true" inline @click.stop="tweetExpanded = false">
 			<i class="ti ti-x"></i> {{ i18n.ts.close }}
 		</MkButton>
 	</div>
 </template>
 <div v-else>
 	<component :is="self ? 'MkA' : 'a'" :class="[$style.link, { [$style.compact]: compact }]" :[attr]="self ? url.substring(local.length) : url" rel="nofollow noopener" :target="target" :title="url">
-		<div v-if="thumbnail" :class="$style.thumbnail" :style="defaultStore.state.enableDataSaverMode ? '' : `background-image: url('${thumbnail}')`">
+		<div v-if="thumbnail && !sensitive" :class="$style.thumbnail" :style="defaultStore.state.dataSaver.urlPreview ? '' : `background-image: url('${thumbnail}')`">
 		</div>
 		<article :class="$style.body">
 			<header :class="$style.header">
@@ -66,15 +66,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</component>
 	<template v-if="showActions">
 		<div v-if="tweetId" :class="$style.action">
-			<MkButton :small="true" inline @click="tweetExpanded = true">
+			<MkButton :small="true" inline @click.stop="tweetExpanded = true">
 				<i class="ti ti-brand-x"></i> {{ i18n.ts.expandTweet }}
 			</MkButton>
 		</div>
 		<div v-if="!playerEnabled && player.url" :class="$style.action">
-			<MkButton :small="true" inline @click="playerEnabled = true">
+			<MkButton :small="true" inline @click.stop="playerEnabled = true">
 				<i class="ti ti-player-play"></i> {{ i18n.ts.enablePlayer }}
 			</MkButton>
-			<MkButton v-if="!isMobile" :small="true" inline @click="openPlayer()">
+			<MkButton v-if="!isMobile" :small="true" inline @click.stop="openPlayer()">
 				<i class="ti ti-picture-in-picture"></i> {{ i18n.ts.openInWindow }}
 			</MkButton>
 		</div>
@@ -118,6 +118,7 @@ let description = $ref<string | null>(null);
 let thumbnail = $ref<string | null>(null);
 let icon = $ref<string | null>(null);
 let sitename = $ref<string | null>(null);
+let sensitive = $ref<boolean>(false);
 let player = $ref({
 	url: null,
 	width: null,
@@ -170,6 +171,7 @@ window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLa
 		icon = info.icon;
 		sitename = info.sitename;
 		player = info.player;
+		sensitive = info.sensitive ?? false;
 	});
 
 function adjustTweetHeight(message: any) {

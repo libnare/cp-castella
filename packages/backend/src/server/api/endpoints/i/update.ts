@@ -125,7 +125,7 @@ export const meta = {
 
 const muteWords = { type: 'array', items: { oneOf: [
 	{ type: 'array', items: { type: 'string' } },
-	{ type: 'string' }
+	{ type: 'string' },
 ] } } as const;
 
 export const paramDef = {
@@ -137,12 +137,16 @@ export const paramDef = {
 		birthday: { ...birthdaySchema, nullable: true },
 		lang: { type: 'string', enum: [null, ...Object.keys(langmap)] as string[], nullable: true },
 		avatarId: { type: 'string', format: 'misskey:id', nullable: true },
-		avatarDecorations: { type: 'array', maxItems: 1, items: {
+		avatarDecorations: { type: 'array', maxItems: 5, items: {
 			type: 'object',
 			properties: {
 				id: { type: 'string', format: 'misskey:id' },
 				angle: { type: 'number', nullable: true, maximum: 0.5, minimum: -0.5 },
 				flipH: { type: 'boolean', nullable: true },
+				scale: { type: 'number', nullable: true, maximum: 1.5, minimum: 0.5 },
+				moveX: { type: 'number', nullable: true, maximum: 25, minimum: -25 },
+				moveY: { type: 'number', nullable: true, maximum: 25, minimum: -25 },
+				opacity: { type: 'number', nullable: true, maximum: 1, minimum: 0.1 },
 			},
 			required: ['id'],
 		} },
@@ -251,7 +255,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			function validateMuteWordRegex(mutedWords: (string[] | string)[]) {
 				for (const mutedWord of mutedWords) {
-					if (typeof mutedWord !== "string") continue;
+					if (typeof mutedWord !== 'string') continue;
 
 					const regexp = mutedWord.match(/^\/(.+)\/(.*)$/);
 					if (!regexp) throw new ApiError(meta.errors.invalidRegexp);
@@ -339,6 +343,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					id: d.id,
 					angle: d.angle ?? 0,
 					flipH: d.flipH ?? false,
+					scale: d.scale ?? 1,
+					moveX: d.moveX ?? 0,
+					moveY: d.moveY ?? 0,
+					opacity: d.opacity ?? 1,
 				}));
 			}
 

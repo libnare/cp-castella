@@ -3,6 +3,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+const notificationRecieveConfig = {
+	type: 'object',
+	nullable: false, optional: true,
+	properties: {
+		type: {
+			type: 'string',
+			nullable: false, optional: false,
+			enum: ['all', 'following', 'follower', 'mutualFollow', 'list', 'never'],
+		},
+	},
+} as const;
+
 export const packedUserLiteSchema = {
 	type: 'object',
 	properties: {
@@ -55,6 +67,22 @@ export const packedUserLiteSchema = {
 					},
 					flipH: {
 						type: 'boolean',
+						nullable: false, optional: true,
+					},
+					scale: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					moveX: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					moveY: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					opacity: {
+						type: 'number',
 						nullable: false, optional: true,
 					},
 					url: {
@@ -317,41 +345,7 @@ export const packedUserDetailedNotMeOnlySchema = {
 			items: {
 				type: 'object',
 				nullable: false, optional: false,
-				properties: {
-					id: {
-						type: 'string',
-						nullable: false, optional: false,
-						format: 'id',
-					},
-					name: {
-						type: 'string',
-						nullable: false, optional: false,
-					},
-					color: {
-						type: 'string',
-						nullable: true, optional: false,
-					},
-					iconUrl: {
-						type: 'string',
-						nullable: true, optional: false,
-					},
-					description: {
-						type: 'string',
-						nullable: false, optional: false,
-					},
-					isModerator: {
-						type: 'boolean',
-						nullable: false, optional: false,
-					},
-					isAdministrator: {
-						type: 'boolean',
-						nullable: false, optional: false,
-					},
-					displayOrder: {
-						type: 'number',
-						nullable: false, optional: false,
-					},
-				},
+				ref: 'RoleLite',
 			},
 		},
 		memo: {
@@ -398,6 +392,7 @@ export const packedUserDetailedNotMeOnlySchema = {
 		notify: {
 			type: 'string',
 			nullable: false, optional: true,
+			enum: ['normal', 'none'],
 		},
 		withReplies: {
 			type: 'boolean',
@@ -557,6 +552,20 @@ export const packedMeDetailedOnlySchema = {
 		notificationRecieveConfig: {
 			type: 'object',
 			nullable: false, optional: false,
+			properties: {
+				app: notificationRecieveConfig,
+				quote: notificationRecieveConfig,
+				reply: notificationRecieveConfig,
+				follow: notificationRecieveConfig,
+				renote: notificationRecieveConfig,
+				mention: notificationRecieveConfig,
+				reaction: notificationRecieveConfig,
+				pollEnded: notificationRecieveConfig,
+				achievementEarned: notificationRecieveConfig,
+				receiveFollowRequest: notificationRecieveConfig,
+				followRequestAccepted: notificationRecieveConfig,
+				groupInvited: notificationRecieveConfig,
+			},
 		},
 		emailNotificationTypes: {
 			type: 'array',
@@ -701,6 +710,23 @@ export const packedMeDetailedOnlySchema = {
 			items: {
 				type: 'object',
 				nullable: false, optional: false,
+				properties: {
+					id: {
+						type: 'string',
+						nullable: false, optional: false,
+						format: 'id',
+						example: 'xxxxxxxxxx',
+					},
+					name: {
+						type: 'string',
+						nullable: false, optional: false,
+					},
+					lastUsed: {
+						type: 'string',
+						nullable: false, optional: false,
+						format: 'date-time',
+					},
+				},
 			},
 		},
 		//#endregion

@@ -9,12 +9,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview/>
-		<div :class="$style.body">
+		<div :class="$style.body" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
 				<p v-if="note.cw != null" :class="$style.cw">
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'respect'"/>
-					<MkCwButton v-model="showContent" style="width: 100%" :note="note"/>
+					<MkCwButton v-model="showContent" style="width: 100%" :text="note.text" :files="note.files" :poll="note.poll" @click.stop/>
 				</p>
 				<div v-show="note.cw == null || showContent">
 					<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="defaultStore.state.showSubNoteFooterButton"/>
@@ -53,6 +53,7 @@ import { $i } from '@/account.js';
 import { userPage } from '@/filters/user.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { defaultStore } from '@/store.js';
+import { useRouter } from '@/router.js';
 
 let hideLine = $ref(false);
 
@@ -68,6 +69,9 @@ const props = withDefaults(defineProps<{
 
 const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 
+const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
+const router = useRouter();
+
 let showContent = $ref(false);
 let replies: Misskey.entities.Note[] = $ref([]);
 
@@ -79,6 +83,11 @@ if (props.detail) {
 		replies = res;
 		hideLine = true;
 	});
+}
+
+function noteClick(ev: MouseEvent) {
+	if (document.getSelection().type === 'Range' || !expandOnNoteClick) ev.stopPropagation();
+	else router.push(notePage(props.note));
 }
 </script>
 

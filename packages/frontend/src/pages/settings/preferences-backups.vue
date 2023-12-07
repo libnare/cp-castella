@@ -71,7 +71,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'advancedMfm',
 	'loadRawImages',
 	'imageNewTab',
-	'enableDataSaverMode',
+	'dataSaver',
 	'disableShowingAnimatedImages',
 	'showingAnimatedImages',
 	'emojiStyle',
@@ -151,6 +151,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'sound_chatBg',
 	'sound_antenna',
 	'sound_channel',
+	'sound_reaction',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'lightTheme',

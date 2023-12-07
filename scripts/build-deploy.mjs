@@ -4,10 +4,12 @@
  */
 
 import * as fs from 'node:fs/promises';
-import locales from '../locales/index.js';
+import { build as buildLocales } from '../locales/index.js';
 import generateDTS from '../locales/generateDTS.js';
 import meta from '../package.json' assert { type: "json" };
 import built_meta from '../built/meta.json' assert { type: "json" };
+
+let locales = buildLocales();
 
 async function copyFrontendLocales() {
   generateDTS();

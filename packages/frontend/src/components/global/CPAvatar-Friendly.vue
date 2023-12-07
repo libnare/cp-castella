@@ -17,13 +17,30 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
+	<span v-if="showDecoration && !decoration && user.avatarDecorations.length > 0 && defaultStore.state.friendlyShowAvatarDecorationsInNavBtn">
+		<img
+			v-for="avatarDecoration in user.avatarDecorations"
+			:key="avatarDecoration.id"
+			:class="[$style.decoration]"
+			:src="avatarDecoration.url"
+			:style="{
+				rotate: getDecorationAngle(avatarDecoration),
+				scale: getDecorationScale(avatarDecoration),
+				transform: getDecorationTransform(avatarDecoration),
+				opacity: getDecorationOpacity(avatarDecoration),
+			}"
+			alt=""
+		>
+	</span>
 	<img
-		v-if="showDecoration && (decoration || user.avatarDecorations.length > 0) && defaultStore.state.friendlyShowAvatarDecorationsInNavBtn"
+		v-else-if="showDecoration && decoration && defaultStore.state.friendlyShowAvatarDecorationsInNavBtn"
 		:class="[$style.decoration]"
-		:src="decoration?.url ?? user.avatarDecorations[0].url"
+		:src="decoration?.url"
 		:style="{
-			rotate: getDecorationAngle(),
-			scale: getDecorationScale(),
+			rotate: getDecorationAngle(decoration),
+			scale: getDecorationScale(decoration),
+			transform: getDecorationTransform(decoration),
+			opacity: getDecorationOpacity(decoration),
 		}"
 		alt=""
 	>
@@ -50,6 +67,10 @@ const props = withDefaults(defineProps<{
 		angle?: number;
 		flipH?: boolean;
 		flipV?: boolean;
+    scale?: number;
+    moveX?: number;
+    moveY?: number;
+    opacity?: number;
 	};
 	forceShowDecoration?: boolean;
 }>(), {
@@ -73,7 +94,7 @@ const bound = $computed(() => props.link
 let playAnimation = $ref(true);
 if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
 let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
-const url = $computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+const url = $computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 	? getStaticImageUrl(props.user.avatarUrl)
 	: props.user.avatarUrl);
 
@@ -82,28 +103,26 @@ function onClick(ev: MouseEvent): void {
 	emit('click', ev);
 }
 
-function getDecorationAngle() {
-	let angle;
-	if (props.decoration) {
-		angle = props.decoration.angle ?? 0;
-	} else if (props.user.avatarDecorations.length > 0) {
-		angle = props.user.avatarDecorations[0].angle ?? 0;
-	} else {
-		angle = 0;
-	}
+function getDecorationAngle(avatarDecoration) {
+	let angle = avatarDecoration.angle ?? 0;
 	return angle === 0 ? undefined : `${angle * 360}deg`;
 }
 
-function getDecorationScale() {
-	let scaleX;
-	if (props.decoration) {
-		scaleX = props.decoration.flipH ? -1 : 1;
-	} else if (props.user.avatarDecorations.length > 0) {
-		scaleX = props.user.avatarDecorations[0].flipH ? -1 : 1;
-	} else {
-		scaleX = 1;
-	}
+function getDecorationScale(avatarDecoration) {
+	let scaleX = avatarDecoration.flipH ? -1 : 1;
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
+}
+
+function getDecorationTransform(avatarDecoration) {
+	let scale = avatarDecoration.scale ?? 1;
+	let moveX = avatarDecoration.moveX ?? 0;
+	let moveY = avatarDecoration.moveY ?? 0;
+	return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
+}
+
+function getDecorationOpacity(avatarDecoration) {
+	let opacity = avatarDecoration.opacity ?? 1;
+	return opacity === 1 ? undefined : opacity;
 }
 
 function resetTimer() {

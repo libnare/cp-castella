@@ -9,7 +9,9 @@ import cssnano from 'cssnano';
 import postcss from 'postcss';
 import * as terser from 'terser';
 
-import locales from '../locales/index.js';
+import { build as buildLocales } from '../locales/index.js';
+
+let locales = buildLocales();
 
 async function copyFrontendFonts() {
   await fs.cp('./packages/frontend/node_modules/three/examples/fonts', './built/_frontend_dist_/fonts', { dereference: true, recursive: true });

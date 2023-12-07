@@ -1,8 +1,8 @@
 {
 	"name": "cherrypick",
-	"version": "4.5.2",
+	"version": "4.6.0-beta.2",
 	"prefix": "cs",
-	"basedMisskeyVersion": "2023.11.1",
+	"basedMisskeyVersion": "2023.12.0-beta.2",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
@@ -28,6 +28,7 @@
 		"build": "pnpm build-pre && pnpm -r build && pnpm build-assets",
 		"build-d": "pnpm build-pre && pnpm -r build && pnpm build-assets-d",
 		"build-storybook": "pnpm --filter frontend build-storybook",
+		"build-cherrypick-js-with-types": "pnpm --filter backend build && pnpm --filter backend generate-api-json && ncp packages/backend/built/api.json packages/cherrypick-js/generator/api.json && pnpm --filter cherrypick-js update-autogen-code && pnpm --filter cherrypick-js build",
 		"start": "pnpm check:connect && cd packages/backend && node ./built/boot/entry.js",
 		"start:docker": "pnpm check:connect && cd packages/backend && exec node ./built/boot/entry.js",
 		"start:test": "cd packages/backend && cross-env NODE_ENV=test node ./built/boot/entry.js",
@@ -60,16 +61,17 @@
 		"execa": "8.0.1",
 		"cssnano": "6.0.1",
 		"js-yaml": "4.1.0",
-		"postcss": "8.4.31",
+		"postcss": "8.4.32",
 		"terser": "5.24.0",
 		"typescript": "5.3.2"
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "6.11.0",
-		"@typescript-eslint/parser": "6.11.0",
+		"@typescript-eslint/eslint-plugin": "6.13.1",
+		"@typescript-eslint/parser": "6.13.1",
 		"cross-env": "7.0.3",
-		"cypress": "13.5.1",
-		"eslint": "8.53.0",
-		"start-server-and-test": "2.0.3"
+		"cypress": "13.6.0",
+		"eslint": "8.55.0",
+		"start-server-and-test": "2.0.3",
+		"ncp": "2.0.0"
 	}
 }
