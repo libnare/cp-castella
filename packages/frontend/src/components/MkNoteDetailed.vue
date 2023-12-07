@@ -699,6 +699,7 @@ onMounted(() => {
 	transition: box-shadow 0.1s ease;
 	overflow: clip;
 	contain: content;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .replyTo {
