@@ -776,6 +776,7 @@ onBeforeUnmount(() => {
 	width: 128px;
 	margin: 4px;
 	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .padding {

@@ -437,6 +437,7 @@ defineExpose({
 			padding: 32px;
 			display: flex;
 			overflow: auto;
+			-webkit-tap-highlight-color: transparent;
 
 			@media (max-width: 500px) {
 				padding: 16px;

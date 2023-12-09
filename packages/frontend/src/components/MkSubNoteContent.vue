@@ -449,6 +449,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 <style lang="scss" module>
 .root {
 	overflow-wrap: break-word;
+	-webkit-tap-highlight-color: transparent;
 
 	&.collapsed {
 		position: relative;
