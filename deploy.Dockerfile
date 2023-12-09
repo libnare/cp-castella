@@ -104,4 +104,4 @@ ENV CLIENT_ASSETS_BASE_URL=${ARGS_CLIENT_ASSETS_BASE_URL}
 ENV CLIENT_ASSETS_DIR=${ARGS_CLIENT_ASSETS_DIR}
 HEALTHCHECK --interval=5s --retries=20 CMD ["/bin/bash", "/cherrypick/healthcheck.sh"]
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["pnpm", "run", "migrateandstart:docker"]
+CMD ["/bin/bash", "/cherrypick/start.sh"]
