@@ -1310,6 +1310,8 @@ _achievements:
       title: "Référence circulaire"
     _setNameToSyuilo:
       description: "Vous avez spécifié « syuilo » comme nom"
+    _setNameToNoriDev:
+      description: "Vous avez spécifié « noridev » comme nom"
     _passedSinceAccountCreated1:
       title: "Premier anniversaire"
     _passedSinceAccountCreated2:
@@ -1324,7 +1326,7 @@ _achievements:
     _cookieClicked:
       flavor: "Attendez une minute, vous êtes sur le mauvais site web ?"
     _brainDiver:
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "Débordement de tests"
       description: "Détruire le bouton de test de notifications dans un intervalle extrêmement court"

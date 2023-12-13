@@ -517,6 +517,8 @@ _achievements:
       title: "Rett og slett heldig"
     _setNameToSyuilo:
       description: "Du satte navnet ditt til \"syuilo\""
+    _setNameToNoriDev:
+      description: "Du satte navnet ditt til \"noridev\""
     _passedSinceAccountCreated1:
       title: "Ett års jubileum"
       description: "Det har gått ett år siden kontoen din ble opprettet"
@@ -537,7 +539,7 @@ _achievements:
       flavor: "Er du på riktig nettsted?"
     _brainDiver:
       title: "Brain Diver"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
 _role:
   options: "Alternativ"
   _priority:

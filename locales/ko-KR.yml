@@ -1,8 +1,6 @@
 ---
 _lang_: "한국어"
 cannotBeUsedFunc: "이 기능은 현재 사용할 수 없어요."
-maxinumLayerError: "레이어는 6장 이상 겹칠 수 없어요. 다른 레이어를 삭제해 주세요."
-layer: "레이어"
 Xcoordinate: "X 좌표"
 Ycoordinate: "Y 좌표"
 scale: "크기"
@@ -1700,6 +1698,9 @@ _achievements:
     _setNameToSyuilo:
       title: "신 콤플렉스"
       description: "이름을 syuilo로 설정했어요. 어라..?"
+    _setNameToNoriDev:
+      title: "신 콤플렉스 (CherryPick)"
+      description: "이름을 noridev로 설정했어요. 어라..?"
     _passedSinceAccountCreated1:
       title: "1주년"
       description: "계정을 생성하고 1년이 지났어요"
@@ -1723,7 +1724,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Brain Diver로의 링크를 첨부했어요"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "테스트 과잉"
       description: "매우 짧은 시간 안에 알림 테스트를 여러 번 수행했어요"

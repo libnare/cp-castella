@@ -4,8 +4,6 @@
 export interface Locale {
     "_lang_": string;
     "cannotBeUsedFunc": string;
-    "maxinumLayerError": string;
-    "layer": string;
     "Xcoordinate": string;
     "Ycoordinate": string;
     "scale": string;
@@ -336,6 +334,7 @@ export interface Locale {
     "removeAreYouSure": string;
     "deleteAreYouSure": string;
     "resetAreYouSure": string;
+    "areYouSure": string;
     "saved": string;
     "messaging": string;
     "upload": string;
@@ -1264,6 +1263,7 @@ export interface Locale {
     "avatarDecorations": string;
     "attach": string;
     "detach": string;
+    "detachAll": string;
     "angle": string;
     "flip": string;
     "showAvatarDecorations": string;
@@ -1277,6 +1277,7 @@ export interface Locale {
     "doReaction": string;
     "code": string;
     "reloadRequiredToApplySettings": string;
+    "remainingN": string;
     "showUnreadNotificationsCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
@@ -1810,6 +1811,10 @@ export interface Locale {
                 "title": string;
                 "description": string;
             };
+            "_setNameToNoriDev": {
+                "title": string;
+                "description": string;
+            };
             "_passedSinceAccountCreated1": {
                 "title": string;
                 "description": string;
@@ -1914,6 +1919,7 @@ export interface Locale {
             "canHideAds": string;
             "canSearchNotes": string;
             "canUseTranslator": string;
+            "avatarDecorationLimit": string;
         };
         "_condition": {
             "isLocal": string;
@@ -2495,6 +2501,7 @@ export interface Locale {
         "changeAvatar": string;
         "changeBanner": string;
         "verifiedLinkDescription": string;
+        "avatarDecorationMax": string;
     };
     "_exportOrImport": {
         "allNotes": string;

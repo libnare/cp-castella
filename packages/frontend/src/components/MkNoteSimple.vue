@@ -17,19 +17,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkCwButton v-model="showContent" :text="note.text" :files="note.files" :poll="note.poll"/>
 		</p>
 		<div v-show="note.cw == null || showContent">
-			<MkSubNoteContent :class="$style.text" :note="note"/>
+			<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="false"/>
 		</div>
 	</div>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
-import { $i } from '@/account.js';
 import { globalEvents } from '@/events.js';
 import { mainRouter, useRouter } from '@/router.js';
 import { defaultStore } from '@/store.js';
@@ -39,15 +38,15 @@ const props = defineProps<{
 	note: Misskey.entities.Note;
 }>();
 
-let showEl = $ref(false);
+const showEl = ref(false);
 
-const showContent = $ref(false);
+const showContent = ref(false);
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
 const router = useRouter();
 
 onMounted(() => {
 	globalEvents.on('showEl', (showEl_receive) => {
-		showEl = showEl_receive;
+		showEl.value = showEl_receive;
 	});
 });
 

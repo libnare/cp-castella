@@ -1410,6 +1410,9 @@ _achievements:
     _setNameToSyuilo:
       title: "像神一样呐"
       description: "将名称设定为 syuilo"
+    _setNameToNoriDev:
+      title: "像神一样呐 (CherryPick)"
+      description: "将名称设定为 noridev"
     _passedSinceAccountCreated1:
       title: "一周年"
       description: "账户创建时间超过 1 年"
@@ -1433,7 +1436,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "发布了包含 Brain Diver 链接的帖子"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "过度测试"
       description: "短时间内连续测试通知"

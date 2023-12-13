@@ -33,38 +33,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
-	<span v-if="showDecoration && !decoration && user.avatarDecorations.length > 0">
+	<template v-if="showDecoration">
 		<img
-			v-for="avatarDecoration in user.avatarDecorations"
-			:key="avatarDecoration.id"
+			v-for="decoration in decorations ?? user.avatarDecorations"
 			:class="[$style.decoration]"
-			:src="avatarDecoration.url"
+			:src="decoration.url"
 			:style="{
-				rotate: getDecorationAngle(avatarDecoration),
-				scale: getDecorationScale(avatarDecoration),
-				transform: getDecorationTransform(avatarDecoration),
-				opacity: getDecorationOpacity(avatarDecoration),
+				rotate: getDecorationAngle(decoration),
+				scale: getDecorationScale(decoration),
+				transform: getDecorationTransform(decoration),
+				opacity: getDecorationOpacity(decoration),
 			}"
 			alt=""
 		>
-	</span>
-	<img
-		v-else-if="showDecoration && decoration"
-		:class="[$style.decoration]"
-		:src="decoration?.url"
-		:style="{
-			rotate: getDecorationAngle(decoration),
-			scale: getDecorationScale(decoration),
-			transform: getDecorationTransform(decoration),
-			opacity: getDecorationOpacity(decoration),
-		}"
-		alt=""
-	>
+	</template>
 </component>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, watch } from 'vue';
+import { onMounted, onUnmounted, watch, ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
 import MkA from './MkA.vue';
@@ -74,9 +61,9 @@ import { acct, userPage } from '@/filters/user.js';
 import MkUserOnlineIndicator from '@/components/MkUserOnlineIndicator.vue';
 import { defaultStore } from '@/store.js';
 
-const animation = $ref(defaultStore.state.animation);
-const squareAvatars = $ref(defaultStore.state.squareAvatars);
-const useBlurEffect = $ref(defaultStore.state.useBlurEffect);
+const animation = ref(defaultStore.state.animation);
+const squareAvatars = ref(defaultStore.state.squareAvatars);
+const useBlurEffect = ref(defaultStore.state.useBlurEffect);
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.User;
@@ -84,23 +71,14 @@ const props = withDefaults(defineProps<{
 	link?: boolean;
 	preview?: boolean;
 	indicator?: boolean;
-	decoration?: {
-		url: string;
-		angle?: number;
-		flipH?: boolean;
-		flipV?: boolean;
-		scale?: number;
-		moveX?: number;
-		moveY?: number;
-		opacity?: number;
-	};
+	decorations?: Misskey.entities.UserDetailed['avatarDecorations'][number][];
 	forceShowDecoration?: boolean;
 }>(), {
 	target: null,
 	link: false,
 	preview: false,
 	indicator: false,
-	decoration: undefined,
+	decorations: undefined,
 	forceShowDecoration: false,
 });
 
@@ -110,14 +88,14 @@ const emit = defineEmits<{
 
 const showDecoration = props.forceShowDecoration || defaultStore.state.showAvatarDecorations;
 
-const bound = $computed(() => props.link
+const bound = computed(() => props.link
 	? { to: userPage(props.user), target: props.target }
 	: {});
 
-let playAnimation = $ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
-let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
-const url = $computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+const url = computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
 	? getStaticImageUrl(props.user.avatarUrl)
 	: props.user.avatarUrl);
 
@@ -126,38 +104,38 @@ function onClick(ev: MouseEvent): void {
 	emit('click', ev);
 }
 
-function getDecorationAngle(avatarDecoration) {
-	let angle = avatarDecoration.angle ?? 0;
+function getDecorationAngle(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+	const angle = decoration.angle ?? 0;
 	return angle === 0 ? undefined : `${angle * 360}deg`;
 }
 
-function getDecorationScale(avatarDecoration) {
-	let scaleX = avatarDecoration.flipH ? -1 : 1;
+function getDecorationScale(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+	const scaleX = decoration.flipH ? -1 : 1;
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
-function getDecorationTransform(avatarDecoration) {
-	let scale = avatarDecoration.scale ?? 1;
-	let moveX = avatarDecoration.moveX ?? 0;
-	let moveY = avatarDecoration.moveY ?? 0;
+function getDecorationTransform(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+	const scale = decoration.scale ?? 1;
+	const moveX = decoration.moveX ?? 0;
+	const moveY = decoration.moveY ?? 0;
 	return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
 }
 
-function getDecorationOpacity(avatarDecoration) {
-	let opacity = avatarDecoration.opacity ?? 1;
+function getDecorationOpacity(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+	const opacity = decoration.opacity ?? 1;
 	return opacity === 1 ? undefined : opacity;
 }
 
 function resetTimer() {
-	playAnimation = true;
+	playAnimation.value = true;
 	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 }
 
-let color = $ref<string | undefined>();
+const color = ref<string | undefined>();
 
 watch(() => props.user.avatarBlurhash, () => {
-	color = extractAvgColorFromBlurhash(props.user.avatarBlurhash);
+	color.value = extractAvgColorFromBlurhash(props.user.avatarBlurhash);
 }, {
 	immediate: true,
 });

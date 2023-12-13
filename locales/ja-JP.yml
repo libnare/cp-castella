@@ -1,8 +1,6 @@
 _lang_: "日本語"
 
 cannotBeUsedFunc: "この機能は現在使用できません。"
-maxinumLayerError: "6枚以上重ねることはできません。他のレイヤーを削除してください。"
-layer: "レイヤー"
 Xcoordinate: "X座標"
 Ycoordinate: "Y座標"
 scale: "大きさ"
@@ -333,6 +331,7 @@ removed: "削除しました"
 removeAreYouSure: "「{x}」を削除しますか？"
 deleteAreYouSure: "「{x}」を削除しますか？"
 resetAreYouSure: "リセットしますか？"
+areYouSure: "よろしいですか？"
 saved: "保存しました"
 messaging: "チャット"
 upload: "アップロード"
@@ -1261,6 +1260,7 @@ tosAndPrivacyPolicy: "利用規約・プライバシーポリシー"
 avatarDecorations: "アイコンデコレーション"
 attach: "付ける"
 detach: "外す"
+detachAll: "全て外す"
 angle: "角度"
 flip: "反転"
 showAvatarDecorations: "アイコンのデコレーションを表示"
@@ -1274,6 +1274,7 @@ cwNotationRequired: "「内容を隠す」がオンの場合は注釈の記述�
 doReaction: "リアクションする"
 code: "コード"
 reloadRequiredToApplySettings: "設定の反映にはリロードが必要です。"
+remainingN: "残り: {n}"
 showUnreadNotificationsCount: "未読の通知の数を表示する"
 showCatOnly: "キャット付きのみ"
 additionalPermissionsForFlash: "Playへの追加許可"
@@ -1729,6 +1730,9 @@ _achievements:
     _setNameToSyuilo:
       title: "神様コンプレックス"
       description: "名前を syuilo に設定した"
+    _setNameToNoriDev:
+      title: "神様コンプレックス（CherryPick）"
+      description: "名前を noridev に設定した"
     _passedSinceAccountCreated1:
       title: "一周年"
       description: "アカウント作成から1年経過した"
@@ -1752,7 +1756,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Brain Diverへのリンクを投稿した"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "テスト過剰"
       description: "通知のテストをごく短時間のうちに連続して行った"
@@ -1822,6 +1826,7 @@ _role:
     canHideAds: "広告の非表示"
     canSearchNotes: "ノート検索の利用"
     canUseTranslator: "翻訳機能の利用"
+    avatarDecorationLimit: "アイコンデコレーションの最大取付個数"
   _condition:
     isLocal: "ローカルユーザー"
     isRemote: "リモートユーザー"
@@ -2395,6 +2400,7 @@ _profile:
   changeAvatar: "アイコン画像を変更"
   changeBanner: "バナー画像を変更"
   verifiedLinkDescription: "内容にURLを設定すると、リンク先のWebサイトに自分のプロフィールへのリンクが含まれている場合に所有者確認済みアイコンを表示させることができます。"
+  avatarDecorationMax: "最大{max}つまでデコレーションを付けられます。"
 
 _exportOrImport:
   allNotes: "全てのノート"

@@ -1418,6 +1418,9 @@ _achievements:
     _setNameToSyuilo:
       title: "Complejo de superioridad"
       description: "Configurar el nombre como 'Syuilo'"
+    _setNameToNoriDev:
+      title: "Complejo de superioridad (CherryPick)"
+      description: "Configurar el nombre como 'NoriDev'"
     _passedSinceAccountCreated1:
       title: "Primer aniversario"
       description: "Pasó un año desde la creación de la cuenta"
@@ -1441,7 +1444,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Publicaste un vínculo a \"Brain Diver\""
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "Sobrecarga de pruebas"
       description: "Envía muchas notificaciones de prueba en un corto espacio de tiempo"

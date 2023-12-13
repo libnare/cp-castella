@@ -32,11 +32,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import XTimeline from './welcome.timeline.vue';
 import MarqueeText from '@/components/MkMarquee.vue';
 import MkFeaturedPhotos from '@/components/MkFeaturedPhotos.vue';
+import cherrypicksvg from '/client-assets/cherrypick.svg';
+import misskeysvg from '/client-assets/misskey.svg';
 import MkInfo from '@/components/MkInfo.vue';
 import { instanceName } from '@/config.js';
 import * as os from '@/os.js';
@@ -47,26 +49,25 @@ import MkNumber from '@/components/MkNumber.vue';
 import MkVisitorDashboard from '@/components/MkVisitorDashboard.vue';
 import { getProxiedImageUrl } from '@/scripts/media-proxy.js';
 
-let meta = $ref<Misskey.entities.MetaResponse>();
-let instances = $ref<Misskey.entities.FederationInstance[]>();
+const meta = ref<Misskey.entities.MetaResponse>();
+const instances = ref<Misskey.entities.FederationInstance[]>();
 
 function getInstanceIcon(instance: Misskey.entities.FederationInstance): string {
 	if (!instance.iconUrl) {
 		return '';
 	}
-
 	return getProxiedImageUrl(instance.iconUrl, 'preview');
 }
 
 os.api('meta', { detail: true }).then(_meta => {
-	meta = _meta;
+	meta.value = _meta;
 });
 
 os.apiGet('federation/instances', {
 	sort: '+pubSub',
 	limit: 20,
 }).then(_instances => {
-	instances = _instances;
+	instances.value = _instances;
 });
 </script>
 
@@ -118,7 +119,7 @@ os.apiGet('federation/instances', {
 		opacity: 0.5;
 	}
 
-	> .cherrypick {
+	> .cherrypick, .misskey {
 		position: fixed;
 		top: 42px;
 		left: 42px;

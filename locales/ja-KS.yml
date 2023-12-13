@@ -1,7 +1,5 @@
 ---
 _lang_: "日本語 (関西弁)"
-maxinumLayerError: "6枚以上重ねられんで。他のレイヤーを削除してなー"
-layer: "レイヤー"
 headlineMisskey: "ノートでつながるネットワーク"
 introMisskey: "ようお越し！CherryPickは、オープンソースの分散型マイクロブログサービスやねん。\n「ノート」を作って、いま起こっとることを共有したり、あんたについて皆に発信しよう📡\n「ツッコミ」機能で、皆のノートに素早く反応を追加したりもできるで✌\nほな、新しい世界を探検しよか🚀"
 poweredByMisskeyDescription: "{name}は、オープンソースのプラットフォーム<b>CherryPick</b>のサーバーのひとつなんやで。"
@@ -1459,6 +1457,9 @@ _achievements:
     _setNameToSyuilo:
       title: "神様コンプレックス"
       description: "名前を syuilo に設定した"
+    _setNameToNoriDev:
+      title: "神様コンプレックス（CherryPick）"
+      description: "名前を noridev に設定した"
     _passedSinceAccountCreated1:
       title: "一周年"
       description: "アカウント作成から1年経過した"
@@ -1482,7 +1483,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Brain Diverへのリンクを投稿したった"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "テスト過剰"
       description: "通知テストをごく短時間のうちに連続して行ったねん"

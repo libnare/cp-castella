@@ -87,10 +87,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-else :class="$style.footerButton" class="_button" disabled>
 				<i class="ti ti-ban"></i>
 			</button>
-			<button v-if="note.myReaction == null" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @click.stop="heartReact()">
+			<button v-if="note.myReaction == null" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @mousedown.stop="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button v-if="note.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.footerButton" class="_button" @mousedown="react()">
+			<button v-if="note.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.footerButton" class="_button" @mousedown.stop="react()">
 				<i v-if="note.myReaction == null" v-tooltip="i18n.ts.reaction" class="ti ti-mood-plus"></i>
 				<i v-else v-tooltip="i18n.ts.editReaction" class="ti ti-mood-edit"></i>
 			</button>
@@ -100,13 +100,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click.stop="quote()">
 				<i class="ti ti-quote"></i>
 			</button>
-			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @click.stop="clip()">
+			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @mousedown.stop="clip()">
 				<i class="ti ti-paperclip"></i>
 			</button>
 			<MkA v-if="defaultStore.state.infoButtonForNoteActionsEnabled && defaultStore.state.showNoteActionsOnlyHover" v-tooltip="i18n.ts.details" :to="notePage(note)" :class="$style.footerButton" style="text-decoration: none;" class="_button">
 				<i class="ti ti-info-circle"></i>
 			</MkA>
-			<button ref="menuButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.more" :class="$style.footerButton" class="_button" @mousedown="menu()">
+			<button ref="menuButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.more" :class="$style.footerButton" class="_button" @mousedown.stop="menu()">
 				<i class="ti ti-dots"></i>
 			</button>
 		</footer>
@@ -159,7 +159,7 @@ const emit = defineEmits<{
   (ev: 'removeReaction', emoji: string): void;
 }>();
 
-let note = $ref(deepClone(props.note));
+const note = ref(deepClone(props.note));
 
 const el = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
@@ -183,7 +183,7 @@ const parsed = props.note.text ? mfm.parse(props.note.text) : null;
 const isLong = shouldCollapsed(props.note, []);
 const isMFM = shouldMfmCollapsed(props.note);
 
-const collapsed = $ref(isLong || (isMFM && defaultStore.state.collapseDefault) || props.note.files.length > 0 || props.note.poll);
+const collapsed = ref(isLong || (isMFM && defaultStore.state.collapseDefault) || props.note.files.length > 0 || props.note.poll);
 
 const collapseLabel = computed(() => {
 	return concat([
@@ -193,13 +193,13 @@ const collapseLabel = computed(() => {
 
 if (props.mock) {
 	watch(() => props.note, (to) => {
-		note = deepClone(to);
+		note.value = deepClone(to);
 	}, { deep: true });
 } else {
 	useNoteCapture({
 		rootEl: el,
-		note: $$(note),
-		pureNote: $$(note),
+		note: note,
+		pureNote: note,
 		isDeletedRef: isDeleted,
 	});
 }
@@ -228,7 +228,7 @@ function renote(viaKeyboard = false) {
 	pleaseLogin();
 	showMovedDialog();
 
-	const { menu } = getRenoteMenu({ note: note, renoteButton, mock: props.mock });
+	const { menu } = getRenoteMenu({ note: note.value, renoteButton, mock: props.mock });
 	os.popupMenu(menu, renoteButton.value, {
 		viaKeyboard,
 	});
@@ -238,7 +238,7 @@ async function renoteOnly() {
 	pleaseLogin();
 	showMovedDialog();
 
-	await getRenoteOnly({ note: note, renoteButton, mock: props.mock });
+	await getRenoteOnly({ note: note.value, renoteButton, mock: props.mock });
 }
 
 function quote(viaKeyboard = false): void {
@@ -311,7 +311,7 @@ function react(viaKeyboard = false): void {
 }
 
 async function toggleReaction(reaction) {
-	const oldReaction = note.myReaction;
+	const oldReaction = note.value.myReaction;
 	if (oldReaction) {
 		const confirm = await os.confirm({
 			type: 'warning',
@@ -322,11 +322,11 @@ async function toggleReaction(reaction) {
 		sound.play('reaction');
 
 		os.api('notes/reactions/delete', {
-			noteId: note.id,
+			noteId: note.value.id,
 		}).then(() => {
 			if (oldReaction !== reaction) {
 				os.api('notes/reactions/create', {
-					noteId: note.id,
+					noteId: note.value.id,
 					reaction: reaction,
 				});
 			}
@@ -335,11 +335,11 @@ async function toggleReaction(reaction) {
 		sound.play('reaction');
 
 		os.api('notes/reactions/create', {
-			noteId: note.id,
+			noteId: note.value.id,
 			reaction: reaction,
 		});
 	}
-	if (note.text && note.text.length > 100 && (Date.now() - new Date(note.createdAt).getTime() < 1000 * 3)) {
+	if (note.value.text && note.value.text.length > 100 && (Date.now() - new Date(note.value.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
 	}
 }
@@ -389,7 +389,7 @@ function menu(viaKeyboard = false): void {
 		return;
 	}
 
-	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
+	const { menu, cleanup } = getNoteMenu({ note: note.value, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);
@@ -400,12 +400,12 @@ async function clip() {
 		return;
 	}
 
-	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
+	os.popupMenu(await getNoteClipMenu({ note: note.value, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
 }
 
-const isForeignLanguage: boolean = note.text != null && (() => {
+const isForeignLanguage: boolean = note.value.text != null && (() => {
 	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
-	const postLang = detectLanguage(note.text);
+	const postLang = detectLanguage(note.value.text);
 	return postLang !== '' && postLang !== targetLang;
 })();
 

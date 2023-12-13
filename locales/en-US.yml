@@ -1,8 +1,6 @@
 ---
 _lang_: "English"
 cannotBeUsedFunc: "This feature is currently unavailable."
-maxinumLayerError: "You cannot stack more than 6 layers. Please delete other layers."
-layer: "Layer"
 Xcoordinate: "X-Coordinate"
 Ycoordinate: "Y-Coordinate"
 scale: "Scale"
@@ -1704,6 +1702,9 @@ _achievements:
     _setNameToSyuilo:
       title: "God Complex"
       description: "Set your name to \"syuilo\""
+    _setNameToNoriDev:
+      title: "God Complex (CherryPick)"
+      description: "Set your name to \"noridev\""
     _passedSinceAccountCreated1:
       title: "One Year Anniversary"
       description: "One year has passed since your account was created"
@@ -1727,7 +1728,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Post the link to Brain Diver"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "Test overflow"
       description: "Trigger the notification test repeatedly within an extremely short time"

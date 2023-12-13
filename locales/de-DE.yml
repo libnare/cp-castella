@@ -1435,6 +1435,9 @@ _achievements:
     _setNameToSyuilo:
       title: "Gottkomplex"
       description: "Setze deinen Namen auf \"syuilo\""
+    _setNameToNoriDev:
+      title: "Gottkomplex (CherryPick)"
+      description: "Setze deinen Namen auf \"noridev\""
     _passedSinceAccountCreated1:
       title: "Einjahresjubiläum"
       description: "Seit der Erstellung deines Kontos ist 1 Jahr vergangen"
@@ -1458,7 +1461,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Sende den Link zu Brain Diver"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "Testüberfluss"
       description: "Betätige den Benachrichtigungstest mehrfach innerhalb einer extrem kurzen Zeitspanne"
