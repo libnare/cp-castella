@@ -2,9 +2,9 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
 /*
- * version: 4.6.0-beta.3
- * basedMisskeyVersion: 2023.12.0-beta.3
- * generatedAt: 2023-12-13T12:46:52.733Z
+ * version: 4.6.0-beta.4
+ * basedMisskeyVersion: 2023.12.0-beta.4
+ * generatedAt: 2023-12-14T11:18:50.281Z
  */
 
 /**
@@ -4810,6 +4810,7 @@ export type operations = {
             maintainerName: string | null;
             name: string | null;
             objectStorageS3ForcePathStyle: boolean;
+            objectStorageRemoteS3ForcePathStyle: boolean;
             privacyPolicyUrl: string | null;
             repositoryUrl: string;
             summalyProxy: string | null;

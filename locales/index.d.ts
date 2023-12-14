@@ -194,7 +194,12 @@ export interface Locale {
     "add": string;
     "reaction": string;
     "reactions": string;
-    "reactionSetting": string;
+    "emojiPicker": string;
+    "pinnedEmojisForReactionSettingDescription": string;
+    "pinnedEmojisSettingDescription": string;
+    "emojiPickerDisplay": string;
+    "copyFromPinnedEmojisForReaction": string;
+    "copyFromPinnedEmojis": string;
     "reactionSettingDescription2": string;
     "rememberNoteVisibility": string;
     "attachCancel": string;
@@ -1278,6 +1283,7 @@ export interface Locale {
     "code": string;
     "reloadRequiredToApplySettings": string;
     "remainingN": string;
+    "overwriteContentConfirm": string;
     "showUnreadNotificationsCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
@@ -2052,7 +2058,6 @@ export interface Locale {
             "donate": string;
         };
         "_cherrypick": {
-            "about": string;
             "translation": string;
             "donate": string;
             "relayServer": string;

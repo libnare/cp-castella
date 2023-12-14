@@ -447,6 +447,10 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			objectStorageRemoteS3ForcePathStyle: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 			privacyPolicyUrl: {
 				type: 'string',
 				optional: false, nullable: true,
