@@ -17,3 +17,6 @@ declare const _DATA_TRANSFER_DRIVE_FILE_: string;
 declare const _DATA_TRANSFER_DRIVE_FOLDER_: string;
 declare const _DATA_TRANSFER_DECK_COLUMN_: string;
 declare const _CLIENT_ASSETS_BASE_URL_: string;
+
+// for dev-mode
+declare const _LANGS_FULL_: string[][];
