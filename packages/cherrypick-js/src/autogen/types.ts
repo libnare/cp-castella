@@ -4728,8 +4728,11 @@ export type operations = {
             infoImageUrl: string | null;
             notFoundImageUrl: string | null;
             iconUrl: string | null;
+						appleIconUrl: string | null;
             app192IconUrl: string | null;
             app512IconUrl: string | null;
+						app769IconUrl: string | null;
+						app1024IconUrl: string | null;
             enableEmail: boolean;
             enableServiceWorker: boolean;
             translatorAvailable: boolean;
@@ -8898,8 +8901,11 @@ export type operations = {
           infoImageUrl?: string | null;
           notFoundImageUrl?: string | null;
           iconUrl?: string | null;
+					appleIconUrl?: string | null;
           app192IconUrl?: string | null;
           app512IconUrl?: string | null;
+					app769IconUrl?: string | null;
+					app1024IconUrl?: string | null;
           backgroundImageUrl?: string | null;
           logoImageUrl?: string | null;
           name?: string | null;

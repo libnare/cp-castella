@@ -157,11 +157,11 @@ const manifestJsonOverride = ref<string>('{}');
 async function init() {
 	const meta = await os.api('admin/meta');
 	iconUrl.value = meta.iconUrl;
-	appleIconUrl = meta.appleIconUrl;
+	appleIconUrl.value = meta.appleIconUrl;
 	app192IconUrl.value = meta.app192IconUrl;
 	app512IconUrl.value = meta.app512IconUrl;
-	app769IconUrl = meta.app769IconUrl;
-	app1024IconUrl = meta.app1024IconUrl;
+	app769IconUrl.value = meta.app769IconUrl;
+	app1024IconUrl.value = meta.app1024IconUrl;
 	bannerUrl.value = meta.bannerUrl;
 	backgroundImageUrl.value = meta.backgroundImageUrl;
 	themeColor.value = meta.themeColor;
@@ -176,11 +176,11 @@ async function init() {
 function save() {
 	os.apiWithDialog('admin/update-meta', {
 		iconUrl: iconUrl.value,
-		appleIconUrl,
+		appleIconUrl: appleIconUrl.value,
 		app192IconUrl: app192IconUrl.value,
 		app512IconUrl: app512IconUrl.value,
-		app769IconUrl,
-		app1024IconUrl,
+		app769IconUrl: app769IconUrl.value,
+		app1024IconUrl: app1024IconUrl.value,
 		bannerUrl: bannerUrl.value,
 		backgroundImageUrl: backgroundImageUrl.value,
 		themeColor: themeColor.value === '' ? null : themeColor.value,
