@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.collapsedRenoteTargetAvatar" :user="appearNote.user" link preview/>
 		<Mfm :text="getNoteSummary(appearNote)" :plain="true" :nowrap="true" :author="appearNote.user" :nyaize="'respect'" :class="$style.collapsedRenoteTargetText" @click="renoteCollapsed = false"/>
 	</div>
-	<article v-else :class="$style.article" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick" @contextmenu.stop="onContextmenu">
+	<article v-else :class="$style.article" :style="{ cursor: expandOnNoteClick ? 'pointer' : '', paddingTop: defaultStore.state.showSubNoteFooterButton && appearNote.reply && !renoteCollapsed ? '14px' : '' }" @click.stop="noteClick" @contextmenu.stop="onContextmenu">
 		<div style="display: flex; padding-bottom: 10px;">
 			<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
 			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.avatarReplyTo]: appearNote.reply, [$style.showEl]: !appearNote.reply && (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: !appearNote.reply && (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" :link="!mock" :preview="!mock"/>
@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div style="container-type: inline-size;">
 			<p v-if="appearNote.cw != null" :class="$style.cw">
 				<Mfm v-if="appearNote.cw != ''" :text="appearNote.cw" :author="appearNote.user" :nyaize="noNyaize ? false : 'respect'"/>
-				<MkCwButton v-model="showContent" :text="appearNote.text" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;" @click.stop/>
+				<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;" @click.stop/>
 			</p>
 			<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
 				<div :class="$style.text">
@@ -144,7 +144,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					v-tooltip="i18n.ts.renote"
 					:class="$style.footerButton"
 					class="_button"
-					@click.stop="defaultStore.state.renoteQuoteButtonSeparation ? renoteOnly() : renote()"
+					@click.stop="defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !appearNote.channel) || (appearNote.channel && !appearNote.channel.allowRenoteToExternal) || appearNote.visibility === 'followers') ? renoteOnly() : renote()"
 				>
 					<i class="ti ti-repeat"></i>
 					<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ appearNote.renoteCount }}</p>
@@ -162,7 +162,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.removeReaction" :class="$style.footerButton" class="_button" @click.stop="undoReact(appearNote)">
 					<i class="ti ti-heart-minus"></i>
 				</button>
-				<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click.stop="quote()">
+				<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" ref="quoteButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click.stop="quote()">
 					<i class="ti ti-quote"></i>
 				</button>
 				<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @click.stop="clip()">
@@ -219,7 +219,7 @@ import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
-import { getAbuseNoteMenu, getCopyNoteLinkMenu, getNoteClipMenu, getNoteMenu, getRenoteMenu, getRenoteOnly } from '@/scripts/get-note-menu.js';
+import { getAbuseNoteMenu, getCopyNoteLinkMenu, getNoteClipMenu, getNoteMenu, getRenoteMenu, getRenoteOnly, getQuoteMenu } from '@/scripts/get-note-menu.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { deepClone } from '@/scripts/clone.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
@@ -284,6 +284,7 @@ if (noteViewInterruptors.length > 0) {
 const isRenote = (
 	note.value.renote != null &&
 	note.value.text == null &&
+	note.value.cw == null &&
 	note.value.fileIds.length === 0 &&
 	note.value.poll == null
 );
@@ -294,6 +295,7 @@ const renoteButton = shallowRef<HTMLElement>();
 const renoteTime = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
 const heartReactButton = shallowRef<HTMLElement>();
+const quoteButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
 const appearNote = computed(() => isRenote ? note.value.renote as Misskey.entities.Note : note.value);
 const isMyRenote = $i && ($i.id === note.value.userId);
@@ -388,7 +390,7 @@ if (!props.mock) {
 }
 
 function noteClick(ev: MouseEvent) {
-	if (document.getSelection().type === 'Range' || !expandOnNoteClick) ev.stopPropagation();
+	if (!expandOnNoteClick) ev.stopPropagation();
 	else router.push(notePage(appearNote.value));
 }
 
@@ -415,19 +417,27 @@ function quote(viaKeyboard = false): void {
 		return;
 	}
 	if (appearNote.value.channel) {
+		if (appearNote.value.channel.allowRenoteToExternal) {
+			const { menu } = getQuoteMenu({ note: note.value, mock: props.mock });
+			os.popupMenu(menu, quoteButton.value, {
+				viaKeyboard,
+			});
+		} else {
+			os.post({
+				renote: appearNote.value,
+				channel: appearNote.value.channel,
+				animation: !viaKeyboard,
+			}, () => {
+				focus();
+			});
+		}
+	} else {
 		os.post({
 			renote: appearNote.value,
-			channel: appearNote.value.channel,
-			animation: !viaKeyboard,
 		}, () => {
 			focus();
 		});
 	}
-	os.post({
-		renote: appearNote.value,
-	}, () => {
-		focus();
-	});
 }
 
 function reply(viaKeyboard = false): void {

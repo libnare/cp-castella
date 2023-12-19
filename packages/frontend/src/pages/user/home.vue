@@ -127,11 +127,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<b>{{ number(user.notesCount) }}</b>
 							<span>{{ i18n.ts.notes }}</span>
 						</MkA>
-						<MkA v-if="isFfVisibleForMe(user)" :to="userPage(user, 'following')">
+						<MkA v-if="isFollowingVisibleForMe(user)" :to="userPage(user, 'following')">
 							<b>{{ number(user.followingCount) }}</b>
 							<span>{{ i18n.ts.following }}</span>
 						</MkA>
-						<MkA v-if="isFfVisibleForMe(user)" :to="userPage(user, 'followers')">
+						<MkA v-if="isFollowersVisibleForMe(user)" :to="userPage(user, 'followers')">
 							<b>{{ number(user.followersCount) }}</b>
 							<span>{{ i18n.ts.followers }}</span>
 						</MkA>
@@ -145,10 +145,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<MkInfo v-else-if="$i && $i.id === user.id">{{ i18n.ts.userPagePinTip }}</MkInfo>
 				<template v-if="narrow">
-					<XFiles :key="user.id" :user="user"/>
-					<XActivity :key="user.id" :user="user"/>
+					<MkLazy>
+						<XFiles :key="user.id" :user="user"/>
+					</MkLazy>
+					<MkLazy>
+						<XActivity :key="user.id" :user="user"/>
+					</MkLazy>
 				</template>
-				<XTimeline v-if="!disableNotes" :user="user"/>
+				<div v-if="!disableNotes">
+					<MkLazy>
+						<XTimeline :user="user"/>
+					</MkLazy>
+				</div>
 			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
@@ -180,9 +188,8 @@ import { i18n } from '@/i18n.js';
 import { $i, iAmModerator } from '@/account.js';
 import { dateString } from '@/filters/date.js';
 import { confetti } from '@/scripts/confetti.js';
-import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os.js';
-import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
+import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
 import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { editNickname } from '@/scripts/edit-nickname.js';

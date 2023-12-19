@@ -79,7 +79,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-tooltip="i18n.ts.renote"
 				:class="$style.footerButton"
 				class="_button"
-				@click.stop="defaultStore.state.renoteQuoteButtonSeparation ? renoteOnly() : renote()"
+				@click.stop="(defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !note.channel) || (note.channel && !note.channel.allowRenoteToExternal) || note.visibility === 'followers')) ? renoteOnly() : renote()"
 			>
 				<i class="ti ti-repeat"></i>
 				<p v-if="note.renoteCount > 0" :class="$style.footerButtonCount">{{ note.renoteCount }}</p>
@@ -97,7 +97,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-if="note.myReaction != null && note.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.removeReaction" :class="$style.footerButton" class="_button" @click.stop="undoReact(note)">
 				<i class="ti ti-heart-minus"></i>
 			</button>
-			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click.stop="quote()">
+			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" ref="quoteButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click.stop="quote()">
 				<i class="ti ti-quote"></i>
 			</button>
 			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @click.stop="clip()">
@@ -135,7 +135,7 @@ import { notePage } from '@/filters/note.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
 import { pleaseLogin } from '@/scripts/please-login.js';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
-import { getNoteClipMenu, getNoteMenu, getRenoteMenu, getRenoteOnly } from '@/scripts/get-note-menu.js';
+import { getNoteClipMenu, getNoteMenu, getRenoteMenu, getRenoteOnly, getQuoteMenu } from '@/scripts/get-note-menu.js';
 import { deepClone } from '@/scripts/clone.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { claimAchievement } from '@/scripts/achievements.js';
@@ -166,8 +166,9 @@ const menuButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
 const heartReactButton = shallowRef<HTMLElement>();
+const quoteButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
-const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || props.note.userId === $i.id);
+const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || (props.note.visibility === 'followers' && props.note.userId === $i.id));
 const isDeleted = ref(false);
 const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 
@@ -247,19 +248,27 @@ function quote(viaKeyboard = false): void {
 		return;
 	}
 	if (props.note.channel) {
+		if (props.note.channel.allowRenoteToExternal) {
+			const { menu } = getQuoteMenu({ note: note.value, mock: props.mock });
+			os.popupMenu(menu, quoteButton.value, {
+				viaKeyboard,
+			});
+		} else {
+			os.post({
+				renote: props.note,
+				channel: props.note.channel,
+				animation: !viaKeyboard,
+			}, () => {
+				focus();
+			});
+		}
+	} else {
 		os.post({
 			renote: props.note,
-			channel: props.note.channel,
-			animation: !viaKeyboard,
 		}, () => {
 			focus();
 		});
 	}
-	os.post({
-		renote: props.note,
-	}, () => {
-		focus();
-	});
 }
 
 function reply(viaKeyboard = false): void {

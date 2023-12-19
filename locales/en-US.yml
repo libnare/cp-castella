@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+showRenoteVisibilitySelector: "Show renote visibility selector"
 cannotBeUsedFunc: "This feature is currently unavailable."
 scale: "Scale"
 opacity: "Opacity"
@@ -1337,7 +1338,8 @@ _cherrypick:
   mobileHeaderChange: "Header design change in mobile environment"
   renameTheButtonInPostFormToNya: "Change the \"Note\" button on the note-posting form to \"Nyan!\""
   renameTheButtonInPostFormToNyaDescription: "Outside of the note-posting form, they are still as \"Note\"."
-  enableLongPressOpenAccountMenu: "Press and hold to open the account menu."
+  enableLongPressOpenAccountMenu: "Press and hold to open the account menu"
+  enableLongPressOpenAccountMenuDescription: "It can be opened by long-pressing the Timeline tab at the bottom of the screen."
   friendlyShowAvatarDecorationsInNavBtn: "Show avatar decorations on floating buttons"
 _bannerDisplay:
   all: "All"
@@ -2449,8 +2451,6 @@ _notification:
   youGotReply: "{name} replied to you"
   youGotQuote: "{name} quoted you"
   youRenoted: "Renote from {name}"
-  youGotMessagingMessageFromUser: "{name} sent you a chat message"
-  youGotMessagingMessageFromGroup: "A chat message was sent to the {name} group"
   youWereFollowed: "followed you"
   youReceivedFollowRequest: "You've received a follow request"
   yourFollowRequestAccepted: "Your follow request was accepted"

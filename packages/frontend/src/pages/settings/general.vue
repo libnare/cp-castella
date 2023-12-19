@@ -74,6 +74,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="infoButtonForNoteActionsEnabled">{{ i18n.ts.infoButtonForNoteActions }}<template #caption>{{ i18n.ts.infoButtonForNoteActionsDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showReplyInNotification">{{ i18n.ts.showReplyInNotification }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="renoteQuoteButtonSeparation">{{ i18n.ts.renoteQuoteButtonSeparation }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="renoteVisibilitySelection">{{ i18n.ts.showRenoteVisibilitySelector }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="allMediaNoteCollapse">{{ i18n.ts.allMediaNoteCollapse }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
@@ -154,6 +155,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
 				<MkSwitch v-model="disableDrawer">{{ i18n.ts.disableDrawer }}</MkSwitch>
 				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
+				<MkSwitch v-model="enableSeasonalScreenEffect">{{ i18n.ts.seasonalScreenEffect }}</MkSwitch>
 				<MkSwitch v-model="showUnreadNotificationsCount">{{ i18n.ts.showUnreadNotificationsCount }}</MkSwitch>
 			</div>
 			<div>
@@ -409,6 +411,7 @@ const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificati
 const keepScreenOn = computed(defaultStore.makeGetterSetter('keepScreenOn'));
 const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disableStreamingTimeline'));
 const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroupedNotifications'));
+const enableSeasonalScreenEffect = computed(defaultStore.makeGetterSetter('enableSeasonalScreenEffect'));
 const showUnreadNotificationsCount = computed(defaultStore.makeGetterSetter('showUnreadNotificationsCount'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
@@ -426,6 +429,7 @@ const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showF
 const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
 const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNoteCollapse'));
 const nsfwOpenBehavior = computed(defaultStore.makeGetterSetter('nsfwOpenBehavior'));
+const renoteVisibilitySelection = computed(defaultStore.makeGetterSetter('renoteVisibilitySelection'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -473,6 +477,7 @@ watch([
 	showUnreadNotificationsCount,
 	showFixedPostFormInReplies,
 	showingAnimatedImages,
+	enableSeasonalScreenEffect,
 ], async () => {
 	await reloadAsk();
 });

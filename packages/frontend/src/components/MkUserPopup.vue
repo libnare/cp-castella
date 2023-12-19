@@ -35,17 +35,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div :class="$style.statusItemLabel">{{ i18n.ts.notes }}</div>
 					<div>{{ number(user.notesCount) }}</div>
 				</div>
-				<div v-if="isFfVisibleForMe(user)" :class="$style.statusItem">
+				<div v-if="isFollowingVisibleForMe(user)" :class="$style.statusItem">
 					<div :class="$style.statusItemLabel">{{ i18n.ts.following }}</div>
 					<div>{{ number(user.followingCount) }}</div>
 				</div>
-				<div v-if="isFfVisibleForMe(user)" :class="$style.statusItem">
+				<div v-if="isFollowersVisibleForMe(user)" :class="$style.statusItem">
 					<div :class="$style.statusItemLabel">{{ i18n.ts.followers }}</div>
 					<div>{{ number(user.followersCount) }}</div>
 				</div>
 			</div>
 			<button class="_button" :class="$style.menu" @click="showMenu"><i class="ti ti-dots"></i></button>
-			<MkFollowButton v-if="$i && user.id != $i.id" v-model:user="user" :class="$style.follow" mini/>
+			<MkFollowButton v-model:user="user" :class="$style.follow" mini/>
 		</div>
 		<div v-else>
 			<MkLoading/>
@@ -65,7 +65,7 @@ import number from '@/filters/number.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import { $i } from '@/account.js';
-import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
+import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
 
 const props = defineProps<{
 	showing: boolean;
