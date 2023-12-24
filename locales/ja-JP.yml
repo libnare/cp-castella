@@ -1,5 +1,9 @@
 _lang_: "日本語"
 
+welcome: "ようこそ！"
+cherrypickMigrated: "CherryPickへの移行が完了しました！"
+cherrypickMigratedCacheClearTitle: "キャッシュクリアのご案内"
+cherrypickMigratedCacheClear: "このサーバーは<b>Misskey</b>または<b>CherryPick v4.3.0以前</b>のバージョンから移行されました。\nバージョン管理方式が異なり、残っているキャッシュが問題を引き起こす可能性があるため、移行後、最初の接続時にキャッシュを削除する作業を行う必要があります。\n\nこの作業は最初一度だけ行われます。"
 showRenoteVisibilitySelector: "リノートの公開範囲オプションを表示"
 cannotBeUsedFunc: "この機能は現在使用できません。"
 scale: "大きさ"
@@ -1870,6 +1874,7 @@ _emailUnavailable:
   disposable: "恒久的に使用可能なアドレスではありません"
   mx: "正しいメールサーバーではありません"
   smtp: "メールサーバーが応答しません"
+  banned: "このメールアドレスでは登録できません"
 
 _ffVisibility:
   public: "公開"
@@ -2539,6 +2544,7 @@ _notification:
   pollEnded: "アンケートの結果が出ました"
   newNote: "新しい投稿"
   unreadAntennaNote: "アンテナ {name}"
+  roleAssigned: "ロールが付与されました"
   emptyPushNotificationMessage: "プッシュ通知の更新をしました"
   achievementEarned: "実績を獲得"
   testNotification: "通知テスト"
@@ -2562,6 +2568,7 @@ _notification:
     receiveFollowRequest: "フォロー申請を受け取った"
     followRequestAccepted: "フォローが受理された"
     groupInvited: "グループに招待された"
+    roleAssigned: "ロールが付与された"
     achievementEarned: "実績の獲得"
     app: "連携アプリからの通知"
 

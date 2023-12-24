@@ -86,7 +86,7 @@ if (props.detail) {
 }
 
 function noteClick(ev: MouseEvent) {
-	if (!expandOnNoteClick) ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection().toString() !== '') ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 </script>
@@ -137,6 +137,7 @@ function noteClick(ev: MouseEvent) {
 .body {
 	flex: 1;
 	min-width: 0;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .header {

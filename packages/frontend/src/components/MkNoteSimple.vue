@@ -54,7 +54,7 @@ onMounted(() => {
 });
 
 function noteClick(ev: MouseEvent) {
-	if (!expandOnNoteClick || !props.enableNoteClick) ev.stopPropagation();
+	if (!expandOnNoteClick || !props.enableNoteClick || window.getSelection().toString() !== '') ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 </script>
@@ -64,6 +64,7 @@ function noteClick(ev: MouseEvent) {
 	margin: 0;
 	padding: 0;
 	font-size: 0.95em;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .avatar {

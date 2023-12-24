@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div style="container-type: inline-size;">
 			<p v-if="appearNote.cw != null" :class="$style.cw">
 				<Mfm v-if="appearNote.cw != ''" :text="appearNote.cw" :author="appearNote.user" :nyaize="noNyaize ? false : 'respect'"/>
-				<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;" @click.stop/>
+				<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote.renote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;" @click.stop/>
 			</p>
 			<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
 				<div :class="$style.text">
@@ -196,7 +196,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, shallowRef, Ref, defineAsyncComponent, watch, provide } from 'vue';
+import { computed, inject, onMounted, ref, shallowRef, Ref, watch, provide } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
@@ -390,7 +390,7 @@ if (!props.mock) {
 }
 
 function noteClick(ev: MouseEvent) {
-	if (!expandOnNoteClick) ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection().toString() !== '') ev.stopPropagation();
 	else router.push(notePage(appearNote.value));
 }
 
@@ -897,6 +897,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 .article {
 	position: relative;
 	padding: 28px 32px;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .colorBar {

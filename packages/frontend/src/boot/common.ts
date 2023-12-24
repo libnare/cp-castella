@@ -3,16 +3,16 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { computed, createApp, watch, markRaw, version as vueVersion, defineAsyncComponent, App } from 'vue';
+import { computed, watch, version as vueVersion, App } from 'vue';
 import { compareVersions } from 'compare-versions';
 import widgets from '@/widgets/index.js';
 import directives from '@/directives/index.js';
 import components from '@/components/index.js';
-import { version, basedMisskeyVersion, ui, lang, updateLocale, locale } from '@/config.js';
+import { version, basedMisskeyVersion, lang, updateLocale, locale } from '@/config.js';
 import { applyTheme } from '@/scripts/theme.js';
 import { isDeviceDarkmode } from '@/scripts/is-device-darkmode.js';
-import { i18n, updateI18n } from '@/i18n.js';
-import { $i, refreshAccount, login, updateAccount, signout } from '@/account.js';
+import { updateI18n } from '@/i18n.js';
+import { $i, refreshAccount, login } from '@/account.js';
 import { defaultStore, ColdDeviceStorage } from '@/store.js';
 import { fetchInstance, instance } from '@/instance.js';
 import { deviceKind } from '@/scripts/device-kind.js';
@@ -66,32 +66,23 @@ export async function common(createVue: () => App<Element>) {
 	});
 
 	let isClientUpdated = false;
+	let isClientMigrated = false;
 
 	//#region クライアントが更新されたかチェック
 	const lastVersion = miLocalStorage.getItem('lastVersion');
 	const lastBasedMisskeyVersion = miLocalStorage.getItem('lastBasedMisskeyVersion');
-	if (lastVersion !== version) {
-		miLocalStorage.setItem('lastVersion', version);
-
-		// テーマリビルドするため
-		miLocalStorage.removeItem('theme');
-
-		try { // 変なバージョン文字列来るとcompareVersionsでエラーになるため
-			if (lastVersion != null && compareVersions(version, lastVersion) === 1) {
-				isClientUpdated = true;
-			}
-		} catch (err) { /* empty */ }
-	}
-	if (lastBasedMisskeyVersion !== basedMisskeyVersion) {
+	if (lastVersion !== version || lastBasedMisskeyVersion !== basedMisskeyVersion) {
+		if (lastVersion == null) miLocalStorage.setItem('lastVersion', version);
+		else if (compareVersions(version, lastVersion) === 0 || compareVersions(version, lastVersion) === 1) miLocalStorage.setItem('lastVersion', version);
 		miLocalStorage.setItem('lastBasedMisskeyVersion', basedMisskeyVersion);
 
 		// テーマリビルドするため
 		miLocalStorage.removeItem('theme');
 
 		try { // 変なバージョン文字列来るとcompareVersionsでエラーになるため
-			if (lastBasedMisskeyVersion != null && compareVersions(basedMisskeyVersion, lastBasedMisskeyVersion) === 1) {
+			if ((lastVersion != null && compareVersions(version, lastVersion) === 1) || (lastBasedMisskeyVersion != null && compareVersions(basedMisskeyVersion, lastBasedMisskeyVersion) === 1)) {
 				isClientUpdated = true;
-			}
+			} else if (lastVersion != null && compareVersions(version, lastVersion) === -1) isClientMigrated = true;
 		} catch (err) { /* empty */ }
 	}
 	//#endregion
@@ -291,6 +282,7 @@ export async function common(createVue: () => App<Element>) {
 
 	return {
 		isClientUpdated,
+		isClientMigrated,
 		app,
 	};
 }

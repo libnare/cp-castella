@@ -13,9 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 >
 	<Transition
 		:enterActiveClass="defaultStore.state.animation ? $style.transition_header_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_header_leaveActive : ''"
 		:enterFromClass="defaultStore.state.animation ? $style.transition_header_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_header_leaveTo : ''"
 	>
 		<header v-if="showForm" :class="$style.header">
 			<div :class="$style.headerLeft">
@@ -93,9 +91,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<Transition
 		:enterActiveClass="defaultStore.state.animation ? $style.transition_footer_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_footer_leaveActive : ''"
 		:enterFromClass="defaultStore.state.animation ? $style.transition_footer_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_footer_leaveTo : ''"
 	>
 		<footer v-if="showForm" :class="$style.footer">
 			<div :class="$style.footerLeft">
@@ -104,7 +100,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ti ti-eye-off"></i></button>
 				<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ti ti-at"></i></button>
 				<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ti ti-hash"></i></button>
-				<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugin" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
+				<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugins" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
 				<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
 			</div>
 			<div :class="$style.footerRight">
@@ -318,30 +314,6 @@ watch(visibleUsers, () => {
 }, {
 	deep: true,
 });
-
-if (props.mention) {
-	text.value = props.mention.host ? `@${props.mention.username}@${toASCII(props.mention.host)}` : `@${props.mention.username}`;
-	text.value += ' ';
-}
-
-if (props.reply && props.reply.text != null) {
-	const ast = mfm.parse(props.reply.text);
-	const otherHost = props.reply.user.host;
-
-	for (const x of extractMentions(ast)) {
-		const mention = x.host ?
-			`@${x.username}@${toASCII(x.host)}` :
-			(otherHost == null || otherHost === host) ?
-				`@${x.username}` :
-				`@${x.username}@${toASCII(otherHost)}`;
-
-		// 自分は除外
-		if ($i.username === x.username && (x.host == null || x.host === host)) continue;
-
-		// 重複は除外
-		if (text.value.includes(`${mention} `)) continue;
-	}
-}
 
 if ($i?.isSilenced && visibility.value === 'public') {
 	visibility.value = 'home';
@@ -913,6 +885,7 @@ async function post(ev?: MouseEvent) {
 		});
 	});
 	textareaEl.value.style.height = '35px';
+	showForm.value = false;
 	if (props.updateMode) sound.play('noteEdited');
 	vibrate(defaultStore.state.vibrateSystem ? [10, 20, 10, 20, 10, 20, 60] : []);
 }
@@ -982,6 +955,10 @@ function openAccountMenu(ev: MouseEvent) {
 
 function formClick() {
 	if ($i) showForm.value = true;
+
+	if (props.reply && (props.reply.user.username !== $i.username || (props.reply.user.host != null && props.reply.user.host !== host))) {
+		text.value = `@${props.reply.user.username}${props.reply.user.host != null ? '@' + toASCII(props.reply.user.host) : ''} `;
+	}
 
 	if (props.reply && props.reply.text != null) {
 		const ast = mfm.parse(props.reply.text);
@@ -1100,25 +1077,17 @@ defineExpose({
 
 <style lang="scss" module>
 .transition_header_enterActive,
-.transition_header_leaveActive {
+.transition_footer_enterActive {
   opacity: 1;
   transform: translateY(0);
   transition: transform 850ms cubic-bezier(0.23, 1, 0.32, 1), opacity 850ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-.transition_header_enterFrom,
-.transition_header_leaveTo {
+.transition_header_enterFrom {
   opacity: 0;
   transform: translateY(20px);
 }
 
-.transition_footer_enterActive,
-.transition_footer_leaveActive {
-  opacity: 1;
-  transform: translateY(0);
-  transition: transform 850ms cubic-bezier(0.23, 1, 0.32, 1), opacity 850ms cubic-bezier(0.23, 1, 0.32, 1);
-}
-.transition_footer_enterFrom,
-.transition_footer_leaveTo {
+.transition_footer_enterFrom {
   opacity: 0;
   transform: translateY(-20px);
 }

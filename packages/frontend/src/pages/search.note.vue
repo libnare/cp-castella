@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps">
 	<div class="_gaps">
-		<MkInput v-model="searchQuery" :large="true" autofocus type="search" @keydown="onInputKeydown">
+		<MkInput v-model="searchQuery" :large="true" autofocus type="search" @keydown.enter="search">
 			<template #prefix><i class="ti ti-search"></i></template>
 		</MkInput>
 		<MkRadios v-model="searchOrigin" @update:modelValue="search()">
@@ -47,18 +47,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
-import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import { $i } from '@/account.js';
-import { instance } from '@/instance.js';
-import MkInfo from '@/components/MkInfo.vue';
 import { useRouter } from '@/router.js';
 import MkFolder from '@/components/MkFolder.vue';
 
@@ -113,11 +109,5 @@ async function search() {
 	if (isLocalOnly.value) notePagination.value.params.host = '.';
 
 	key.value++;
-}
-
-function onInputKeydown(evt: KeyboardEvent) {
-	if (evt.key === 'Enter') {
-		search();
-	}
 }
 </script>
