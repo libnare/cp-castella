@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</header>
 	</Transition>
-	<div v-if="quoteId && showForm" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
+	<div v-if="quoteId && showForm" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button class="_button" @click="quoteId = null"><i class="ti ti-x"></i></button></div>
 	<div v-if="visibility === 'specified' && showForm" :class="$style.toSpecified">
 		<span style="margin-right: 8px;">{{ i18n.ts.recipient }}</span>
 		<div :class="$style.visibleUsers">
@@ -102,6 +102,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ti ti-hash"></i></button>
 				<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugins" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
 				<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
+				<button v-tooltip="i18n.ts.showTextDecoration" :class="['_button', $style.footerButton]" @click="insertFunction"><i class="ti ti-palette"></i></button>
 			</div>
 			<div :class="$style.footerRight">
 				<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="$style.footerButton" @click="showPreviewMenu"><i class="ti ti-eye"></i></button>
@@ -146,6 +147,7 @@ import { emojiPicker } from '@/scripts/emoji-picker.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import XSigninDialog from '@/components/MkSigninDialog.vue';
 import * as sound from '@/scripts/sound.js';
+import { functionPicker } from '@/scripts/function-picker.js';
 
 const modal = inject('modal');
 
@@ -820,10 +822,10 @@ async function post(ev?: MouseEvent) {
 			clear();
 		}
 		nextTick(() => {
-			if (props.reply) os.noteToast(i18n.ts.replied, 'reply');
-			else if (props.renote) os.noteToast(i18n.ts.quoted, 'quote');
-			else if (props.updateMode) os.noteToast(i18n.ts.noteEdited, 'edited');
-			else os.noteToast(i18n.ts.posted, 'posted');
+			if (props.reply) os.toast(i18n.ts.replied, 'reply');
+			else if (props.renote) os.toast(i18n.ts.quoted, 'quote');
+			else if (props.updateMode) os.toast(i18n.ts.noteEdited, 'edited');
+			else os.toast(i18n.ts.posted, 'posted');
 
 			deleteDraft();
 			emit('posted');
@@ -912,6 +914,14 @@ async function insertEmoji(ev: MouseEvent) {
 			textAreaReadOnly.value = false;
 			nextTick(() => focus());
 		},
+	);
+}
+
+async function insertFunction(ev: MouseEvent) {
+	functionPicker(
+		ev.currentTarget ?? ev.target,
+		textareaEl.value,
+		text,
 	);
 }
 
@@ -1245,8 +1255,21 @@ defineExpose({
 }
 
 .withQuote {
-	margin: 0 0 8px 0;
+	display: flex;
+	align-items: center;
+	gap: .2em;
+	margin-inline: 30px;
+	margin-bottom: 12px;
 	color: var(--accent);
+
+	i {
+		display: flex;
+	}
+
+	button {
+		display: flex;
+		padding: 0;
+	}
 }
 
 .toSpecified {
@@ -1357,9 +1380,17 @@ defineExpose({
 .footerLeft {
 	flex: 1;
 	display: grid;
-	grid-auto-flow: row;
+	grid-auto-flow: column;
 	grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
 	grid-auto-rows: 40px;
+	overflow: scroll;
+	max-width: 80%;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+
+	.scroll::-webkit-scrollbar {
+		display: none;
+	}
 }
 
 .footerRight {
@@ -1423,11 +1454,15 @@ defineExpose({
 		padding: 16px 14px 0 14px;
 	}
 
-	.cw,
-	.hashtags,
-	.text {
-		// padding: 0 16px;
+	.withQuote {
+		margin-inline: 22px;
 	}
+
+	// .cw,
+	// .hashtags,
+	// .text {
+		// padding: 0 16px;
+	// }
 
 	.cw {
 		padding: 0 22px 8px;
