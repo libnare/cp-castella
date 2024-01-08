@@ -64,10 +64,6 @@ const close = async () => {
 		text: i18n.ts.cherrypickUpdatedCacheClear,
 	});
 	if (canceled) {
-		await os.alert({
-			type: 'info',
-			text: i18n.ts.cherrypickUpdatedCacheClearLater,
-		});
 		return;
 	}
 	await clearCache();
