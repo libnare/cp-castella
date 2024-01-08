@@ -169,7 +169,7 @@ export class FileInfoService {
 		].includes(mime)) {
 			const result = await detectSensitivity(source, mime, sensitiveThreshold, sensitiveThresholdForPorn);
 			if (result) {
-				[sensitive, porn] = [result.sensitive, result.porn]
+				[sensitive, porn] = [result.sensitive, result.porn];
 			}
 		} else if (analyzeVideo && (mime === 'image/apng' || mime === 'image/gif' || mime.startsWith('video/'))) {
 			const [outDir, disposeOutDir] = await createTempDir();
@@ -226,7 +226,7 @@ export class FileInfoService {
 						}
 						targetIndex = nextIndex;
 						nextIndex += index; // fibonacci sequence によってフレーム数制限を掛ける
-						const result = await detectSensitivity(path, 'image/png', sensitiveThreshold, sensitiveThresholdForPorn)
+						const result = await detectSensitivity(path, 'image/png', sensitiveThreshold, sensitiveThresholdForPorn);
 						if (result) {
 							results.push([result.sensitive, result.porn]);
 						}
