@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 	</button>
 	<div v-if="showSubNoteFooterButton">
-		<MkReactionsViewer v-show="note.cw == null || showContent" :note="note" :maxNumber="16" @click.stop @mockUpdateMyReaction="emitUpdReaction">
+		<MkReactionsViewer v-show="note.cw == null || showContent" :note="note" :maxNumber="16" @click.stop @contextmenu.prevent.stop @mockUpdateMyReaction="emitUpdReaction">
 			<template #more>
 				<div :class="$style.reactionOmitted">{{ i18n.ts.more }}</div>
 			</template>
@@ -173,7 +173,7 @@ const isDeleted = ref(false);
 const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 
 const showContent = ref(true);
-const translation = ref<any>(null);
+const translation = ref<Misskey.entities.NotesTranslateResponse | null>(null);
 const translating = ref(false);
 
 const viewTextSource = ref(false);
@@ -473,6 +473,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 			width: 100%;
 			height: 74px;
 			background: linear-gradient(0deg, var(--panel), var(--X15));
+			z-index: 2;
 
 			> .fadeLabel {
 				display: inline-block;

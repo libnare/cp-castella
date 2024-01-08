@@ -28,6 +28,16 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 기반 Misskey 버전: 2023.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
+### Client
+- Fix: 장식 추가로 일부 태그를 추가할 수 없음
+
+---
+
+## 4.6.0
+출시일: 2024/1/08<br>
+기반 Misskey 버전: 2023.12.2<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023122](CHANGELOG.md#2023122) 문서를 참고하십시오.
+
 ### General
 - Change: 노트를 번역할 때 유저가 고양이로 설정되어 있으면 nyaize를 적용
 - Change: Misskey 또는 CherryPick v4.3.0 이전 버전에서 마이그레이션 시, 마이그레이션 관련 대화 상자가 표시됨
@@ -39,6 +49,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Feat: 텍스트 장식(MFM, HTML, Markdown)을 보다 편하게 추가할 수 있음
   - 노트 작성 폼에서 텍스트 장식 버튼을 눌러 사용할 수 있음
   - 텍스트를 선택한 상태에서도 적용 가능
+- Enhance: 다양한 자산의 출력 파일 이름에 CherryPick 버전을 포함하도록 설정 ([MisskeyIO/misskey@436ddb8f](https://github.com/MisskeyIO/misskey/commit/436ddb8fdb2e585987f403c1527915947c7aae7c))
 - Revert: 사용자 통계 표시 기능 제거 ([MisskeyIO/misskey@114c7fe6](https://github.com/MisskeyIO/misskey/commit/114c7fe6b37dd6bddbcd9d92406f8b13bf688e8b))
 
 ### Client
@@ -68,7 +79,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 토큰을 삭제할 때 삭제 전 대화 상자가 표시됨
 - Enhance: 링크 또는 내용을 복사할 때 토스트 알림 표시
 - Enhance: HTML 태그 및 Markdown 태그가 자동 완성을 지원함
-  - `<`를 입력하면 ``<b>, ~~, <i>, <small>, <center>, <plain>, `, ```, \(\), \(\\ \) `` 태그를 자동으로 입력할 수 있음
+  - `<`를 입력하면 ``<b>, ~~, <i>, <small>, <center>, <plain>, `, ```, \(\), \(\\ \)`` 태그를 자동으로 입력할 수 있음
+- Enhance: 서버에서 푸시 알림을 사용할 수 있으면 푸시 알림을 활성화 하도록 대화 상자를 표시
+- Enhance: 리액션 뷰어에서 우클릭하면 리액션을 복사할 수 있음
+- Enhance: 대화 페이지를 새로 고치지 않아도 자동으로 갱신함
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
 - Fix: 열람 주의로 설정된 노트의 리액션이 '더 보기'를 눌러야 표시됨
 - Fix: 채널 이름이 긴 경우 게시 양식 표시가 깨지는 문제 (misskey-dev/misskey#12524)
@@ -79,7 +93,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 서브 노트에서 액션 버튼의 클릭 가능 영역이 매우 작게 설정될 수 있음
 - Fix: 내 프로필에서 간헐적으로 헤더에 MkFollowButton 컴포넌트가 표시될 수 있음
 - Fix: 다이렉트 노트를 리노트 할 수 있음
-- Fix: 이모지를 변경할 때 이모지가 ❤️로 고정될 수 있음
+- Fix: 이모지를 변경할 때 이모지가 '❤️'로 고정될 수 있음
 - Fix: 일부 환경에서 특정 영역에 스크롤 바가 표시될 수 있음
 - Fix: 일부 검색 페이지에서 Enter 키를 눌러 검색할 수 없음
 - Fix: 서버 이름이 매우 긴 경우, 후원(MkDonation) 대화 상자의 디자인이 잘못 표시될 수 있음
@@ -87,17 +101,26 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 노트 상세 페이지에서 노트 작성 폼을 클릭했을 때, 노트 작성자가 자동으로 멘션에 포함되지 않을 수 있음
 - Fix: 링크를 인용해서 노트를 작성할 때 노트 작성 폼의 디자인이 올바르지 않게 표시됨
 - Fix: MFM 도움말의 수식(블록) 항목이 누락됨
+- Fix: Temml를 사용할 때 폰트가 올바르게 표시되지 않을 수 있음
+- Fix: 열람 주의로 설정된 미디어가 답글 또는 인용된 경우 '더 보기' 버튼을 누를 수 없음
+- Fix: 노트 공개 범위가 비공개인 노트를 편집하면 다른 사용자가 노트 편집 기록을 볼 수 있음
+- Fix: 대화 목록의 인디케이터가 중복 및 잘못된 위치에 표시될 수 있음
+- Fix: 노트 작성 폼에서 링크 프리뷰가 표시될 수 있음
 
 ### Server
+- Feat: Bearcaps URL 지원 (MisskeyIO/misskey#330)
 - Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성됨 (misskey-dev/misskey#12481)
 - Enhance: 푸시 알림 개선
   - 개인간 대화 알림을 받았을 때, 대화 내용을 푸시 알림에 표시
-  - 그룹간 대화 알림을 받았을 때, 채팅을 보낸 사용자와 내용을 표시
+  - 그룹간 대화 알림을 받았을 때, 대화를 보낸 사용자와 내용을 표시
   - 팔로우 알림에 Acct 및 host 정보 표시
+  - 리액션 알림 디자인 개선
 - Enhance: 사용자 반응 목록 API 성능 향상 (MisskeyIO/misskey#278)
 - Fix: RedisKVCache에서 Redis에서 읽은 값을 MemoryKVCache에 다시 쓰기 (MisskeyIO/misskey#289)
 - Fix: redisForJobQueue 연결 사용 (MisskeyIO/misskey#268)
 - Fix: redisForJobQueue의 maxRetriesPerRequest를 null로 설정 (MisskeyIO/misskey#272)
+- Fix: Inbox 또는 Deliver 큐에 data 필드가 비어 있는 작업이 등록되지 않도록 (MisskeyIO/misskey#307)
+- Fix: Misskey에서 CherryPick으로 마이그레이션 하면 타임라인이 표시되지 않음
 
 ---
 

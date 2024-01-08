@@ -124,6 +124,7 @@ export class NoteEntityService implements OnModuleInit {
 			packedNote.fileIds = [];
 			packedNote.files = [];
 			packedNote.text = null;
+			packedNote.noteEditHistory = [];
 			packedNote.poll = undefined;
 			packedNote.cw = null;
 			packedNote.isHidden = true;

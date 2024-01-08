@@ -3,11 +3,11 @@ import pluginReplace from '@rollup/plugin-replace';
 import pluginVue from '@vitejs/plugin-vue';
 import { type UserConfig, defineConfig } from 'vite';
 
-import locales from '../../locales';
+import locales from '../../locales/index.js';
 import meta from '../../package.json';
 import built_meta from '../../built/meta.json';
-import pluginUnwindCssModuleClassName from './lib/rollup-plugin-unwind-css-module-class-name';
-import pluginJson5 from './vite.json5';
+import pluginUnwindCssModuleClassName from './lib/rollup-plugin-unwind-css-module-class-name.js';
+import pluginJson5 from './vite.json5.js';
 
 const extensions = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json', '.json5', '.svg', '.sass', '.scss', '.css', '.vue'];
 
@@ -143,8 +143,9 @@ export function getConfig(): UserConfig {
 						vue: ['vue'],
 						photoswipe: ['photoswipe', 'photoswipe/lightbox', 'photoswipe/style.css'],
 					},
-					chunkFileNames: process.env.NODE_ENV === 'production' ? '[hash:8].js' : '[name]-[hash:8].js',
-					assetFileNames: process.env.NODE_ENV === 'production' ? '[hash:8][extname]' : '[name]-[hash:8][extname]',
+					entryFileNames: `${meta.version}.[hash].js`,
+					chunkFileNames: `${meta.version}.[hash].js`,
+					assetFileNames: `${meta.version}.[hash][extname]`,
 				},
 			},
 			cssCodeSplit: true,

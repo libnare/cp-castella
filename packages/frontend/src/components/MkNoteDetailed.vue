@@ -239,9 +239,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 						<div>
 							<div>
-								<Mfm :text="text.trim()" :author="appearNote.user"/>
+								<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
+								<Mfm v-else :text="text.trim()" :author="appearNote.user"/>
 							</div>
 							<CodeDiff
+								v-if="!appearNote.isHidden"
 								:oldString="appearNote.noteEditHistory[index - 1] || ''"
 								:newString="text"
 								:trim="true"
@@ -363,7 +365,7 @@ const isMyRenote = $i && ($i.id === note.value.userId);
 const showContent = ref(false);
 const isDeleted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote.value, $i, $i.mutedWords) : false);
-const translation = ref(null);
+const translation = ref<Misskey.entities.NotesTranslateResponse | null>(null);
 const translating = ref(false);
 const viewTextSource = ref(false);
 const noNyaize = ref(false);
@@ -391,7 +393,7 @@ provide('react', (reaction: string) => {
 });
 
 const tab = ref('replies');
-const reactionTabType = ref(null);
+const reactionTabType = ref<string | null>(null);
 
 const renotesPagination = computed(() => ({
 	endpoint: 'notes/renotes',

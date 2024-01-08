@@ -228,6 +228,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	enableQuickAddMfmFunction: {
+		where: 'device',
+		default: true,
+	},
 	loadRawImages: {
 		where: 'device',
 		default: false,
@@ -431,7 +435,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	enableSeasonalScreenEffect: {
 		where: 'device',
-		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()),
+		default: false,
 	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
