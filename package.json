@@ -28,7 +28,7 @@
 		"build": "pnpm build-pre && pnpm -r build && pnpm build-assets",
 		"build-d": "pnpm build-pre && pnpm -r build && pnpm build-assets-d",
 		"build-storybook": "pnpm --filter frontend build-storybook",
-		"build-cherrypick-js-with-types": "pnpm --filter backend build && pnpm --filter backend generate-api-json && ncp packages/backend/built/api.json packages/cherrypick-js/generator/api.json && pnpm --filter cherrypick-js update-autogen-code && pnpm --filter cherrypick-js build",
+		"build-cherrypick-js-with-types": "pnpm --filter backend build && pnpm --filter backend generate-api-json && ncp packages/backend/built/api.json packages/cherrypick-js/generator/api.json && pnpm --filter cherrypick-js update-autogen-code && pnpm --filter cherrypick-js build && pnpm --filter cherrypick-js api",
 		"start": "pnpm check:connect && cd packages/backend && node ./built/boot/entry.js",
 		"start:test": "cd packages/backend && cross-env NODE_ENV=test node ./built/boot/entry.js",
 		"init": "pnpm migrate",

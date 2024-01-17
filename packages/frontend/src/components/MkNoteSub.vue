@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview/>
-		<div :class="$style.body" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick">
+		<div :class="$style.body" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick" @dblclick.stop="noteDblClick">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
 				<p v-if="note.cw != null" :class="$style.cw">
@@ -47,13 +47,13 @@ import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import { notePage } from '@/filters/note.js';
-import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { userPage } from '@/filters/user.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { defaultStore } from '@/store.js';
-import { useRouter } from '@/router.js';
+import { useRouter } from '@/global/router/supplier.js';
 
 const hideLine = ref(false);
 
@@ -76,7 +76,7 @@ const showContent = ref(false);
 const replies = ref<Misskey.entities.Note[]>([]);
 
 if (props.detail) {
-	os.api('notes/children', {
+	misskeyApi('notes/children', {
 		noteId: props.note.id,
 		limit: 5,
 	}).then(res => {
@@ -86,7 +86,12 @@ if (props.detail) {
 }
 
 function noteClick(ev: MouseEvent) {
-	if (!expandOnNoteClick || window.getSelection().toString() !== '') ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection().toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
+	else router.push(notePage(props.note));
+}
+
+function noteDblClick(ev: MouseEvent) {
+	if (!expandOnNoteClick || window.getSelection().toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'click') ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 </script>

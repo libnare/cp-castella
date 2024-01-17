@@ -437,6 +437,13 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	dropAndFusion: {
+		where: 'device',
+		default: {
+			bgmVolume: 0.25,
+			sfxVolume: 1,
+		},
+	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
 		default: false,
@@ -549,6 +556,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	forceRenoteVisibilitySelection: {
+		where: 'device',
+		default: 'none' as 'none' | 'public' | 'home' | 'followers',
+	},
 	showFixedPostFormInReplies: {
 		where: 'device',
 		default: true,
@@ -642,6 +653,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	expandOnNoteClick: {
 		where: 'device',
 		default: true,
+	},
+	expandOnNoteClickBehavior: {
+		where: 'device',
+		default: 'click' as 'click' | 'doubleClick',
 	},
 	displayHeaderNavBarWhenScroll: {
 		where: 'device',

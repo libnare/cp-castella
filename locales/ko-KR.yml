@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+forceRenoteVisibilitySelector: "리노트 공개 범위 지정"
 cherrypickLabs: "CherryPick 실험실"
 cherrypickLabsDescription: "개발 중인 기능을 사용해 보시겠어요? 아직 개발 중인 기능이므로 제대로 작동하지 않을 수 있어요."
 copiedLink: "링크를 복사했어요!"
@@ -1345,6 +1346,10 @@ _cherrypick:
   showRenoteConfirmPopupDescription: "이 설정은 '일반 - 리노트와 인용 버튼을 분리해서 표시하기' 설정이 켜져 있어야 해요."
   expandOnNoteClick: "노트를 클릭하여 자세히 표시"
   expandOnNoteClickDescription: "비활성화한 경우에도 노트 메뉴에서 '자세히'를 클릭하거나 타임스탬프를 클릭하여 열 수 있어요."
+  expandOnNoteClickBehavior: "노트를 클릭해서 열 때"
+  _expandOnNoteClickBehavior:
+    click: "클릭해서 열기"
+    doubleClick: "두 번 클릭해서 열기"
   displayHeaderNavBarWhenScroll: "스크롤 시 요소 표시 (헤더, 플로팅 버튼, 탐색 모음)"
   _displayHeaderNavBarWhenScroll:
     all: "모두 표시"
