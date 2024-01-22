@@ -85,6 +85,8 @@ jobs:
         run: |
           NODE_ENV=production pnpm build-pre
           NODE_ENV=production pnpm --filter cherrypick-js build
+          NODE_ENV=production pnpm --filter misskey-reversi build
+          NODE_ENV=production pnpm --filter misskey-bubble-game build
           NODE_ENV=production pnpm --filter frontend build
           NODE_ENV=production pnpm build-deploy
       - name: Deploy static
