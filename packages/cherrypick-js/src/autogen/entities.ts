@@ -1,7 +1,7 @@
 /*
- * version: 4.6.0
- * basedMisskeyVersion: 2023.12.2
- * generatedAt: 2024-01-10T07:26:44.252Z
+ * version: 4.6.0+cs-7a02ecb
+ * basedMisskeyVersion: 2024.2.0-beta.3
+ * generatedAt: 2024-01-22T12:28:10.911Z
  */
 
 import { operations } from './types.js';
@@ -430,8 +430,6 @@ export type NotesMentionsResponse = operations['notes/mentions']['responses']['2
 export type NotesPollsRecommendationRequest = operations['notes/polls/recommendation']['requestBody']['content']['application/json'];
 export type NotesPollsRecommendationResponse = operations['notes/polls/recommendation']['responses']['200']['content']['application/json'];
 export type NotesPollsVoteRequest = operations['notes/polls/vote']['requestBody']['content']['application/json'];
-export type NotesEventsSearchRequest = operations['notes/events/search']['requestBody']['content']['application/json'];
-export type NotesEventsSearchResponse = operations['notes/events/search']['responses']['200']['content']['application/json'];
 export type NotesReactionsRequest = operations['notes/reactions']['requestBody']['content']['application/json'];
 export type NotesReactionsResponse = operations['notes/reactions']['responses']['200']['content']['application/json'];
 export type NotesReactionsCreateRequest = operations['notes/reactions/create']['requestBody']['content']['application/json'];
@@ -587,3 +585,17 @@ export type FetchRssResponse = operations['fetch-rss']['responses']['200']['cont
 export type FetchExternalResourcesRequest = operations['fetch-external-resources']['requestBody']['content']['application/json'];
 export type FetchExternalResourcesResponse = operations['fetch-external-resources']['responses']['200']['content']['application/json'];
 export type RetentionResponse = operations['retention']['responses']['200']['content']['application/json'];
+export type BubbleGameRegisterRequest = operations['bubble-game/register']['requestBody']['content']['application/json'];
+export type BubbleGameRegisterResponse = operations['bubble-game/register']['responses']['200']['content']['application/json'];
+export type BubbleGameRankingRequest = operations['bubble-game/ranking']['requestBody']['content']['application/json'];
+export type BubbleGameRankingResponse = operations['bubble-game/ranking']['responses']['200']['content']['application/json'];
+export type ReversiCancelMatchRequest = operations['reversi/cancel-match']['requestBody']['content']['application/json'];
+export type ReversiCancelMatchResponse = operations['reversi/cancel-match']['responses']['200']['content']['application/json'];
+export type ReversiGamesRequest = operations['reversi/games']['requestBody']['content']['application/json'];
+export type ReversiGamesResponse = operations['reversi/games']['responses']['200']['content']['application/json'];
+export type ReversiMatchRequest = operations['reversi/match']['requestBody']['content']['application/json'];
+export type ReversiMatchResponse = operations['reversi/match']['responses']['200']['content']['application/json'];
+export type ReversiInvitationsResponse = operations['reversi/invitations']['responses']['200']['content']['application/json'];
+export type ReversiShowGameRequest = operations['reversi/show-game']['requestBody']['content']['application/json'];
+export type ReversiShowGameResponse = operations['reversi/show-game']['responses']['200']['content']['application/json'];
+export type ReversiSurrenderRequest = operations['reversi/surrender']['requestBody']['content']['application/json'];

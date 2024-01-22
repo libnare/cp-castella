@@ -67,6 +67,8 @@ import { FeaturedService } from './FeaturedService.js';
 import { FanoutTimelineService } from './FanoutTimelineService.js';
 import { ChannelFollowingService } from './ChannelFollowingService.js';
 import { RegistryApiService } from './RegistryApiService.js';
+import { ReversiService } from './ReversiService.js';
+
 import { ChartLoggerService } from './chart/ChartLoggerService.js';
 import FederationChart from './chart/charts/federation.js';
 import NotesChart from './chart/charts/notes.js';
@@ -81,6 +83,7 @@ import PerUserFollowingChart from './chart/charts/per-user-following.js';
 import PerUserDriveChart from './chart/charts/per-user-drive.js';
 import ApRequestChart from './chart/charts/ap-request.js';
 import { ChartManagementService } from './chart/ChartManagementService.js';
+
 import { AbuseUserReportEntityService } from './entities/AbuseUserReportEntityService.js';
 import { AntennaEntityService } from './entities/AntennaEntityService.js';
 import { AppEntityService } from './entities/AppEntityService.js';
@@ -116,6 +119,8 @@ import { UserListEntityService } from './entities/UserListEntityService.js';
 import { FlashEntityService } from './entities/FlashEntityService.js';
 import { FlashLikeEntityService } from './entities/FlashLikeEntityService.js';
 import { RoleEntityService } from './entities/RoleEntityService.js';
+import { ReversiGameEntityService } from './entities/ReversiGameEntityService.js';
+
 import { ApAudienceService } from './activitypub/ApAudienceService.js';
 import { ApDbResolverService } from './activitypub/ApDbResolverService.js';
 import { ApDeliverManagerService } from './activitypub/ApDeliverManagerService.js';
@@ -204,6 +209,7 @@ const $FanoutTimelineService: Provider = { provide: 'FanoutTimelineService', use
 const $FanoutTimelineEndpointService: Provider = { provide: 'FanoutTimelineEndpointService', useExisting: FanoutTimelineEndpointService };
 const $ChannelFollowingService: Provider = { provide: 'ChannelFollowingService', useExisting: ChannelFollowingService };
 const $RegistryApiService: Provider = { provide: 'RegistryApiService', useExisting: RegistryApiService };
+const $ReversiService: Provider = { provide: 'ReversiService', useExisting: ReversiService };
 
 const $ChartLoggerService: Provider = { provide: 'ChartLoggerService', useExisting: ChartLoggerService };
 const $FederationChart: Provider = { provide: 'FederationChart', useExisting: FederationChart };
@@ -255,6 +261,7 @@ const $UserListEntityService: Provider = { provide: 'UserListEntityService', use
 const $FlashEntityService: Provider = { provide: 'FlashEntityService', useExisting: FlashEntityService };
 const $FlashLikeEntityService: Provider = { provide: 'FlashLikeEntityService', useExisting: FlashLikeEntityService };
 const $RoleEntityService: Provider = { provide: 'RoleEntityService', useExisting: RoleEntityService };
+const $ReversiGameEntityService: Provider = { provide: 'ReversiGameEntityService', useExisting: ReversiGameEntityService };
 
 const $ApAudienceService: Provider = { provide: 'ApAudienceService', useExisting: ApAudienceService };
 const $ApDbResolverService: Provider = { provide: 'ApDbResolverService', useExisting: ApDbResolverService };
@@ -345,6 +352,8 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		FanoutTimelineEndpointService,
 		ChannelFollowingService,
 		RegistryApiService,
+		ReversiService,
+
 		ChartLoggerService,
 		FederationChart,
 		NotesChart,
@@ -359,6 +368,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		PerUserDriveChart,
 		ApRequestChart,
 		ChartManagementService,
+
 		AbuseUserReportEntityService,
 		AntennaEntityService,
 		AppEntityService,
@@ -394,6 +404,8 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		FlashEntityService,
 		FlashLikeEntityService,
 		RoleEntityService,
+		ReversiGameEntityService,
+
 		ApAudienceService,
 		ApDbResolverService,
 		ApDeliverManagerService,
@@ -479,6 +491,8 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$FanoutTimelineEndpointService,
 		$ChannelFollowingService,
 		$RegistryApiService,
+		$ReversiService,
+
 		$ChartLoggerService,
 		$FederationChart,
 		$NotesChart,
@@ -493,6 +507,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$PerUserDriveChart,
 		$ApRequestChart,
 		$ChartManagementService,
+
 		$AbuseUserReportEntityService,
 		$AntennaEntityService,
 		$AppEntityService,
@@ -528,6 +543,8 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$FlashEntityService,
 		$FlashLikeEntityService,
 		$RoleEntityService,
+		$ReversiGameEntityService,
+
 		$ApAudienceService,
 		$ApDbResolverService,
 		$ApDeliverManagerService,
@@ -614,6 +631,8 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		FanoutTimelineEndpointService,
 		ChannelFollowingService,
 		RegistryApiService,
+		ReversiService,
+
 		FederationChart,
 		NotesChart,
 		UsersChart,
@@ -627,6 +646,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		PerUserDriveChart,
 		ApRequestChart,
 		ChartManagementService,
+
 		AbuseUserReportEntityService,
 		AntennaEntityService,
 		AppEntityService,
@@ -662,6 +682,8 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		FlashEntityService,
 		FlashLikeEntityService,
 		RoleEntityService,
+		ReversiGameEntityService,
+
 		ApAudienceService,
 		ApDbResolverService,
 		ApDeliverManagerService,
@@ -747,6 +769,8 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$FanoutTimelineEndpointService,
 		$ChannelFollowingService,
 		$RegistryApiService,
+		$ReversiService,
+
 		$FederationChart,
 		$NotesChart,
 		$UsersChart,
@@ -760,6 +784,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$PerUserDriveChart,
 		$ApRequestChart,
 		$ChartManagementService,
+
 		$AbuseUserReportEntityService,
 		$AntennaEntityService,
 		$AppEntityService,
@@ -795,6 +820,8 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$FlashEntityService,
 		$FlashLikeEntityService,
 		$RoleEntityService,
+		$ReversiGameEntityService,
+
 		$ApAudienceService,
 		$ApDbResolverService,
 		$ApDeliverManagerService,
