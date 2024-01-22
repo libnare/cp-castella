@@ -79,16 +79,22 @@ jobs:
       - name: Install static dependencies
         run: |
           git submodule update --init
-          NODE_ENV=production pnpm --filter cherrypick-js install
-          NODE_ENV=production pnpm --filter frontend install
+          pnpm --filter cherrypick-js install
+          pnpm --filter misskey-reversi install
+          pnpm --filter misskey-bubble-game install
+          pnpm --filter frontend install
+        env:
+          NODE_ENV: production
       - name: Build static
         run: |
-          NODE_ENV=production pnpm build-pre
-          NODE_ENV=production pnpm --filter cherrypick-js build
-          NODE_ENV=production pnpm --filter misskey-reversi build
-          NODE_ENV=production pnpm --filter misskey-bubble-game build
-          NODE_ENV=production pnpm --filter frontend build
-          NODE_ENV=production pnpm build-deploy
+          pnpm build-pre
+          pnpm --filter cherrypick-js build
+          pnpm --filter misskey-reversi build
+          pnpm --filter misskey-bubble-game build
+          pnpm --filter frontend build
+          pnpm build-deploy
+        env:
+          NODE_ENV: production
       - name: Deploy static
         run: |
           mv built/_frontend_dist_ built/assets
