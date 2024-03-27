@@ -1127,7 +1127,7 @@ defineExpose({
 
 	&.modal {
 		width: 100%;
-		max-width: 640px;
+		max-width: 750px;
 	}
 }
 
