@@ -178,16 +178,6 @@ export const paramDef = {
 			},
 			required: ['choices'],
 		},
-		event: {
-			type: 'object',
-			nullable: true,
-			properties: {
-				title: { type: 'string', minLength: 1, maxLength: 128, nullable: false },
-				start: { type: 'integer', nullable: false },
-				end: { type: 'integer', nullable: true },
-				metadata: { type: 'object' },
-			},
-		},
 	},
 	// (re)note with text, files and poll are optional
 	if: {
@@ -370,12 +360,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					text: ps.text ?? undefined,
 					reply,
 					renote,
-					event: ps.event ? {
-						start: new Date(ps.event.start!),
-						end: ps.event.end ? new Date(ps.event.end) : null,
-						title: ps.event.title!,
-						metadata: ps.event.metadata ?? {},
-					} : undefined,
 					cw: ps.cw,
 					localOnly: ps.localOnly,
 					reactionAcceptance: ps.reactionAcceptance,

@@ -16,7 +16,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSpacer v-else-if="tab === 'notes'" key="notes" :contentMax="800" style="padding-top: 0">
 					<XTimeline :user="user"/>
 				</MkSpacer>
-				<XEvent v-else-if="tab === 'events'" key="events" :user="user"/>
 				<XActivity v-else-if="tab === 'activity'" key="activity" :user="user"/>
 				<XAchievements v-else-if="tab === 'achievements'" key="achievements" :user="user"/>
 				<XClips v-else-if="tab === 'clips'" key="clips" :user="user"/>
@@ -56,7 +55,6 @@ window.addEventListener('resize', () => {
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
-const XEvent = defineAsyncComponent(() => import('./events.vue'));
 const XActivity = defineAsyncComponent(() => import('./activity.vue'));
 const XAchievements = defineAsyncComponent(() => import('./achievements.vue'));
 const XClips = defineAsyncComponent(() => import('./clips.vue'));
@@ -106,10 +104,6 @@ const headerTabs = computed(() => user.value ? [{
 	key: 'notes',
 	title: i18n.ts.notes,
 	icon: 'ti ti-pencil',
-}, {
-	key: 'events',
-	title: i18n.ts.events,
-	icon: 'ti ti-calendar',
 }, {
 	key: 'activity',
 	title: i18n.ts.activity,

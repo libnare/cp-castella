@@ -12,7 +12,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.body" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick" @dblclick.stop="noteDblClick">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
-				<MkEvent v-if="note.event" :note="note"/>
 				<p v-if="note.cw != null" :class="$style.cw">
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'respect'"/>
 					<MkCwButton v-model="showContent" style="width: 100%" :text="note.text" :files="note.files" :poll="note.poll" @click.stop/>
@@ -47,7 +46,6 @@ import * as Misskey from 'cherrypick-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
-import MkEvent from '@/components/MkEvent.vue';
 import { notePage } from '@/filters/note.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';

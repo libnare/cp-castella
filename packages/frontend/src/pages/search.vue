@@ -20,10 +20,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer v-else-if="tab === 'user'" key="user" :contentMax="800">
 			<XUser/>
 		</MkSpacer>
-
-		<MkSpacer v-else-if="tab === 'event'" key="event" :contentMax="800">
-			<XEvent/>
-		</MkSpacer>
 	</MkHorizontalSwipe>
 </MkStickyContainer>
 </template>
@@ -39,7 +35,6 @@ import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 
 const XNote = defineAsyncComponent(() => import('./search.note.vue'));
 const XUser = defineAsyncComponent(() => import('./search.user.vue'));
-const XEvent = defineAsyncComponent(() => import('./search.event.vue'));
 
 const tab = ref('note');
 
@@ -55,10 +50,6 @@ const headerTabs = computed(() => [{
 	key: 'user',
 	title: i18n.ts.users,
 	icon: 'ti ti-users',
-}, {
-	key: 'event',
-	title: i18n.ts.events,
-	icon: 'ti ti-calendar',
 }]);
 
 definePageMetadata(() => ({

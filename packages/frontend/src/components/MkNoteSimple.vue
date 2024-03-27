@@ -12,7 +12,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<div>
-		<MkEvent v-if="note.event" :note="note"/>
 		<p v-if="note.cw != null" :class="$style.cw">
 			<Mfm v-if="note.cw != ''" :text="note.cw" :author="note.user" :nyaize="'respect'" style="margin-right: 8px;"/>
 			<MkCwButton v-model="showContent" :text="note.text" :renote="note.renote" :files="note.files" :poll="note.poll" @click.stop/>
@@ -30,7 +29,6 @@ import * as Misskey from 'cherrypick-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
-import MkEvent from '@/components/MkEvent.vue';
 import { globalEvents } from '@/events.js';
 import { mainRouter } from '@/router/main.js';
 import { useRouter } from '@/router/supplier.js';
