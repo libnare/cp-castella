@@ -139,7 +139,6 @@ type Option = {
 	event?: IEvent | null;
 	localOnly?: boolean | null;
 	reactionAcceptance?: MiNote['reactionAcceptance'];
-	disableRightClick?: boolean | null;
 	cw?: string | null;
 	visibility?: string;
 	visibleUsers?: MinimumUser[] | null;
@@ -253,7 +252,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 		if (data.createdAt == null) data.createdAt = new Date();
 		if (data.visibility == null) data.visibility = 'public';
 		if (data.localOnly == null) data.localOnly = false;
-		if (data.disableRightClick == null) data.disableRightClick = false;
 		if (data.channel != null) data.visibility = 'public';
 		if (data.channel != null) data.visibleUsers = [];
 		if (data.channel != null) data.localOnly = true;
@@ -418,7 +416,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 			userId: user.id,
 			localOnly: data.localOnly!,
 			reactionAcceptance: data.reactionAcceptance,
-			disableRightClick: data.disableRightClick!,
 			visibility: data.visibility as any,
 			visibleUserIds: data.visibility === 'specified'
 				? data.visibleUsers

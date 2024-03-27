@@ -42,8 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-show="showContent">
 			<div v-if="note.files.length > 0">
-				<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @click.stop @contextmenu.prevent/>
-				<MkMediaList v-else :mediaList="note.files" @click.stop/>
+				<MkMediaList :mediaList="note.files" @click.stop/>
 			</div>
 			<div v-if="note.poll">
 				<MkPoll :note="note" @click.stop/>

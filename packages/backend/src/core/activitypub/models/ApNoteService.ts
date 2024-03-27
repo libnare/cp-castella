@@ -319,7 +319,6 @@ export class ApNoteService {
 				cw,
 				text,
 				localOnly: false,
-				disableRightClick: false,
 				visibility,
 				visibleUsers,
 				apMentions,

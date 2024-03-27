@@ -80,10 +80,6 @@ export const packedNoteSchema = {
 			optional: true, nullable: true,
 			ref: 'Note',
 		},
-		disableRightClick: {
-			type: 'boolean',
-			optional: true, nullable: false,
-		},
 		isHidden: {
 			type: 'boolean',
 			optional: true, nullable: false,

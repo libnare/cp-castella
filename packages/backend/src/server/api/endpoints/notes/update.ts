@@ -89,7 +89,6 @@ export const paramDef = {
 			required: ['choices'],
 		},
 		cw: { type: 'string', nullable: true, maxLength: 100 },
-		disableRightClick: { type: 'boolean', default: false },
 	},
 	required: ['noteId', 'text', 'cw'],
 } as const;
