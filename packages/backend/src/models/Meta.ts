@@ -126,6 +126,12 @@ export class MiMeta {
 		length: 1024,
 		nullable: true,
 	})
+	public appleIconUrl: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
 	public app192IconUrl: string | null;
 
 	@Column('varchar', {
@@ -133,6 +139,18 @@ export class MiMeta {
 		nullable: true,
 	})
 	public app512IconUrl: string | null;
+
+  @Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public app769IconUrl: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public app1024IconUrl: string | null;
 
 	@Column('varchar', {
 		length: 1024,

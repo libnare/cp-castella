@@ -15,9 +15,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts._serverSettings.iconUrl }}</template>
 					</MkInput>
 
+					<MkInput v-model="appleIconUrl" type="url">
+						<template #prefix><i class="ti ti-link"></i></template>
+						<template #label>Apple Touch Icon URL</template>
+					</MkInput>
+
 					<MkInput v-model="app192IconUrl" type="url">
 						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/192px)</template>
+						<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/192px | Disabled)</template>
 						<template #caption>
 							<div>{{ i18n.tsx._serverSettings.appIconDescription({ host: instance.name ?? host }) }}</div>
 							<div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
@@ -30,12 +35,34 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #prefix><i class="ti ti-link"></i></template>
 						<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/512px)</template>
 						<template #caption>
-							<div>{{ i18n.tsx._serverSettings.appIconDescription({ host: instance.name ?? host }) }}</div>
+							<div>{{ i18n.t('_serverSettings.appIconDescription', { host: instance.name ?? host }) }}</div>
 							<div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
 							<div>{{ i18n.ts._serverSettings.appIconStyleRecommendation }}</div>
-							<div><strong>{{ i18n.tsx._serverSettings.appIconResolutionMustBe({ resolution: '512x512px' }) }}</strong></div>
+							<div><strong>{{ i18n.t('_serverSettings.appIconResolutionMustBe', { resolution: '512x512px' }) }}</strong></div>
 						</template>
 					</MkInput>
+
+          <MkInput v-model="app769IconUrl" type="url">
+            <template #prefix><i class="ti ti-link"></i></template>
+            <template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/769px)</template>
+            <template #caption>
+              <div>{{ i18n.t('_serverSettings.appIconDescription', { host: instance.name ?? host }) }}</div>
+              <div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
+              <div>{{ i18n.ts._serverSettings.appIconStyleRecommendation }}</div>
+              <div><strong>{{ i18n.t('_serverSettings.appIconResolutionMustBe', { resolution: '769x769px' }) }}</strong></div>
+            </template>
+          </MkInput>
+
+          <MkInput v-model="app1024IconUrl" type="url">
+            <template #prefix><i class="ti ti-link"></i></template>
+            <template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/1024px)</template>
+            <template #caption>
+              <div>{{ i18n.t('_serverSettings.appIconDescription', { host: instance.name ?? host }) }}</div>
+              <div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
+              <div>{{ i18n.ts._serverSettings.appIconStyleRecommendation }}</div>
+              <div><strong>{{ i18n.t('_serverSettings.appIconResolutionMustBe', { resolution: '1024x1024px' }) }}</strong></div>
+            </template>
+          </MkInput>
 
 					<MkInput v-model="bannerUrl" type="url">
 						<template #prefix><i class="ti ti-link"></i></template>
@@ -120,8 +147,11 @@ import MkColorInput from '@/components/MkColorInput.vue';
 import { host } from '@/config.js';
 
 const iconUrl = ref<string | null>(null);
+const appleIconUrl = ref<string | null>(null);
 const app192IconUrl = ref<string | null>(null);
 const app512IconUrl = ref<string | null>(null);
+const app769IconUrl = ref<string | null>(null);
+const app1024IconUrl = ref<string | null>(null);
 const bannerUrl = ref<string | null>(null);
 const backgroundImageUrl = ref<string | null>(null);
 const themeColor = ref<string | null>(null);
@@ -137,8 +167,11 @@ const manifestJsonOverride = ref<string>('{}');
 async function init() {
 	const meta = await misskeyApi('admin/meta');
 	iconUrl.value = meta.iconUrl;
+	appleIconUrl.value = meta.appleIconUrl;
 	app192IconUrl.value = meta.app192IconUrl;
 	app512IconUrl.value = meta.app512IconUrl;
+	app769IconUrl = meta.app769IconUrl;
+	app1024IconUrl = meta.app1024IconUrl;
 	bannerUrl.value = meta.bannerUrl;
 	backgroundImageUrl.value = meta.backgroundImageUrl;
 	themeColor.value = meta.themeColor;
@@ -155,8 +188,11 @@ async function init() {
 function save() {
 	os.apiWithDialog('admin/update-meta', {
 		iconUrl: iconUrl.value,
+		appleIconUrl: appleIconUrl.value,
 		app192IconUrl: app192IconUrl.value,
 		app512IconUrl: app512IconUrl.value,
+		app769IconUrl: app769IconUrl.value,
+		app1024IconUrl: app1024IconUrl.value,
 		bannerUrl: bannerUrl.value,
 		backgroundImageUrl: backgroundImageUrl.value,
 		themeColor: themeColor.value === '' ? null : themeColor.value,

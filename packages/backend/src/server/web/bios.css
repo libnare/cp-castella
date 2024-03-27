@@ -42,7 +42,7 @@
 }
 
 html {
-	background: rgb(28, 28, 37);
+	background: rgb(27, 26, 37);
 }
 
 header {
@@ -50,7 +50,7 @@ header {
 }
 
 main {
-	background: rgb(35, 35, 47);
+	background: rgb(33, 32, 41);
 	color: #fff;
 }
 main > .tabs {

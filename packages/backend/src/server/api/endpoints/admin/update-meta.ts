@@ -55,8 +55,11 @@ export const paramDef = {
 		infoImageUrl: { type: 'string', nullable: true },
 		notFoundImageUrl: { type: 'string', nullable: true },
 		iconUrl: { type: 'string', nullable: true },
+		appleIconUrl: { type: 'string', nullable: true },
 		app192IconUrl: { type: 'string', nullable: true },
 		app512IconUrl: { type: 'string', nullable: true },
+		app769IconUrl: { type: 'string', nullable: true },
+		app1024IconUrl: { type: 'string', nullable: true },
 		backgroundImageUrl: { type: 'string', nullable: true },
 		logoImageUrl: { type: 'string', nullable: true },
 		name: { type: 'string', nullable: true },
@@ -236,12 +239,24 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.iconUrl = ps.iconUrl;
 			}
 
+			if (ps.appleIconUrl !== undefined) {
+				set.appleIconUrl = ps.appleIconUrl;
+			}
+
 			if (ps.app192IconUrl !== undefined) {
 				set.app192IconUrl = ps.app192IconUrl;
 			}
 
 			if (ps.app512IconUrl !== undefined) {
 				set.app512IconUrl = ps.app512IconUrl;
+			}
+
+			if (ps.app769IconUrl !== undefined) {
+				set.app769IconUrl = ps.app769IconUrl;
+			}
+
+			if (ps.app1024IconUrl !== undefined) {
+				set.app1024IconUrl = ps.app1024IconUrl;
 			}
 
 			if (ps.serverErrorImageUrl !== undefined) {

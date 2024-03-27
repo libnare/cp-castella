@@ -184,7 +184,7 @@
 			<p>Update your os and browser / ブラウザおよびOSを最新バージョンに更新する / 브라우저와 OS를 최신 버전으로 업데이트 하기</p>
 			<p>Disable an adblocker / アドブロッカーを無効にする / 광고 차단기를 비활성화 하기</p>
 			<p>&#40;Tor Browser&#41; Set dom.webaudio.enabled to true / dom.webaudio.enabledをtrueに設定する / dom.webaudio.enabled를 true로 설정하기</p>
-			<details style="color: rgb(255, 197, 230);">
+			<details style="color: rgb(242, 238, 252);">
 				<summary>Other options / その他のオプション / 기타 옵션</summary>
 				<a href="/flush">
 					<button class="button-small">
@@ -219,8 +219,41 @@
 		<code>${JSON.stringify(details)}</code>`;
 		errorsElement.appendChild(detailsElement);
 		addStyle(`
+    @font-face {
+			font-family: 'Pretendard JP';
+			font-weight: 400;
+			font-display: swap;
+			src: local('Pretendard JP Regular'),
+			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Regular.woff2') format('woff2'),
+			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff/PretendardJP-Regular.woff') format('woff');
+		}
+		@font-face {
+			font-family: 'Pretendard JP';
+			font-weight: 700;
+			font-display: swap;
+			src: local('Pretendard JP Bold'),
+			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Bold.woff2') format('woff2'),
+			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff/PretendardJP-Bold.woff') format('woff');
+		}
+		@font-face {
+			font-family: 'JetBrains Mono';
+			font-style: normal;
+			font-weight: 400;
+			src: local("JetBrains Mono Regular"), local("JetBrainsMono-Regular"),
+			url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@master/fonts/webfonts/JetBrainsMono-Regular.woff2") format("woff2");
+			font-display: swap;
+		}
+		@font-face {
+			font-family: 'JetBrains Mono';
+			font-style: normal;
+			font-weight: 700;
+			src: local("JetBrains Mono Bold"), local("JetBrainsMono-Bold"),
+			url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@master/fonts/webfonts/JetBrainsMono-Bold.woff2") format("woff2");
+			font-display: swap;
+		}
+
 		* {
-			font-family: BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
+			font-family: "Pretendard JP", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Hiragino Sans", "Apple SD Gothic Neo", Meiryo, "Noto Sans JP", "Noto Sans KR", "Malgun Gothic", Osaka, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 		}
 
 		#cherypick_app,
@@ -230,8 +263,8 @@
 
 		body,
 		html {
-			background-color: rgb(28, 28, 37);
-			color: #dfddcc;
+			background-color: rgb(27, 26, 37);
+			color: rgb(242, 238, 252);
 			justify-content: center;
 			margin: auto;
 			padding: 10px;
@@ -251,12 +284,12 @@
 		}
 
 		.button-big {
-			background: linear-gradient(90deg, rgb(255, 207, 230), rgb(185, 216, 255));
+			background: linear-gradient(90deg, rgb(184, 185, 247), rgb(204, 184, 247));
 			line-height: 50px;
 		}
 
 		.button-big:hover {
-			background: rgb(255, 222, 241);
+			background: rgb(230, 230, 252);
 		}
 
 		.button-small {
@@ -265,7 +298,7 @@
 		}
 
 		.button-small:hover {
-			background: rgba(255, 255, 255, 0.1);
+			background: rgba(184, 185, 247, 0.15);
 		}
 
 		.button-label-big {
@@ -276,7 +309,7 @@
 		}
 
 		.button-label-small {
-			color: rgb(185, 216, 255);
+			color: rgba(184, 185, 247);
 			font-size: 16px;
 			padding: 12px;
 		}
@@ -303,11 +336,13 @@
 		}
 
 		code {
-			font-family: Fira, FiraCode, monospace;
+			color: #f8f8f2;
+			text-shadow: 0 1px rgba(0,0,0,.3);
+			font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
 		}
 
 		#errorInfo {
-			background: rgb(35, 35, 47);
+			background: #272822;
 			margin-bottom: 2rem;
 			padding: 0.5rem 1rem;
 			width: 40rem;
