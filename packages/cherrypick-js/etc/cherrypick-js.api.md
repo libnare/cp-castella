@@ -1594,8 +1594,6 @@ declare namespace entities {
         NotesPollsRecommendationRequest,
         NotesPollsRecommendationResponse,
         NotesPollsVoteRequest,
-        NotesEventsSearchRequest,
-        NotesEventsSearchResponse,
         NotesReactionsRequest,
         NotesReactionsResponse,
         NotesReactionsCreateRequest,
@@ -2553,12 +2551,6 @@ type NotesCreateResponse = operations['notes/create']['responses']['200']['conte
 
 // @public (undocumented)
 type NotesDeleteRequest = operations['notes/delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesEventsSearchRequest = operations['notes/events/search']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesEventsSearchResponse = operations['notes/events/search']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type NotesFavoritesCreateRequest = operations['notes/favorites/create']['requestBody']['content']['application/json'];

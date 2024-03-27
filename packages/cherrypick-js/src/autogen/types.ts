@@ -2754,15 +2754,6 @@ export type paths = {
      */
     post: operations['notes/polls/vote'];
   };
-  '/notes/events/search': {
-    /**
-     * notes/events/search
-     * @description No description provided.
-     *
-     * **Credential required**: *No*
-     */
-    post: operations['notes/events/search'];
-  };
   '/notes/reactions': {
     /**
      * notes/reactions
@@ -4267,7 +4258,6 @@ export type components = {
       renoteId?: string | null;
       reply?: components['schemas']['Note'] | null;
       renote?: components['schemas']['Note'] | null;
-      disableRightClick?: boolean;
       isHidden?: boolean;
       /** @enum {string} */
       visibility: 'public' | 'home' | 'followers' | 'specified';
@@ -5106,8 +5096,11 @@ export type operations = {
             infoImageUrl: string | null;
             notFoundImageUrl: string | null;
             iconUrl: string | null;
+            appleIconUrl: string | null;
             app192IconUrl: string | null;
             app512IconUrl: string | null;
+            app769IconUrl: string | null;
+            app1024IconUrl: string | null;
             enableEmail: boolean;
             enableServiceWorker: boolean;
             translatorAvailable: boolean;
@@ -9466,8 +9459,11 @@ export type operations = {
           infoImageUrl?: string | null;
           notFoundImageUrl?: string | null;
           iconUrl?: string | null;
+          appleIconUrl?: string | null;
           app192IconUrl?: string | null;
           app512IconUrl?: string | null;
+          app769IconUrl?: string | null;
+          app1024IconUrl?: string | null;
           backgroundImageUrl?: string | null;
           logoImageUrl?: string | null;
           name?: string | null;
@@ -21573,8 +21569,6 @@ export type operations = {
            */
           reactionAcceptance?: null | 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote';
           /** @default false */
-          disableRightClick?: boolean;
-          /** @default false */
           noExtractMentions?: boolean;
           /** @default false */
           noExtractHashtags?: boolean;
@@ -21594,12 +21588,6 @@ export type operations = {
             multiple?: boolean;
             expiresAt?: number | null;
             expiredAfter?: number | null;
-          }) | null;
-          event?: ({
-            title?: string;
-            start?: number;
-            end?: number | null;
-            metadata?: Record<string, never>;
           }) | null;
         };
       };
@@ -21731,8 +21719,6 @@ export type operations = {
             expiredAfter?: number | null;
           }) | null;
           cw: string | null;
-          /** @default false */
-          disableRightClick?: boolean;
         };
       };
     };
@@ -22296,87 +22282,6 @@ export type operations = {
       /** @description OK (without any results) */
       204: {
         content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * notes/events/search
-   * @description No description provided.
-   *
-   * **Credential required**: *No*
-   */
-  'notes/events/search': {
-    requestBody: {
-      content: {
-        'application/json': {
-          query?: string | null;
-          /** Format: misskey:id */
-          sinceId?: string;
-          /** Format: misskey:id */
-          untilId?: string;
-          /** @default 10 */
-          limit?: number;
-          /**
-           * @default combined
-           * @enum {string}
-           */
-          origin?: 'local' | 'remote' | 'combined';
-          /** @default 0 */
-          offset?: number;
-          users?: string[] | null;
-          sinceDate?: number | null;
-          untilDate?: number | null;
-          /** @description list of string -> [string] that filters events based on metadata. Each item in filters is applied as an AND */
-          filters?: (({
-              /** @description the metadata string property to filter on. Can filter on nested properties using an array. such as `["location", "postalCode"]`. */
-              key?: string[];
-              /** @description The values to match the metadata against (case insensitive regex). Each item in this array is applied as an OR. Include null to indicate match on missing metadata */
-              values?: (string | null)[];
-            })[]) | null;
-          /**
-           * @default startDate
-           * @enum {string|null}
-           */
-          sortBy?: 'startDate' | 'createdAt';
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
-        };
       };
       /** @description Client error */
       400: {
