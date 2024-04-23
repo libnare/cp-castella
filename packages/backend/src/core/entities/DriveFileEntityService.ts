@@ -126,7 +126,7 @@ export class DriveFileEntityService {
 
 		// リモートかつ期限切れはローカルプロキシを試みる
 		if (file.uri != null && file.isLink && this.config.proxyRemoteFiles && this.config.sermcsUrl) {
-			const key = file.webpublicAccessKey;
+			const key = file.accessKey;
 
 			if (key && !key.match('/')) {	// 古いものはここにオブジェクトストレージキーが入ってるので除外
 				const url = `${this.config.sermcsUrl}/${key}`;
