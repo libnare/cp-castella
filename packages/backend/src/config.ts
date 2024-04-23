@@ -92,6 +92,7 @@ type Source = {
 	apFileBaseUrl?: string;
 
 	mediaProxy?: string;
+	sermcsUrl?: string;
 	proxyRemoteFiles?: boolean;
 	videoThumbnailGenerator?: string;
 
@@ -177,6 +178,7 @@ export type Config = {
 	clientEntry: string;
 	clientManifestExists: boolean;
 	mediaProxy: string;
+	sermcsUrl: string | null;
 	externalMediaProxyEnabled: boolean;
 	videoThumbnailGenerator: string | null;
 	redis: RedisOptions & RedisOptionsSource;
@@ -222,6 +224,9 @@ export function loadConfig(): Config {
 	const scheme = url.protocol.replace(/:$/, '');
 	const wsScheme = scheme.replace('http', 'ws');
 
+	const sermcsUrl = config.sermcsUrl ?
+		config.sermcsUrl.endsWith('/') ? config.sermcsUrl.substring(0, config.sermcsUrl.length - 1) : config.sermcsUrl
+		: null;
 	const externalMediaProxy = config.mediaProxy ?
 		config.mediaProxy.endsWith('/') ? config.mediaProxy.substring(0, config.mediaProxy.length - 1) : config.mediaProxy
 		: null;
@@ -274,6 +279,7 @@ export function loadConfig(): Config {
 		signToActivityPubGet: config.signToActivityPubGet,
 		apFileBaseUrl: config.apFileBaseUrl,
 		mediaProxy: externalMediaProxy ?? internalMediaProxy,
+		sermcsUrl: sermcsUrl,
 		externalMediaProxyEnabled: externalMediaProxy !== null && externalMediaProxy !== internalMediaProxy,
 		videoThumbnailGenerator: config.videoThumbnailGenerator ?
 			config.videoThumbnailGenerator.endsWith('/') ? config.videoThumbnailGenerator.substring(0, config.videoThumbnailGenerator.length - 1) : config.videoThumbnailGenerator

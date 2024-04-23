@@ -96,6 +96,15 @@ export class DriveFileEntityService {
 			return this.getProxiedUrl(file.uri, 'static');
 		}
 
+		if (file.uri != null && file.isLink && this.config.proxyRemoteFiles && this.config.sermcsUrl) {
+			const key = file.thumbnailAccessKey;
+
+			if (key && !key.match('/')) {	// 古いものはここにオブジェクトストレージキーが入ってるので除外
+				const url = `${this.config.sermcsUrl}/${key}`;
+				return url;
+			}
+		}
+
 		if (file.uri != null && file.isLink && this.config.proxyRemoteFiles) {
 			// リモートかつ期限切れはローカルプロキシを試みる
 			// 従来は/files/${thumbnailAccessKey}にアクセスしていたが、
@@ -116,6 +125,16 @@ export class DriveFileEntityService {
 		}
 
 		// リモートかつ期限切れはローカルプロキシを試みる
+		if (file.uri != null && file.isLink && this.config.proxyRemoteFiles && this.config.sermcsUrl) {
+			const key = file.webpublicAccessKey;
+
+			if (key && !key.match('/')) {	// 古いものはここにオブジェクトストレージキーが入ってるので除外
+				const url = `${this.config.sermcsUrl}/${key}`;
+				if (mode === 'avatar') return this.getProxiedUrl(file.uri, 'avatar');
+				return url;
+			}
+		}
+
 		if (file.uri != null && file.isLink && this.config.proxyRemoteFiles) {
 			const key = file.webpublicAccessKey;
 
